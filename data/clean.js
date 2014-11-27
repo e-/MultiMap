@@ -85,7 +85,8 @@ parser.parseString(mapXML.toString(), function(err, result){
   };
 
   loadPopulation();
-  
+  loadSize();
+
   fs.writeFileSync('data.json', JSON.stringify(r0s, undefined, 2));
 
    
@@ -120,6 +121,63 @@ function loadPopulation(){
 
   leaves.forEach(function(leaf){
     if(!leaf.population)
+      console.error('no pop', leaf.name);
+  });
+}
+
+
+function loadSize(){
+  var raw = fs.readFileSync('size.data').toString();
+  raw.split('\n').forEach(function(line2){
+    if(line2.trim().length == 0) return;
+    var line = line2.split(' '),
+        sido = line[1],
+        name = line[2],
+        bun = parseInt(line[3]),
+        number = parseFloat(line[4]),
+        num2 = parseFloat(line[5]);
+
+    var matched = 0;
+
+    if(isNaN(bun)) {
+//      console.log('two address', sido, name);
+      r2s.forEach(function(r2){
+        r2.children.forEach(function(r3){
+          if(r2.name == sido && r3.name.indexOf(name) == 0) { //일치
+            if(r3.size) r3.size += number;
+            else r3.size = number;
+            matched ++;
+          }
+        });
+      });
+
+      if(matched !== 1) console.log('critical!');
+
+
+      return;
+    }
+    if(isNaN(number)) console.error('no number', name);
+    
+
+    r2s.forEach(function(r2){
+      r2.children.forEach(function(r3){
+        if(r2.name == sido && r3.name.indexOf(name) == 0) { //일치
+          if(name =="고성군") 
+            console.log(r2.name, sido, r2.name, name, number);
+          if(r3.size) console.log('ERRORR!!!');
+          r3.size = number;
+          matched ++;
+        }
+      });
+    });
+
+    if(matched != 1){
+      console.error('dup or absent', sido, name);
+    }
+  });
+
+  leaves.forEach(function(leaf){
+    if(!leaf.size)
       console.error('no pop', leaf.name);
   });
 }

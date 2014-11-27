@@ -14,7 +14,8 @@
               ],
               "id": 1,
               "population": 483379,
-              "popRatio": 100.2
+              "popRatio": 100.2,
+              "size": 24587197.1
             },
             {
               "name": "송파구",
@@ -23,7 +24,8 @@
               ],
               "id": 2,
               "population": 668415,
-              "popRatio": 104.5
+              "popRatio": 104.5,
+              "size": 33874807.9
             },
             {
               "name": "광진구",
@@ -32,7 +34,8 @@
               ],
               "id": 3,
               "population": 368927,
-              "popRatio": 102.9
+              "popRatio": 102.9,
+              "size": 17062331.7
             },
             {
               "name": "중랑구",
@@ -41,7 +44,8 @@
               ],
               "id": 4,
               "population": 416798,
-              "popRatio": 99.8
+              "popRatio": 99.8,
+              "size": 18497205.6
             },
             {
               "name": "노원구",
@@ -50,7 +54,8 @@
               ],
               "id": 5,
               "population": 590479,
-              "popRatio": 104.7
+              "popRatio": 104.7,
+              "size": 35435821.6
             },
             {
               "name": "강남구",
@@ -59,7 +64,8 @@
               ],
               "id": 6,
               "population": 563599,
-              "popRatio": 108.3
+              "popRatio": 108.3,
+              "size": 39500873.4
             },
             {
               "name": "성동구",
@@ -68,7 +74,8 @@
               ],
               "id": 7,
               "population": 299337,
-              "popRatio": 100.5
+              "popRatio": 100.5,
+              "size": 16853805.2
             },
             {
               "name": "동대문구",
@@ -77,7 +84,8 @@
               ],
               "id": 8,
               "population": 364273,
-              "popRatio": 99.1
+              "popRatio": 99.1,
+              "size": 14210790.6
             },
             {
               "name": "성북구",
@@ -86,7 +94,8 @@
               ],
               "id": 9,
               "population": 476589,
-              "popRatio": 103.2
+              "popRatio": 103.2,
+              "size": 24578177.1
             },
             {
               "name": "강북구",
@@ -95,7 +104,8 @@
               ],
               "id": 10,
               "population": 338707,
-              "popRatio": 102.4
+              "popRatio": 102.4,
+              "size": 23597083.9
             },
             {
               "name": "도봉구",
@@ -104,7 +114,8 @@
               ],
               "id": 11,
               "population": 358582,
-              "popRatio": 102.4
+              "popRatio": 102.4,
+              "size": 20702811.1
             },
             {
               "name": "서초구",
@@ -113,7 +124,8 @@
               ],
               "id": 12,
               "population": 441763,
-              "popRatio": 107.1
+              "popRatio": 107.1,
+              "size": 47001797.9
             },
             {
               "name": "용산구",
@@ -122,7 +134,8 @@
               ],
               "id": 13,
               "population": 239740,
-              "popRatio": 105.8
+              "popRatio": 105.8,
+              "size": 21868765.4
             },
             {
               "name": "중구1",
@@ -131,7 +144,8 @@
               ],
               "id": 14,
               "population": 130465,
-              "popRatio": 99.6
+              "popRatio": 99.6,
+              "size": 9960055.6
             },
             {
               "name": "종로구",
@@ -140,7 +154,8 @@
               ],
               "id": 15,
               "population": 160070,
-              "popRatio": 101.3
+              "popRatio": 101.3,
+              "size": 23907208.5
             },
             {
               "name": "은평구",
@@ -149,7 +164,8 @@
               ],
               "id": 16,
               "population": 503660,
-              "popRatio": 104
+              "popRatio": 104,
+              "size": 29702017.7
             },
             {
               "name": "서대문구",
@@ -158,7 +174,8 @@
               ],
               "id": 17,
               "population": 314110,
-              "popRatio": 104.9
+              "popRatio": 104.9,
+              "size": 17607426.8
             },
             {
               "name": "마포구",
@@ -167,7 +184,8 @@
               ],
               "id": 18,
               "population": 381856,
-              "popRatio": 106.7
+              "popRatio": 106.7,
+              "size": 23837679.9
             },
             {
               "name": "강서구1",
@@ -176,7 +194,8 @@
               ],
               "id": 19,
               "population": 569070,
-              "popRatio": 103.8
+              "popRatio": 103.8,
+              "size": 41427231.4
             },
             {
               "name": "양천구",
@@ -185,7 +204,8 @@
               ],
               "id": 20,
               "population": 492528,
-              "popRatio": 101.2
+              "popRatio": 101.2,
+              "size": 17403552.8
             },
             {
               "name": "구로구",
@@ -194,7 +214,8 @@
               ],
               "id": 21,
               "population": 424964,
-              "popRatio": 99.3
+              "popRatio": 99.3,
+              "size": 20118738.7
             },
             {
               "name": "금천구",
@@ -203,7 +224,8 @@
               ],
               "id": 22,
               "population": 241020,
-              "popRatio": 95.2
+              "popRatio": 95.2,
+              "size": 13016507.6
             },
             {
               "name": "관악구",
@@ -212,7 +234,8 @@
               ],
               "id": 23,
               "population": 518028,
-              "popRatio": 97.5
+              "popRatio": 97.5,
+              "size": 29569671.4
             },
             {
               "name": "동작구",
@@ -221,7 +244,8 @@
               ],
               "id": 24,
               "population": 410815,
-              "popRatio": 103.2
+              "popRatio": 103.2,
+              "size": 16353870.7
             },
             {
               "name": "영등포구",
@@ -230,7 +254,8 @@
               ],
               "id": 25,
               "population": 386471,
-              "popRatio": 99.3
+              "popRatio": 99.3,
+              "size": 24528724.9
             }
           ]
         },
@@ -244,7 +269,8 @@
               ],
               "id": 26,
               "population": 343806,
-              "popRatio": 99.3
+              "popRatio": 99.3,
+              "size": 45569113.5
             },
             {
               "name": "부평구",
@@ -253,7 +279,8 @@
               ],
               "id": 27,
               "population": 556985,
-              "popRatio": 100.1
+              "popRatio": 100.1,
+              "size": 32002420.2
             },
             {
               "name": "서구3",
@@ -262,7 +289,8 @@
               ],
               "id": 28,
               "population": 490035,
-              "popRatio": 97.6
+              "popRatio": 97.6,
+              "size": 114005951.7
             },
             {
               "name": "연수구",
@@ -271,7 +299,8 @@
               ],
               "id": 29,
               "population": 300305,
-              "popRatio": 100
+              "popRatio": 100,
+              "size": 45568273.5
             },
             {
               "name": "남구3",
@@ -280,7 +309,8 @@
               ],
               "id": 30,
               "population": 411330,
-              "popRatio": 97.9
+              "popRatio": 97.9,
+              "size": 24839807.7
             },
             {
               "name": "남동구",
@@ -289,7 +319,8 @@
               ],
               "id": 31,
               "population": 507021,
-              "popRatio": 100.3
+              "popRatio": 100.3,
+              "size": 57009225.2
             },
             {
               "name": "동구3",
@@ -298,7 +329,8 @@
               ],
               "id": 32,
               "population": 75093,
-              "popRatio": 98.6
+              "popRatio": 98.6,
+              "size": 7189826.3
             },
             {
               "name": "강화군",
@@ -310,7 +342,8 @@
               ],
               "id": 33,
               "population": 66735,
-              "popRatio": 99.1
+              "popRatio": 99.1,
+              "size": 411330788.5
             },
             {
               "name": "중구4",
@@ -321,7 +354,8 @@
               ],
               "id": 34,
               "population": 107774,
-              "popRatio": 93.1
+              "popRatio": 93.1,
+              "size": 131288370.3
             },
             {
               "name": "옹진군",
@@ -335,7 +369,8 @@
               ],
               "id": 35,
               "population": 20698,
-              "popRatio": 77
+              "popRatio": 77,
+              "size": 172072118.9
             }
           ]
         },
@@ -349,7 +384,8 @@
               ],
               "id": 36,
               "population": 312305,
-              "popRatio": 98.5
+              "popRatio": 98.5,
+              "size": 276633484
             },
             {
               "name": "고양시",
@@ -358,7 +394,8 @@
               ],
               "id": 37,
               "population": 990571,
-              "popRatio": 103
+              "popRatio": 103,
+              "size": 174073
             },
             {
               "name": "파주시",
@@ -367,7 +404,8 @@
               ],
               "id": 38,
               "population": 401718,
-              "popRatio": 96.6
+              "popRatio": 96.6,
+              "size": 672769148.6
             },
             {
               "name": "양주시",
@@ -376,7 +414,8 @@
               ],
               "id": 39,
               "population": 199143,
-              "popRatio": 96.6
+              "popRatio": 96.6,
+              "size": 310363943.2
             },
             {
               "name": "의정부시",
@@ -385,7 +424,8 @@
               ],
               "id": 40,
               "population": 430976,
-              "popRatio": 102.2
+              "popRatio": 102.2,
+              "size": 81542065.8
             },
             {
               "name": "동두천시",
@@ -394,7 +434,8 @@
               ],
               "id": 41,
               "population": 97557,
-              "popRatio": 100.1
+              "popRatio": 100.1,
+              "size": 95659108.2
             },
             {
               "name": "연천군",
@@ -403,7 +444,8 @@
               ],
               "id": 42,
               "population": 45610,
-              "popRatio": 92.4
+              "popRatio": 92.4,
+              "size": 675831268.4
             },
             {
               "name": "포천시",
@@ -412,7 +454,8 @@
               ],
               "id": 43,
               "population": 156603,
-              "popRatio": 90.9
+              "popRatio": 90.9,
+              "size": 826728202.2
             },
             {
               "name": "구리시",
@@ -421,7 +464,8 @@
               ],
               "id": 44,
               "population": 189680,
-              "popRatio": 100.3
+              "popRatio": 100.3,
+              "size": 33311155.7
             },
             {
               "name": "남양주시",
@@ -430,7 +474,8 @@
               ],
               "id": 45,
               "population": 618305,
-              "popRatio": 99.8
+              "popRatio": 99.8,
+              "size": 458054145.4
             },
             {
               "name": "하남시",
@@ -439,7 +484,8 @@
               ],
               "id": 46,
               "population": 145096,
-              "popRatio": 96
+              "popRatio": 96,
+              "size": 93032938.5
             },
             {
               "name": "양평군",
@@ -448,7 +494,8 @@
               ],
               "id": 47,
               "population": 103620,
-              "popRatio": 98.4
+              "popRatio": 98.4,
+              "size": 877776441.9
             },
             {
               "name": "가평군",
@@ -457,7 +504,8 @@
               ],
               "id": 48,
               "population": 61017,
-              "popRatio": 95
+              "popRatio": 95,
+              "size": 843587999
             },
             {
               "name": "여주시",
@@ -466,7 +514,8 @@
               ],
               "id": 49,
               "population": 109343,
-              "popRatio": 98
+              "popRatio": 98,
+              "size": 608316175.5
             },
             {
               "name": "광주시",
@@ -475,7 +524,8 @@
               ],
               "id": 50,
               "population": 286699,
-              "popRatio": 94.4
+              "popRatio": 94.4,
+              "size": 430999682.5
             },
             {
               "name": "성남시",
@@ -484,7 +534,8 @@
               ],
               "id": 51,
               "population": 979534,
-              "popRatio": 100.6
+              "popRatio": 100.6,
+              "size": 97539
             },
             {
               "name": "과천시",
@@ -493,7 +544,8 @@
               ],
               "id": 52,
               "population": 70578,
-              "popRatio": 105.4
+              "popRatio": 105.4,
+              "size": 35866371.5
             },
             {
               "name": "의왕시",
@@ -502,7 +554,8 @@
               ],
               "id": 53,
               "population": 159772,
-              "popRatio": 99.9
+              "popRatio": 99.9,
+              "size": 53991233.7
             },
             {
               "name": "용인시",
@@ -511,7 +564,8 @@
               ],
               "id": 54,
               "population": 941477,
-              "popRatio": 101.2
+              "popRatio": 101.2,
+              "size": 297161
             },
             {
               "name": "안양시",
@@ -520,7 +574,8 @@
               ],
               "id": 55,
               "population": 607877,
-              "popRatio": 100.6
+              "popRatio": 100.6,
+              "size": 42123
             },
             {
               "name": "부천시",
@@ -529,7 +584,8 @@
               ],
               "id": 56,
               "population": 863720,
-              "popRatio": 99.6
+              "popRatio": 99.6,
+              "size": 63910
             },
             {
               "name": "광명시",
@@ -538,7 +594,8 @@
               ],
               "id": 57,
               "population": 353100,
-              "popRatio": 101.7
+              "popRatio": 101.7,
+              "size": 38513614.1
             },
             {
               "name": "시흥시",
@@ -547,7 +604,8 @@
               ],
               "id": 58,
               "population": 396765,
-              "popRatio": 90.6
+              "popRatio": 90.6,
+              "size": 135014600.9
             },
             {
               "name": "이천시",
@@ -556,7 +614,8 @@
               ],
               "id": 59,
               "population": 205479,
-              "popRatio": 97.1
+              "popRatio": 97.1,
+              "size": 461357911.1
             },
             {
               "name": "수원시",
@@ -565,7 +624,8 @@
               ],
               "id": 60,
               "population": 1148157,
-              "popRatio": 98.6
+              "popRatio": 98.6,
+              "size": 133493
             },
             {
               "name": "군포시",
@@ -574,7 +634,8 @@
               ],
               "id": 61,
               "population": 286344,
-              "popRatio": 100.9
+              "popRatio": 100.9,
+              "size": 36459849.5
             },
             {
               "name": "안산시",
@@ -583,7 +644,8 @@
               ],
               "id": 62,
               "population": 713666,
-              "popRatio": 95.2
+              "popRatio": 95.2,
+              "size": 91923
             },
             {
               "name": "오산시",
@@ -592,7 +654,8 @@
               ],
               "id": 63,
               "population": 205460,
-              "popRatio": 95.4
+              "popRatio": 95.4,
+              "size": 42731717.9
             },
             {
               "name": "평택시",
@@ -601,7 +664,8 @@
               ],
               "id": 64,
               "population": 442034,
-              "popRatio": 96.7
+              "popRatio": 96.7,
+              "size": 457464148.1
             },
             {
               "name": "안성시",
@@ -610,7 +674,8 @@
               ],
               "id": 65,
               "population": 182173,
-              "popRatio": 96
+              "popRatio": 96,
+              "size": 553443784.8
             },
             {
               "name": "화성시",
@@ -620,7 +685,8 @@
               ],
               "id": 66,
               "population": 530251,
-              "popRatio": 93.7
+              "popRatio": 93.7,
+              "size": 689660989.4
             }
           ]
         }
@@ -639,7 +705,8 @@
               ],
               "id": 67,
               "population": 47473,
-              "popRatio": 94.4
+              "popRatio": 94.4,
+              "size": 889434570.4
             },
             {
               "name": "화천군",
@@ -648,7 +715,8 @@
               ],
               "id": 68,
               "population": 25079,
-              "popRatio": 85.4
+              "popRatio": 85.4,
+              "size": 908968093.6
             },
             {
               "name": "춘천시",
@@ -657,7 +725,8 @@
               ],
               "id": 69,
               "population": 274455,
-              "popRatio": 102.7
+              "popRatio": 102.7,
+              "size": 1116411447.2
             },
             {
               "name": "홍천군",
@@ -666,7 +735,8 @@
               ],
               "id": 70,
               "population": 70638,
-              "popRatio": 95.2
+              "popRatio": 95.2,
+              "size": 1819670464.2
             },
             {
               "name": "횡성군",
@@ -675,7 +745,8 @@
               ],
               "id": 71,
               "population": 44937,
-              "popRatio": 96.5
+              "popRatio": 96.5,
+              "size": 997756505
             },
             {
               "name": "원주시",
@@ -684,7 +755,8 @@
               ],
               "id": 72,
               "population": 324837,
-              "popRatio": 101
+              "popRatio": 101,
+              "size": 872410810
             },
             {
               "name": "양구군",
@@ -693,7 +765,8 @@
               ],
               "id": 73,
               "population": 23594,
-              "popRatio": 88.1
+              "popRatio": 88.1,
+              "size": 661896385.8
             },
             {
               "name": "인제군",
@@ -702,7 +775,8 @@
               ],
               "id": 74,
               "population": 32517,
-              "popRatio": 87.5
+              "popRatio": 87.5,
+              "size": 1645150711.9
             },
             {
               "name": "고성군1",
@@ -711,7 +785,8 @@
               ],
               "id": 75,
               "population": 30398,
-              "popRatio": 87.8
+              "popRatio": 87.8,
+              "size": 660942613.7
             },
             {
               "name": "속초시",
@@ -720,7 +795,8 @@
               ],
               "id": 76,
               "population": 83109,
-              "popRatio": 103.1
+              "popRatio": 103.1,
+              "size": 105626024.4
             },
             {
               "name": "양양군",
@@ -729,7 +805,8 @@
               ],
               "id": 77,
               "population": 27659,
-              "popRatio": 95.7
+              "popRatio": 95.7,
+              "size": 629861644.5
             },
             {
               "name": "평창군",
@@ -738,7 +815,8 @@
               ],
               "id": 78,
               "population": 43666,
-              "popRatio": 95.8
+              "popRatio": 95.8,
+              "size": 1463696218.5
             },
             {
               "name": "강릉시",
@@ -747,7 +825,8 @@
               ],
               "id": 79,
               "population": 216806,
-              "popRatio": 101.3
+              "popRatio": 101.3,
+              "size": 1040382339.3
             },
             {
               "name": "정선군",
@@ -756,7 +835,8 @@
               ],
               "id": 80,
               "population": 39985,
-              "popRatio": 93.4
+              "popRatio": 93.4,
+              "size": 1219695225.1
             },
             {
               "name": "동해시",
@@ -765,7 +845,8 @@
               ],
               "id": 81,
               "population": 95143,
-              "popRatio": 97.8
+              "popRatio": 97.8,
+              "size": 180196095.1
             },
             {
               "name": "영월군",
@@ -774,7 +855,8 @@
               ],
               "id": 82,
               "population": 40150,
-              "popRatio": 96.1
+              "popRatio": 96.1,
+              "size": 1127628448.5
             },
             {
               "name": "태백시",
@@ -783,7 +865,8 @@
               ],
               "id": 83,
               "population": 48794,
-              "popRatio": 96.9
+              "popRatio": 96.9,
+              "size": 303444888.6
             },
             {
               "name": "삼척시",
@@ -792,7 +875,8 @@
               ],
               "id": 84,
               "population": 73023,
-              "popRatio": 95.3
+              "popRatio": 95.3,
+              "size": 1186636685.7
             }
           ]
         }
@@ -811,7 +895,8 @@
               ],
               "id": 85,
               "population": 64606,
-              "popRatio": 92.7
+              "popRatio": 92.7,
+              "size": 407260800.8
             },
             {
               "name": "음성군",
@@ -820,7 +905,8 @@
               ],
               "id": 86,
               "population": 93505,
-              "popRatio": 90.9
+              "popRatio": 90.9,
+              "size": 520301425.9
             },
             {
               "name": "충주시",
@@ -829,7 +915,8 @@
               ],
               "id": 87,
               "population": 208115,
-              "popRatio": 98.6
+              "popRatio": 98.6,
+              "size": 983665638.3
             },
             {
               "name": "제천시",
@@ -838,7 +925,8 @@
               ],
               "id": 88,
               "population": 137204,
-              "popRatio": 99.1
+              "popRatio": 99.1,
+              "size": 883434838.6
             },
             {
               "name": "단양군",
@@ -847,7 +935,8 @@
               ],
               "id": 89,
               "population": 31171,
-              "popRatio": 99
+              "popRatio": 99,
+              "size": 781060595.1
             },
             {
               "name": "괴산군",
@@ -856,7 +945,8 @@
               ],
               "id": 90,
               "population": 38059,
-              "popRatio": 96.8
+              "popRatio": 96.8,
+              "size": 842437075.8
             },
             {
               "name": "증평군",
@@ -865,7 +955,8 @@
               ],
               "id": 91,
               "population": 34546,
-              "popRatio": 96.2
+              "popRatio": 96.2,
+              "size": 81830309.6
             },
             {
               "name": "청주시",
@@ -874,7 +965,8 @@
               ],
               "id": 92,
               "population": 827906,
-              "popRatio": 99.4
+              "popRatio": 99.4,
+              "size": 940279213.8
             },
             {
               "name": "보은군",
@@ -883,7 +975,8 @@
               ],
               "id": 93,
               "population": 34318,
-              "popRatio": 100.7
+              "popRatio": 100.7,
+              "size": 584254564.2
             },
             {
               "name": "옥천군",
@@ -892,7 +985,8 @@
               ],
               "id": 94,
               "population": 52763,
-              "popRatio": 98.7
+              "popRatio": 98.7,
+              "size": 537087721.9
             },
             {
               "name": "영동군",
@@ -901,7 +995,8 @@
               ],
               "id": 95,
               "population": 50539,
-              "popRatio": 101.3
+              "popRatio": 101.3,
+              "size": 845581636.8
             }
           ]
         },
@@ -915,7 +1010,8 @@
               ],
               "id": 96,
               "population": 313968,
-              "popRatio": 98
+              "popRatio": 98,
+              "size": 177279478.3
             },
             {
               "name": "서구5",
@@ -924,7 +1020,8 @@
               ],
               "id": 97,
               "population": 498917,
-              "popRatio": 102.8
+              "popRatio": 102.8,
+              "size": 95473252.4
             },
             {
               "name": "중구5",
@@ -933,7 +1030,8 @@
               ],
               "id": 98,
               "population": 264913,
-              "popRatio": 100.6
+              "popRatio": 100.6,
+              "size": 62131303.7
             },
             {
               "name": "대덕구",
@@ -942,7 +1040,8 @@
               ],
               "id": 99,
               "population": 204360,
-              "popRatio": 96.7
+              "popRatio": 96.7,
+              "size": 68680802.8
             },
             {
               "name": "동구5",
@@ -951,7 +1050,8 @@
               ],
               "id": 100,
               "population": 250653,
-              "popRatio": 97.7
+              "popRatio": 97.7,
+              "size": 136672764.5
             }
           ]
         },
@@ -965,7 +1065,8 @@
               ],
               "id": 101,
               "population": 591089,
-              "popRatio": 96.9
+              "popRatio": 96.9,
+              "size": 283016
             },
             {
               "name": "계룡시",
@@ -974,7 +1075,8 @@
               ],
               "id": 102,
               "population": 40957,
-              "popRatio": 101.7
+              "popRatio": 101.7,
+              "size": 60711347
             },
             {
               "name": "공주시",
@@ -983,7 +1085,8 @@
               ],
               "id": 103,
               "population": 116369,
-              "popRatio": 98.1
+              "popRatio": 98.1,
+              "size": 864287889.6
             },
             {
               "name": "아산시",
@@ -992,7 +1095,8 @@
               ],
               "id": 104,
               "population": 287073,
-              "popRatio": 95.9
+              "popRatio": 95.9,
+              "size": 542176205.4
             },
             {
               "name": "당진시",
@@ -1001,7 +1105,8 @@
               ],
               "id": 105,
               "population": 159615,
-              "popRatio": 92.5
+              "popRatio": 92.5,
+              "size": 695483717.4
             },
             {
               "name": "예산군",
@@ -1010,7 +1115,8 @@
               ],
               "id": 106,
               "population": 85205,
-              "popRatio": 99.7
+              "popRatio": 99.7,
+              "size": 542326215
             },
             {
               "name": "홍성군",
@@ -1019,7 +1125,8 @@
               ],
               "id": 107,
               "population": 89704,
-              "popRatio": 100.7
+              "popRatio": 100.7,
+              "size": 443985187.2
             },
             {
               "name": "청양군",
@@ -1028,7 +1135,8 @@
               ],
               "id": 108,
               "population": 32155,
-              "popRatio": 100
+              "popRatio": 100,
+              "size": 479212049.2
             },
             {
               "name": "논산시",
@@ -1037,7 +1145,8 @@
               ],
               "id": 109,
               "population": 125844,
-              "popRatio": 99.9
+              "popRatio": 99.9,
+              "size": 554782797.7
             },
             {
               "name": "금산군",
@@ -1046,7 +1155,8 @@
               ],
               "id": 110,
               "population": 55441,
-              "popRatio": 97.2
+              "popRatio": 97.2,
+              "size": 576714885.7
             },
             {
               "name": "부여군",
@@ -1055,7 +1165,8 @@
               ],
               "id": 111,
               "population": 72547,
-              "popRatio": 100.4
+              "popRatio": 100.4,
+              "size": 624334267.1
             },
             {
               "name": "서천군",
@@ -1064,7 +1175,8 @@
               ],
               "id": 112,
               "population": 58441,
-              "popRatio": 103.2
+              "popRatio": 103.2,
+              "size": 358130049.7
             },
             {
               "name": "서산시",
@@ -1074,7 +1186,8 @@
               ],
               "id": 113,
               "population": 165837,
-              "popRatio": 95.4
+              "popRatio": 95.4,
+              "size": 740777887
             },
             {
               "name": "태안군",
@@ -1084,7 +1197,8 @@
               ],
               "id": 114,
               "population": 62416,
-              "popRatio": 98.6
+              "popRatio": 98.6,
+              "size": 516125726.1
             },
             {
               "name": "보령시",
@@ -1094,7 +1208,8 @@
               ],
               "id": 115,
               "population": 104938,
-              "popRatio": 98
+              "popRatio": 98,
+              "size": 569386454.6
             }
           ]
         }
@@ -1113,7 +1228,8 @@
               ],
               "id": 188,
               "population": 25398,
-              "popRatio": 102.1
+              "popRatio": 102.1,
+              "size": 631866978.7
             },
             {
               "name": "진안군",
@@ -1122,7 +1238,8 @@
               ],
               "id": 189,
               "population": 26703,
-              "popRatio": 99.2
+              "popRatio": 99.2,
+              "size": 789119926.8
             },
             {
               "name": "익산시",
@@ -1131,7 +1248,8 @@
               ],
               "id": 190,
               "population": 306539,
-              "popRatio": 100
+              "popRatio": 100,
+              "size": 506608270.7
             },
             {
               "name": "장수군",
@@ -1140,7 +1258,8 @@
               ],
               "id": 191,
               "population": 23243,
-              "popRatio": 101.5
+              "popRatio": 101.5,
+              "size": 533287565.8
             },
             {
               "name": "남원시",
@@ -1149,7 +1268,8 @@
               ],
               "id": 192,
               "population": 86460,
-              "popRatio": 103.8
+              "popRatio": 103.8,
+              "size": 752232054.3
             },
             {
               "name": "임실군",
@@ -1158,7 +1278,8 @@
               ],
               "id": 193,
               "population": 29739,
-              "popRatio": 97.9
+              "popRatio": 97.9,
+              "size": 597201992.5
             },
             {
               "name": "순창군",
@@ -1167,7 +1288,8 @@
               ],
               "id": 194,
               "population": 30272,
-              "popRatio": 106.5
+              "popRatio": 106.5,
+              "size": 495931567.9
             },
             {
               "name": "정읍시",
@@ -1176,7 +1298,8 @@
               ],
               "id": 195,
               "population": 118328,
-              "popRatio": 102.2
+              "popRatio": 102.2,
+              "size": 692773840.7
             },
             {
               "name": "김제시",
@@ -1185,7 +1308,8 @@
               ],
               "id": 196,
               "population": 91218,
-              "popRatio": 101.8
+              "popRatio": 101.8,
+              "size": 544810169.8
             },
             {
               "name": "부안군",
@@ -1194,7 +1318,8 @@
               ],
               "id": 197,
               "population": 59164,
-              "popRatio": 102
+              "popRatio": 102,
+              "size": 493074402.3
             },
             {
               "name": "고창군",
@@ -1203,7 +1328,8 @@
               ],
               "id": 198,
               "population": 60522,
-              "popRatio": 102
+              "popRatio": 102,
+              "size": 607872584.6
             },
             {
               "name": "전주시",
@@ -1213,7 +1339,8 @@
               ],
               "id": 199,
               "population": 650082,
-              "popRatio": 102.5
+              "popRatio": 102.5,
+              "size": 192981
             },
             {
               "name": "완주군",
@@ -1223,7 +1350,8 @@
               ],
               "id": 200,
               "population": 86978,
-              "popRatio": 94.9
+              "popRatio": 94.9,
+              "size": 821188628.6
             },
             {
               "name": "군산시",
@@ -1233,7 +1361,8 @@
               ],
               "id": 201,
               "population": 278319,
-              "popRatio": 96.8
+              "popRatio": 96.8,
+              "size": 394848824.3
             }
           ]
         },
@@ -1247,7 +1376,8 @@
               ],
               "id": 202,
               "population": 392875,
-              "popRatio": 99.2
+              "popRatio": 99.2,
+              "size": 222897259.8
             },
             {
               "name": "북구3",
@@ -1256,7 +1386,8 @@
               ],
               "id": 203,
               "population": 445489,
-              "popRatio": 101.2
+              "popRatio": 101.2,
+              "size": 120299468.2
             },
             {
               "name": "동구4",
@@ -1265,7 +1396,8 @@
               ],
               "id": 204,
               "population": 103016,
-              "popRatio": 99.7
+              "popRatio": 99.7,
+              "size": 49195517.5
             },
             {
               "name": "남구4",
@@ -1274,7 +1406,8 @@
               ],
               "id": 205,
               "population": 216254,
-              "popRatio": 106.2
+              "popRatio": 106.2,
+              "size": 60994653.1
             },
             {
               "name": "서구4",
@@ -1283,7 +1416,8 @@
               ],
               "id": 206,
               "population": 315276,
-              "popRatio": 103.3
+              "popRatio": 103.3,
+              "size": 47789619.9
             }
           ]
         },
@@ -1297,7 +1431,8 @@
               ],
               "id": 207,
               "population": 27115,
-              "popRatio": 105.5
+              "popRatio": 105.5,
+              "size": 443235541.4
             },
             {
               "name": "곡성군",
@@ -1306,7 +1441,8 @@
               ],
               "id": 208,
               "population": 31009,
-              "popRatio": 105.6
+              "popRatio": 105.6,
+              "size": 547456122.7
             },
             {
               "name": "담양군",
@@ -1315,7 +1451,8 @@
               ],
               "id": 209,
               "population": 47365,
-              "popRatio": 98.7
+              "popRatio": 98.7,
+              "size": 455051411.9
             },
             {
               "name": "장성군",
@@ -1324,7 +1461,8 @@
               ],
               "id": 210,
               "population": 46292,
-              "popRatio": 98
+              "popRatio": 98,
+              "size": 518331716.1
             },
             {
               "name": "영광군",
@@ -1333,7 +1471,8 @@
               ],
               "id": 211,
               "population": 57617,
-              "popRatio": 100.8
+              "popRatio": 100.8,
+              "size": 474951635.3
             },
             {
               "name": "함평군",
@@ -1342,7 +1481,8 @@
               ],
               "id": 212,
               "population": 35610,
-              "popRatio": 101.6
+              "popRatio": 101.6,
+              "size": 392256711.3
             },
             {
               "name": "순천시",
@@ -1351,7 +1491,8 @@
               ],
               "id": 213,
               "population": 275668,
-              "popRatio": 100.2
+              "popRatio": 100.2,
+              "size": 910430484.5
             },
             {
               "name": "화순군",
@@ -1360,7 +1501,8 @@
               ],
               "id": 214,
               "population": 67829,
-              "popRatio": 103
+              "popRatio": 103,
+              "size": 786867923.6
             },
             {
               "name": "나주시",
@@ -1369,7 +1511,8 @@
               ],
               "id": 215,
               "population": 87754,
-              "popRatio": 98.9
+              "popRatio": 98.9,
+              "size": 608543338.9
             },
             {
               "name": "목포시",
@@ -1378,7 +1521,8 @@
               ],
               "id": 216,
               "population": 240936,
-              "popRatio": 100.5
+              "popRatio": 100.5,
+              "size": 50595165.4
             },
             {
               "name": "영암군",
@@ -1387,7 +1531,8 @@
               ],
               "id": 217,
               "population": 59061,
-              "popRatio": 96.3
+              "popRatio": 96.3,
+              "size": 603486277
             },
             {
               "name": "보성군",
@@ -1396,7 +1541,8 @@
               ],
               "id": 218,
               "population": 46385,
-              "popRatio": 107.1
+              "popRatio": 107.1,
+              "size": 663529257.9
             },
             {
               "name": "장흥군",
@@ -1405,7 +1551,8 @@
               ],
               "id": 219,
               "population": 43004,
-              "popRatio": 106.1
+              "popRatio": 106.1,
+              "size": 622406513.4
             },
             {
               "name": "강진군",
@@ -1414,7 +1561,8 @@
               ],
               "id": 220,
               "population": 40079,
-              "popRatio": 109.6
+              "popRatio": 109.6,
+              "size": 500956174.3
             },
             {
               "name": "해남군",
@@ -1423,7 +1571,8 @@
               ],
               "id": 221,
               "population": 77684,
-              "popRatio": 105.3
+              "popRatio": 105.3,
+              "size": 1013083491.4
             },
             {
               "name": "광양시",
@@ -1433,7 +1582,8 @@
               ],
               "id": 222,
               "population": 151621,
-              "popRatio": 94.4
+              "popRatio": 94.4,
+              "size": 460061176.6
             },
             {
               "name": "여수시",
@@ -1445,7 +1595,8 @@
               ],
               "id": 223,
               "population": 291366,
-              "popRatio": 97.5
+              "popRatio": 97.5,
+              "size": 504308958
             },
             {
               "name": "무안군",
@@ -1457,7 +1608,8 @@
               ],
               "id": 224,
               "population": 79367,
-              "popRatio": 99.9
+              "popRatio": 99.9,
+              "size": 448942680.4
             },
             {
               "name": "고흥군",
@@ -1469,7 +1621,8 @@
               ],
               "id": 225,
               "population": 70631,
-              "popRatio": 107.7
+              "popRatio": 107.7,
+              "size": 807330712.5
             },
             {
               "name": "진도군",
@@ -1479,7 +1632,8 @@
               ],
               "id": 226,
               "population": 32998,
-              "popRatio": 106.1
+              "popRatio": 106.1,
+              "size": 440130484
             },
             {
               "name": "완도군",
@@ -1496,7 +1650,8 @@
               ],
               "id": 227,
               "population": 53619,
-              "popRatio": 101.1
+              "popRatio": 101.1,
+              "size": 396288028.1
             },
             {
               "name": "신안군",
@@ -1516,7 +1671,8 @@
               ],
               "id": 228,
               "population": 44162,
-              "popRatio": 90.8
+              "popRatio": 90.8,
+              "size": 655673520.6
             }
           ]
         }
@@ -1535,7 +1691,8 @@
               ],
               "id": 118,
               "population": 75664,
-              "popRatio": 103.6
+              "popRatio": 103.6,
+              "size": 911623054.9
             },
             {
               "name": "상주시",
@@ -1544,7 +1701,8 @@
               ],
               "id": 119,
               "population": 103346,
-              "popRatio": 103.5
+              "popRatio": 103.5,
+              "size": 1254791629.6
             },
             {
               "name": "예천군",
@@ -1553,7 +1711,8 @@
               ],
               "id": 120,
               "population": 45573,
-              "popRatio": 103.5
+              "popRatio": 103.5,
+              "size": 661161877.6
             },
             {
               "name": "영주시",
@@ -1562,7 +1721,8 @@
               ],
               "id": 121,
               "population": 112625,
-              "popRatio": 100.8
+              "popRatio": 100.8,
+              "size": 669092896.6
             },
             {
               "name": "봉화군",
@@ -1571,7 +1731,8 @@
               ],
               "id": 122,
               "population": 33894,
-              "popRatio": 101
+              "popRatio": 101,
+              "size": 1201465026
             },
             {
               "name": "영양군",
@@ -1580,7 +1741,8 @@
               ],
               "id": 123,
               "population": 18297,
-              "popRatio": 103.4
+              "popRatio": 103.4,
+              "size": 815171700.5
             },
             {
               "name": "울진군",
@@ -1589,7 +1751,8 @@
               ],
               "id": 124,
               "population": 51953,
-              "popRatio": 102.6
+              "popRatio": 102.6,
+              "size": 989428857.2
             },
             {
               "name": "안동시",
@@ -1598,7 +1761,8 @@
               ],
               "id": 125,
               "population": 168461,
-              "popRatio": 102.4
+              "popRatio": 102.4,
+              "size": 1521908756.1
             },
             {
               "name": "의성군",
@@ -1607,7 +1771,8 @@
               ],
               "id": 126,
               "population": 56064,
-              "popRatio": 104.6
+              "popRatio": 104.6,
+              "size": 1175168742.1
             },
             {
               "name": "김천시",
@@ -1616,7 +1781,8 @@
               ],
               "id": 127,
               "population": 135259,
-              "popRatio": 101.2
+              "popRatio": 101.2,
+              "size": 1009090347.3
             },
             {
               "name": "구미시",
@@ -1625,7 +1791,8 @@
               ],
               "id": 128,
               "population": 419428,
-              "popRatio": 96.3
+              "popRatio": 96.3,
+              "size": 615389462.1
             },
             {
               "name": "성주군",
@@ -1634,7 +1801,8 @@
               ],
               "id": 129,
               "population": 45067,
-              "popRatio": 95.1
+              "popRatio": 95.1,
+              "size": 616137567
             },
             {
               "name": "고령군",
@@ -1643,7 +1811,8 @@
               ],
               "id": 130,
               "population": 35198,
-              "popRatio": 95.7
+              "popRatio": 95.7,
+              "size": 384104064.2
             },
             {
               "name": "칠곡군",
@@ -1652,7 +1821,8 @@
               ],
               "id": 131,
               "population": 121182,
-              "popRatio": 92.9
+              "popRatio": 92.9,
+              "size": 450974540.3
             },
             {
               "name": "군위군",
@@ -1661,7 +1831,8 @@
               ],
               "id": 132,
               "population": 24172,
-              "popRatio": 100
+              "popRatio": 100,
+              "size": 614210813.1
             },
             {
               "name": "영덕군",
@@ -1670,7 +1841,8 @@
               ],
               "id": 133,
               "population": 40142,
-              "popRatio": 110
+              "popRatio": 110,
+              "size": 741098651.4
             },
             {
               "name": "청송군",
@@ -1679,7 +1851,8 @@
               ],
               "id": 134,
               "population": 26470,
-              "popRatio": 101.5
+              "popRatio": 101.5,
+              "size": 846081075.6
             },
             {
               "name": "포항시",
@@ -1688,7 +1861,8 @@
               ],
               "id": 135,
               "population": 519467,
-              "popRatio": 97.2
+              "popRatio": 97.2,
+              "size": 1134692754.6
             },
             {
               "name": "영천시",
@@ -1697,7 +1871,8 @@
               ],
               "id": 136,
               "population": 100778,
-              "popRatio": 98.6
+              "popRatio": 98.6,
+              "size": 919385796.4
             },
             {
               "name": "경산시",
@@ -1706,7 +1881,8 @@
               ],
               "id": 137,
               "population": 248805,
-              "popRatio": 98.3
+              "popRatio": 98.3,
+              "size": 411700132.1
             },
             {
               "name": "청도군",
@@ -1715,7 +1891,8 @@
               ],
               "id": 138,
               "population": 43788,
-              "popRatio": 105.4
+              "popRatio": 105.4,
+              "size": 693782463.1
             },
             {
               "name": "경주시",
@@ -1724,7 +1901,8 @@
               ],
               "id": 139,
               "population": 263283,
-              "popRatio": 99.9
+              "popRatio": 99.9,
+              "size": 1324513896.7
             },
             {
               "name": "울릉군",
@@ -1734,7 +1912,8 @@
               ],
               "id": 140,
               "population": 10524,
-              "popRatio": 88.8
+              "popRatio": 88.8,
+              "size": 72862212
             }
           ]
         },
@@ -1748,7 +1927,8 @@
               ],
               "id": 141,
               "population": 343802,
-              "popRatio": 100.2
+              "popRatio": 100.2,
+              "size": 182164816.2
             },
             {
               "name": "북구2",
@@ -1757,7 +1937,8 @@
               ],
               "id": 142,
               "population": 444359,
-              "popRatio": 99.5
+              "popRatio": 99.5,
+              "size": 94078613.3
             },
             {
               "name": "수성구",
@@ -1766,7 +1947,8 @@
               ],
               "id": 143,
               "population": 461004,
-              "popRatio": 104
+              "popRatio": 104,
+              "size": 76464885.7
             },
             {
               "name": "중구3",
@@ -1775,7 +1957,8 @@
               ],
               "id": 144,
               "population": 76246,
-              "popRatio": 104.5
+              "popRatio": 104.5,
+              "size": 7055893.5
             },
             {
               "name": "서구2",
@@ -1784,7 +1967,8 @@
               ],
               "id": 145,
               "population": 215399,
-              "popRatio": 97.3
+              "popRatio": 97.3,
+              "size": 17353160.1
             },
             {
               "name": "남구2",
@@ -1793,7 +1977,8 @@
               ],
               "id": 146,
               "population": 166062,
-              "popRatio": 104.9
+              "popRatio": 104.9,
+              "size": 17435317.3
             },
             {
               "name": "달서구",
@@ -1802,7 +1987,8 @@
               ],
               "id": 147,
               "population": 610358,
-              "popRatio": 100.8
+              "popRatio": 100.8,
+              "size": 62341087.1
             },
             {
               "name": "달성군",
@@ -1812,7 +1998,8 @@
               ],
               "id": 148,
               "population": 184358,
-              "popRatio": 95.9
+              "popRatio": 95.9,
+              "size": 426589204.4
             }
           ]
         },
@@ -1826,7 +2013,8 @@
               ],
               "id": 149,
               "population": 185695,
-              "popRatio": 93.5
+              "popRatio": 93.5,
+              "size": 157337492.1
             },
             {
               "name": "중구6",
@@ -1835,7 +2023,8 @@
               ],
               "id": 150,
               "population": 234607,
-              "popRatio": 95.5
+              "popRatio": 95.5,
+              "size": 37003527.8
             },
             {
               "name": "동구6",
@@ -1844,7 +2033,8 @@
               ],
               "id": 151,
               "population": 178468,
-              "popRatio": 89.4
+              "popRatio": 89.4,
+              "size": 36031339.9
             },
             {
               "name": "남구5",
@@ -1853,7 +2043,8 @@
               ],
               "id": 152,
               "population": 349064,
-              "popRatio": 96.4
+              "popRatio": 96.4,
+              "size": 72696062.4
             },
             {
               "name": "울주군",
@@ -1862,7 +2053,8 @@
               ],
               "id": 153,
               "population": 208646,
-              "popRatio": 94.2
+              "popRatio": 94.2,
+              "size": 757387485.4
             }
           ]
         },
@@ -1876,7 +2068,8 @@
               ],
               "id": 154,
               "population": 63177,
-              "popRatio": 106
+              "popRatio": 106,
+              "size": 803165454.7
             },
             {
               "name": "합천군",
@@ -1885,7 +2078,8 @@
               ],
               "id": 155,
               "population": 50290,
-              "popRatio": 110.8
+              "popRatio": 110.8,
+              "size": 983507089.3
             },
             {
               "name": "함양군",
@@ -1894,7 +2088,8 @@
               ],
               "id": 156,
               "population": 40692,
-              "popRatio": 109.4
+              "popRatio": 109.4,
+              "size": 725466117.5
             },
             {
               "name": "창녕군",
@@ -1903,7 +2098,8 @@
               ],
               "id": 157,
               "population": 63447,
-              "popRatio": 102.2
+              "popRatio": 102.2,
+              "size": 532816067.7
             },
             {
               "name": "밀양시",
@@ -1912,7 +2108,8 @@
               ],
               "id": 158,
               "population": 108342,
-              "popRatio": 104.2
+              "popRatio": 104.2,
+              "size": 798588502.2
             },
             {
               "name": "양산시",
@@ -1921,7 +2118,8 @@
               ],
               "id": 159,
               "population": 279565,
-              "popRatio": 98.7
+              "popRatio": 98.7,
+              "size": 485348766.8
             },
             {
               "name": "김해시",
@@ -1930,7 +2128,8 @@
               ],
               "id": 160,
               "population": 522049,
-              "popRatio": 98.1
+              "popRatio": 98.1,
+              "size": 463360914.1
             },
             {
               "name": "창원시",
@@ -1939,7 +2138,8 @@
               ],
               "id": 161,
               "population": 1083731,
-              "popRatio": 96.7
+              "popRatio": 96.7,
+              "size": 414872
             },
             {
               "name": "함안군",
@@ -1948,7 +2148,8 @@
               ],
               "id": 162,
               "population": 67667,
-              "popRatio": 98.2
+              "popRatio": 98.2,
+              "size": 416644157.2
             },
             {
               "name": "의령군",
@@ -1957,7 +2158,8 @@
               ],
               "id": 163,
               "population": 29417,
-              "popRatio": 107.3
+              "popRatio": 107.3,
+              "size": 482904143.6
             },
             {
               "name": "산청군",
@@ -1966,7 +2168,8 @@
               ],
               "id": 164,
               "population": 35935,
-              "popRatio": 104
+              "popRatio": 104,
+              "size": 794839019
             },
             {
               "name": "진주시",
@@ -1975,7 +2178,8 @@
               ],
               "id": 165,
               "population": 337071,
-              "popRatio": 101.9
+              "popRatio": 101.9,
+              "size": 712953761
             },
             {
               "name": "고성군2",
@@ -1984,7 +2188,8 @@
               ],
               "id": 166,
               "population": 56369,
-              "popRatio": 99.3
+              "popRatio": 99.3,
+              "size": 517687536
             },
             {
               "name": "사천시",
@@ -1993,7 +2198,8 @@
               ],
               "id": 167,
               "population": 116851,
-              "popRatio": 99.2
+              "popRatio": 99.2,
+              "size": 398585668.9
             },
             {
               "name": "하동군",
@@ -2002,7 +2208,8 @@
               ],
               "id": 168,
               "population": 50177,
-              "popRatio": 103.2
+              "popRatio": 103.2,
+              "size": 675516404.4
             },
             {
               "name": "거제시",
@@ -2012,7 +2219,8 @@
               ],
               "id": 169,
               "population": 242077,
-              "popRatio": 90.6
+              "popRatio": 90.6,
+              "size": 402055239.6
             },
             {
               "name": "남해군",
@@ -2022,7 +2230,8 @@
               ],
               "id": 170,
               "population": 47244,
-              "popRatio": 109.5
+              "popRatio": 109.5,
+              "size": 357539435.5
             },
             {
               "name": "통영시",
@@ -2039,7 +2248,8 @@
               ],
               "id": 171,
               "population": 139719,
-              "popRatio": 97.2
+              "popRatio": 97.2,
+              "size": 239220966.3
             }
           ]
         },
@@ -2053,7 +2263,8 @@
               ],
               "id": 172,
               "population": 132507,
-              "popRatio": 101.9
+              "popRatio": 101.9,
+              "size": 218282820.7
             },
             {
               "name": "북구1",
@@ -2062,7 +2273,8 @@
               ],
               "id": 173,
               "population": 309719,
-              "popRatio": 100.5
+              "popRatio": 100.5,
+              "size": 39365452.7
             },
             {
               "name": "금정구",
@@ -2071,7 +2283,8 @@
               ],
               "id": 174,
               "population": 253526,
-              "popRatio": 102.8
+              "popRatio": 102.8,
+              "size": 65265858.7
             },
             {
               "name": "동래구",
@@ -2080,7 +2293,8 @@
               ],
               "id": 175,
               "population": 276689,
-              "popRatio": 102.7
+              "popRatio": 102.7,
+              "size": 16634045.3
             },
             {
               "name": "사상구",
@@ -2089,7 +2303,8 @@
               ],
               "id": 176,
               "population": 246797,
-              "popRatio": 96
+              "popRatio": 96,
+              "size": 36087187.9
             },
             {
               "name": "사하구",
@@ -2098,7 +2313,8 @@
               ],
               "id": 177,
               "population": 349110,
-              "popRatio": 99.8
+              "popRatio": 99.8,
+              "size": 41725118.5
             },
             {
               "name": "연제구",
@@ -2107,7 +2323,8 @@
               ],
               "id": 178,
               "population": 209290,
-              "popRatio": 102.9
+              "popRatio": 102.9,
+              "size": 12078999.6
             },
             {
               "name": "해운대구",
@@ -2116,7 +2333,8 @@
               ],
               "id": 179,
               "population": 425536,
-              "popRatio": 105.2
+              "popRatio": 105.2,
+              "size": 51467208.9
             },
             {
               "name": "부산진구",
@@ -2125,7 +2343,8 @@
               ],
               "id": 180,
               "population": 389765,
-              "popRatio": 103.2
+              "popRatio": 103.2,
+              "size": 29694082.7
             },
             {
               "name": "수영구",
@@ -2134,7 +2353,8 @@
               ],
               "id": 181,
               "population": 175098,
-              "popRatio": 107.6
+              "popRatio": 107.6,
+              "size": 10205442.7
             },
             {
               "name": "남구1",
@@ -2143,7 +2363,8 @@
               ],
               "id": 182,
               "population": 291770,
-              "popRatio": 102.4
+              "popRatio": 102.4,
+              "size": 26808030.7
             },
             {
               "name": "동구1",
@@ -2152,7 +2373,8 @@
               ],
               "id": 183,
               "population": 96011,
-              "popRatio": 101
+              "popRatio": 101,
+              "size": 9732670
             },
             {
               "name": "서구1",
@@ -2161,7 +2383,8 @@
               ],
               "id": 184,
               "population": 118783,
-              "popRatio": 102.2
+              "popRatio": 102.2,
+              "size": 13926827.3
             },
             {
               "name": "중구2",
@@ -2170,7 +2393,8 @@
               ],
               "id": 185,
               "population": 47345,
-              "popRatio": 103.2
+              "popRatio": 103.2,
+              "size": 2825943.6
             },
             {
               "name": "영도구",
@@ -2179,7 +2403,8 @@
               ],
               "id": 186,
               "population": 135816,
-              "popRatio": 100.8
+              "popRatio": 100.8,
+              "size": 14128841.4
             },
             {
               "name": "강서구2",
@@ -2190,7 +2415,8 @@
               ],
               "id": 187,
               "population": 69873,
-              "popRatio": 91.9
+              "popRatio": 91.9,
+              "size": 181634872.6
             }
           ]
         }
@@ -2210,7 +2436,8 @@
               ],
               "id": 116,
               "population": 438165,
-              "popRatio": 100
+              "popRatio": 100,
+              "size": 978331691.5
             },
             {
               "name": "서귀포시",
@@ -2220,7 +2447,8 @@
               ],
               "id": 117,
               "population": 155641,
-              "popRatio": 98.3
+              "popRatio": 98.3,
+              "size": 870931086.4
             }
           ]
         }

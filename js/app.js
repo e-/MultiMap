@@ -45,7 +45,7 @@ requirejs(['jquery', 'd3', 'nmap'
       });
     });
 
-    var nmap = d3.layout.nmap().value(function(node){return node.population;}).width(500).height(500);
+    var nmap = d3.layout.nmap().value(function(node){return node.size;}).width(500).height(500);
     var g = svg.append('g');
 
     var pattern = /M([\d|\.]*),([\d|\.]*)/,
@@ -81,6 +81,7 @@ requirejs(['jquery', 'd3', 'nmap'
           leaf.areas.forEach(function(path){
             path.attr('fill', '#666');
           });
+          console.log(leaf.name, leaf.size);
         })
         .on('mouseout', function(leaf){
           leaf.areas.forEach(function(path){

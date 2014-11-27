@@ -122,8 +122,8 @@ define(['d3'], function(){
         split(nodesLeft, x1, y1, x1 + (x2 - x1) * ratioLeft, y2, VERTICAL);
         split(nodesRight, x1 + (x2 - x1) * ratioLeft, y1, x2, y2, VERTICAL);
       } else {
-        split(nodesTop, x1, y1, x2, y1 + (y2 - y1) * ratioLeft, HORIZONTAL);
-        split(nodesBottom, x1, y1 + (y2 - y1) * ratioLeft, x2, y2, HORIZONTAL);
+        split(nodesTop, x1, y1, x2, y1 + (y2 - y1) * ratioTop, HORIZONTAL);
+        split(nodesBottom, x1, y1 + (y2 - y1) * ratioTop, x2, y2, HORIZONTAL);
       }
     }
 
