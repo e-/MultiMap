@@ -97,7 +97,9 @@ function loadPopulation(){
     if(line2.trim().length == 0) return;
     var line = line2.split(' '),
         name = line[0],
-        number = parseInt(line[1])
+        number = parseInt(line[1]),
+        male = parseInt(line[2]),
+        female = parseInt(line[3])
     ;
 
     if(isNaN(number)) console.error('no number', name);
@@ -113,6 +115,7 @@ function loadPopulation(){
 
     target = target[0];
     target.population = number;
+    target.popRatio = Math.round(female / male * 1000) / 10;
   });
 
   leaves.forEach(function(leaf){
