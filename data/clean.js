@@ -8,6 +8,10 @@ var parser = new xml2js.Parser(),
     leaves = [],
     id = 0;
 
+function sanitize(r){
+  return r.replace(/\r/g,'').replace(/\t/g,'').replace(/\n/g,'');
+}
+
 mapXML = fs.readFileSync('korea.svg');
 parser.parseString(mapXML.toString(), function(err, result){
   var json = JSON.parse(JSON.stringify(result));
@@ -26,7 +30,7 @@ parser.parseString(mapXML.toString(), function(err, result){
       g.path.forEach(function(path){
         var r3 = {
           name: path.$.id,
-          d: [path.$.d],
+          d: [sanitize(path.$.d)],
           id: ++id
         };
 
@@ -42,7 +46,7 @@ parser.parseString(mapXML.toString(), function(err, result){
           id: ++id
         };
         g.path.forEach(function(path){
-          r3.d.push(path.$.d);
+          r3.d.push(sanitize(path.$.d));
         });
         r2.children.push(r3);
         leaves.push(r3);
@@ -77,16 +81,14 @@ parser.parseString(mapXML.toString(), function(err, result){
   var r1s = [r11, r12, r13, r14, r15, r16];
   var r0s = {
     name: '대한민국',
-    children: [r1s]
+    children: r1s
   };
 
-  fs.writeFileSync('buf', (function(){
-    return leaves.map(function(leaf){
-      return leaf.id + ' ' + leaf.name;
-    }).join('\n');
-  })());
-
   loadPopulation();
+  
+  fs.writeFileSync('data.json', JSON.stringify(r0s, undefined, 2));
+
+   
 });
   
 function loadPopulation(){
