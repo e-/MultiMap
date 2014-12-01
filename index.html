@@ -8,6 +8,8 @@
     
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <link href="css/style.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -17,7 +19,24 @@
     <![endif]-->
   </head>
   <body>
-
+    <div id="left">
+      <div class="panel panel-default rectangle" id="control-panel">
+        <div class="panel-heading rectangle">
+          Tools
+        </div>
+        <div class="panel-body rectangle">
+          <p>hello</p>
+        </div>
+      </div>
+      <div class="panel panel-default rectangle" id="map-panel">
+        <div class="panel-heading rectangle">
+          Map
+        </div>
+        <div class="panel-body rectangle">
+          <svg id="map"></svg>
+        </div>
+      </div>
+    </div>
     <script data-main="js/app.js" src="js/lib/require.js"></script>
   </body>
 </html>
