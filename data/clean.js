@@ -63,11 +63,11 @@ parser.parseString(mapXML.toString(), function(err, result){
       },
       r13 = {
         name: '충청도',
-        children: [r2s[4], r2s[5], r2s[6]]
+        children: [r2s[4], r2s[5], r2s[6], r2s[16]]
       },
       r14 = {
         name: '전라도',
-        children: [r2s[13], r2s[14], r2s[15], r2s[16]]
+        children: [r2s[13], r2s[14], r2s[15]]
       },
       r15 = {
         name: '경상도',

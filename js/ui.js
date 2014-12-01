@@ -8,7 +8,50 @@ define(['jquery', 'd3'], function($){
     if(d.children) d.children.forEach(getLeaves);
     else leaves.push(d);
   }
+  
+  function assignLevel(data, level){
+    data.level = level;
+    if(data.children) data.children.forEach(function(child){assignLevel(child, level + 1);});
+  }
 
+  function permutate(ranges){
+    var n = ranges.length,
+        m = Math.ceil(Math.sqrt(n)),
+        arr = new Array(n * n);
+
+    ranges.forEach(function(range, i){
+      var row = Math.floor(i / m),
+          col = i % m;
+
+      arr[col * m + row] = range;
+    });
+
+    return arr.filter(function(range){return range;});
+  }
+
+  function assignColors(data, range){
+    data.color = d3.hcl((range[0] + range[1]) / 2, 30 - 5 * data.level, 70 + 5 * data.level);
+
+    if(data.level == 0)
+      data.color = '#aaa';
+    
+    if(!data.children) return;
+
+    var 
+        n = data.children.length,
+        delta = (range[1] - range[0]) / n,
+        padding = delta > 0 ? .5 : -.5, 
+        ranges = []
+        ;
+    d3.range(n).forEach(function(i){
+      ranges.push([range[0] + delta * i + padding * delta, range[0] + delta * (i + 1) - padding * delta]);
+    });
+    ranges = permutate(ranges);
+    data.children.forEach(function(child, i){
+      assignColors(child, (i % 2 == 0 ? ranges[i] : [ranges[i][1], ranges[i][0]]));
+    });
+  }
+  
   function drawMap(){
     map
       .attr('transform', 'scale(0.7)')
@@ -20,28 +63,22 @@ define(['jquery', 'd3'], function($){
       .enter()
         .append('g')
         .selectAll('path')
-        .data(function(leaf){return leaf.d})
+        .data(function(leaf){
+          return leaf.d.map(function(d){return [d, leaf.color];})
+        })
         .enter()
           .append('path')
-            .attr('d', function(d){return d;})
-            .attr('fill', 'white')
+            .attr('d', function(d){return d[0];})
+            .attr('fill', function(d){return d[1];})
             .attr('stroke', '#aaa')
             .attr('stroke-width', 1)
     ;
-    return;
-    leaves.forEach(function(leaf){
-      leaf.paths = [];
-
-      leaf.d.forEach(function(d){
-        var path = map.append('path').attr('d', d).attr('fill', color(leaf.popRatio)).attr('stroke', '#aaa').attr('stroke-width', 1);
-        
-        leaf.areas.push(path);
-      });
-    });
   }
 
   ui.initialize = function(data){
     getLeaves(data);
+    assignLevel(data, 0);
+    assignColors(data, [0, 360]);
     drawMap();
   };
 /*
