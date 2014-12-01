@@ -24,7 +24,7 @@ define(['jquery', 'd3'], function($){
         .enter()
           .append('path')
             .attr('d', function(d){return d;})
-            .attr('fill', 'transparent')
+            .attr('fill', 'white')
             .attr('stroke', '#aaa')
             .attr('stroke-width', 1)
     ;
