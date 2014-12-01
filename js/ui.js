@@ -1,4 +1,4 @@
-define(['jquery', 'd3', 'nmap'], function($){
+define(['jquery', 'd3', 'component/nmap', 'component/safeBrush'], function($){
   var ui = {},
       map = d3.select('#map').attr('width', 350).attr('height', 500).append('g'),
       width = $(window).width() - 380,
@@ -68,7 +68,7 @@ define(['jquery', 'd3', 'nmap'], function($){
   }
   
   function highlightArea(leaf){
-    playground.selectAll('rect').sort(function (a, b){
+    playground.select('#rects').selectAll('rect').sort(function (a, b){
       if(a.id == leaf.id) return 1;
       return -1;
     });
@@ -77,6 +77,24 @@ define(['jquery', 'd3', 'nmap'], function($){
 
   function unhighlightArea(leaf){
     leaf.area.attr('fill', leaf.color).attr('stroke', '#aaa').attr('stroke-width', 1);
+  }
+  
+  function highlightAll(leaves){
+    map.selectAll('g').sort(function (a, b){
+      if(leaves.indexOf(a) >= 0) return 1;
+      return -1;
+    });
+    leaves.forEach(function(leaf) {
+      leaf.map.selectAll('path').attr('fill', leaf.color.darker(0.8)).attr('stroke', leaf.color.darker(3)).attr('stroke-width', 3);
+    });
+    
+    playground.select('#rects').selectAll('rect').sort(function (a, b){
+      if(leaves.indexOf(a) >= 0) return 1;
+      return -1;
+    });
+    leaves.forEach(function(leaf) {
+      leaf.area.attr('fill', leaf.color.darker(0.8)).attr('stroke', leaf.color.darker(3)).attr('stroke-width', 3);
+    });
   }
 
   function drawMap(){
@@ -133,7 +151,10 @@ define(['jquery', 'd3', 'nmap'], function($){
     }
     
     nmap(leaves);
+    
     playground
+      .append('g')
+      .attr('id', 'rects')
       .selectAll('rect')
       .data(leaves)
       .enter()
@@ -156,6 +177,41 @@ define(['jquery', 'd3', 'nmap'], function($){
           unhighlightArea(leaf);
         })
     ;
+
+    var brush = 
+          d3.svg.safeBrush()
+            .x(d3.scale.linear().domain([0, width]).range([0, width]))
+            .y(d3.scale.linear().domain([0, height]).range([0, height]))
+            .on('brush', brushed)
+        ;
+    playground.call(brush);
+
+    function isPointContainedInBox(x, y, startX, startY, endX, endY) {
+      return startX <= x && x <= endX && startY <= y && y <= endY;
+    }
+
+    function isLeafContainedInBox(leaf, startX, startY, endX, endY) {
+      return isPointContainedInBox(leaf.x, leaf.y, startX, startY, endX, endY) || 
+             isPointContainedInBox(leaf.x + leaf.dx, leaf.y, startX, startY, endX, endY) || 
+             isPointContainedInBox(leaf.x, leaf.y + leaf.dy, startX, startY, endX, endY) || 
+             isPointContainedInBox(leaf.x + leaf.dx, leaf.y + leaf.dy, startX, startY, endX, endY) ||
+             isPointContainedInBox(startX, startY, leaf.x, leaf.y, leaf.x + leaf.dx, leaf.y + leaf.dy);
+    }
+
+    function brushed(startX, startY, endX, endY){
+      var highlightLeaves = [];
+      leaves.forEach(function(leaf){
+        if(isLeafContainedInBox(leaf, startX, startY, endX, endY)) {
+          highlightLeaves.push(leaf);
+        }
+        unhighlightMap(leaf);
+        unhighlightArea(leaf);
+      });
+
+      highlightAll(highlightLeaves);
+    }
+
+
   };
   
   return ui;
