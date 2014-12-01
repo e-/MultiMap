@@ -30,7 +30,7 @@ define(['jquery', 'd3'], function($){
   }
 
   function assignColors(data, range){
-    data.color = d3.hcl((range[0] + range[1]) / 2, 30 - 5 * data.level, 70 + 5 * data.level);
+    data.color = d3.hcl((range[0] + range[1]) / 2, 30 - 5 * data.level, 75 + 5 * data.level);
 
     if(data.level == 0)
       data.color = '#aaa';
@@ -40,7 +40,7 @@ define(['jquery', 'd3'], function($){
     var 
         n = data.children.length,
         delta = (range[1] - range[0]) / n,
-        padding = delta > 0 ? .5 : -.5, 
+        padding = delta > 0 ? .25 : -.25, 
         ranges = []
         ;
     d3.range(n).forEach(function(i){
