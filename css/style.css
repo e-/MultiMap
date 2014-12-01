@@ -5,22 +5,30 @@ html, body{
 }
 
 #left{
-  width: 350px;
-  float:left;
+  position:absolute;
+  width: 380px;
   height:100%;
+  top:0;
+  left:0;
+}
+
+#right{
+  margin-left: 380px;
+  height:100%;
+  width:100%;
 }
 
 #control-panel{
   position:absolute;
-  left:-2px;
   width:380px;
-  height:1000px;
+  height:100%;
+  margin:0;
 }
 
 #map-panel{
   position:absolute;
+  margin:0;
   width:380px;
-  left:-2px;
   bottom:0;
   margin:0px;
 }
