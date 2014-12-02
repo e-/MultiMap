@@ -1,7 +1,9 @@
 define([
 'jquery', 
 'model/node', 
-'model/nodeSet', 'd3', 'component/nmap', 'component/safeBrush'], function($, Node, NodeSet){
+'model/nodeSet', 
+'util',
+'d3', 'component/nmap', 'component/safeBrush'], function($, Node, NodeSet, util){
   function MMap(svg, width, height, root, visibleNodes){
     this.svg = svg;
     this.g = svg.append('g');
@@ -16,7 +18,8 @@ define([
   }
 
   var _ref,
-      namp;
+      nmap;
+
 
   MMap.prototype = {
     draw: function(ref){
@@ -30,39 +33,75 @@ define([
         d3.layout.nmap()
           .value(function(node){return node.population;})
           .width(this.width).height(this.height);
+      
+      var brush = 
+            d3.svg.safeBrush()
+              .x(d3.scale.linear().domain([0, this.width]).range([0, this.width]))
+              .y(d3.scale.linear().domain([0, this.height]).range([0, this.height]))
+              .on('brush', brushed)
+          ;
+      
+      this.svg.call(brush);
+
+      function isNodeSetContainedInBox(nodeSet, startX, startY, endX, endY) {
+        return !(nodeSet.y + nodeSet.height < startY || 
+                 nodeSet.y > endY ||
+                 nodeSet.x + nodeSet.width < startX ||
+                 nodeSet.x > endX);
+      }
+
+      function brushed(startX, startY, endX, endY){
+        var dirty = false;
+
+        self.visibleNodes.forEach(function(nodeSet){
+          if(isNodeSetContainedInBox(nodeSet, startX, startY, endX, endY)) {
+            if(!nodeSet.isSelected) dirty = true;
+            nodeSet.isSelected = true;
+          } else {
+            if(nodeSet.isSelected) dirty = true;
+            nodeSet.isSelected = false;
+          }
+        });
+
+        if(dirty) {
+          ref.map.updateHighlight();
+          self.updateHighlight();
+        }
+      }
 
       this.update(ref);
     },
     update: function(ref)
     {
       var self = this;
+      if(!ref) ref = _ref;
+      else _ref = ref;
       nmap(this.visibleNodes);
+      var rects = 
       this.g
         .selectAll('rect')
-        .data(this.visibleNodes)
+        .data(this.visibleNodes, NodeSet.getId);
+
+      rects
         .enter()
         .append('rect')
-          .attr('width', function(nodeSet){return nodeSet.dx;})
-          .attr('height', function(nodeSet){return nodeSet.dy;})
-          .attr('fill', function(nodeSet){return nodeSet.color;})
-          .attr('transform', function(nodeSet){return translate(nodeSet.x, nodeSet.y);})
-          .attr('stroke', '#aaa')
-          .attr('stroke-width', 1)
-          .each(function(nodeSet){
-            nodeSet.area = d3.select(this);
-          })
-          .on('mouseover', function(nodeSet){
-            nodeSet.isHovered = true;
-            ref.map.updateHighlight();
-            self.updateHighlight();
-          })
-          .on('mouseout', function(nodeSet){
-            nodeSet.isHovered = false;
-            ref.map.updateHighlight();
-            self.updateHighlight();
-          })
-          .on('mousedown', function(nodeSet){
-            if(nodeSet.isSelected) {
+        .attr('stroke', '#aaa')
+        .attr('stroke-width', 1)
+        .each(function(nodeSet){
+          nodeSet.area = d3.select(this);
+        })
+        .on('mouseover', function(nodeSet){
+          nodeSet.isHovered = true;
+          ref.map.updateHighlight();
+          self.updateHighlight();
+        })
+        .on('mouseout', function(nodeSet){
+          nodeSet.isHovered = false;
+          ref.map.updateHighlight();
+          self.updateHighlight();
+        })
+        .on('mousedown', function(nodeSet){
+          if(nodeSet.isSelected) {
 /*              var arc = d3.svg.arc()
                 .outerRadius(200)
                 .innerRadius(20);
@@ -87,44 +126,30 @@ define([
 
               d3.event.stopPropagation();*/
 
-            }
-          })
-      ;
-
-      var brush = 
-            d3.svg.safeBrush()
-              .x(d3.scale.linear().domain([0, this.width]).range([0, this.width]))
-              .y(d3.scale.linear().domain([0, this.height]).range([0, this.height]))
-              .on('brush', brushed)
-          ;
-      
-      this.svg.call(brush);
-
-      function isNodeSetContainedInBox(nodeSet, startX, startY, endX, endY) {
-        return !(nodeSet.y + nodeSet.dy < startY || 
-                 nodeSet.y > endY ||
-                 nodeSet.x + nodeSet.dx < startX ||
-                 nodeSet.x > endX);
-      }
-
-      function brushed(startX, startY, endX, endY){
-        var dirty = false;
-
-        self.visibleNodes.forEach(function(nodeSet){
-          if(isNodeSetContainedInBox(nodeSet, startX, startY, endX, endY)) {
-            if(!nodeSet.isSelected) dirty = true;
-            nodeSet.isSelected = true;
-          } else {
-            if(nodeSet.isSelected) dirty = true;
-            nodeSet.isSelected = false;
           }
-        });
+        })
+        .on('dblclick', function(nodeSet){
+          self.drillDown(nodeSet);
+        })
+        .attr('width', 0)
+        .attr('height', 0)
+        .attr('fill', 'white')
+        .attr('transform', function(nodeSet){return translate(nodeSet.x + nodeSet.width / 2, nodeSet.y + nodeSet.height / 2);})
+        .attr('opacity', 0)
 
-        if(dirty) {
-          ref.map.updateHighlight();
-          self.updateHighlight();
-        }
-      }
+      rects
+        .transition()
+        .attr('width', function(nodeSet){return nodeSet.width;})
+        .attr('height', function(nodeSet){return nodeSet.height;})
+        .attr('fill', function(nodeSet){return nodeSet.color;})
+        .attr('transform', function(nodeSet){return translate(nodeSet.x, nodeSet.y);})
+        .attr('opacity', 1)
+
+
+      rects
+        .exit()
+        .remove();
+      ;
     },
     updateHighlight: function(){
       var highlighted = this.visibleNodes.filter(NodeSet.isHighlighted),
@@ -144,8 +169,29 @@ define([
       highlighted.forEach(function(nodeSet){
         nodeSet.highlightArea();
       });
+    },
+    drillDown: function(nodeSet){
+      var canDrillDown = false;
+      nodeSet.nodes.forEach(function(node){
+        if(node.children.length)
+          canDrillDown = true;
+      });
+      
+      if(!canDrillDown) return;
+
+      var self = this;
+      util.removeA(this.visibleNodes, nodeSet);
+      nodeSet.nodes.forEach(function(node){
+        node.children.forEach(function(child){
+          self.visibleNodes.push(new NodeSet([child]));
+        });
+      });
+      this.update();
+    },
+    drillUp: function(nodeSet){
+      var self = this;
+
     }
- 
   };
 
   return MMap;

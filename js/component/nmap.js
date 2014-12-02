@@ -20,8 +20,8 @@ define(['d3'], function(){
         var node = nodes[0];
         node.x = x1;
         node.y = y1;
-        node.dx = x2 - x1;
-        node.dy = y2 - y1;
+        node.width = x2 - x1;
+        node.height = y2 - y1;
         return;
       }
 
@@ -148,8 +148,8 @@ define(['d3'], function(){
       nodes.forEach(function(node){
         node.x *= width;
         node.y *= height;
-        node.dx *= width;
-        node.dy *= height;
+        node.width *= width;
+        node.height *= height;
       });
     }
 

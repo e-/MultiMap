@@ -50,7 +50,7 @@ define(function(){
           child.highlightMap();
         });
       } else {
-        this.mapG.selectAll('path').attr('fill', this.color.darker(0.8)).attr('stroke', this.color.darker(3)).attr('stroke-width', 3);
+        this.mapG.selectAll('path').attr('fill', this.color.darker(0.5)).attr('stroke', this.color.darker(3)).attr('stroke-width', 3);
       }
     },
     getLeafIds: function(){

@@ -18,7 +18,7 @@ define(['d3'], function(){
     }
 
     function assignColors(data, range){
-      data.color = d3.hcl((range[0] + range[1]) / 2, 50 - 5 * data.level, 75 + 5 * data.level);
+      data.color = d3.hcl((range[0] + range[1]) / 2, 55 - 5 * data.level, 65 + 10 * data.level);
 
       if(data.level == 0)
         data.color = '#aaa';

@@ -38,8 +38,8 @@ define([
 
     var treeColor = d3.treeColor();
     treeColor(root);
-
-    visibleNodes = root.getNodesAtLevel(2).map(function(node){return new NodeSet([node]);});
+    
+    visibleNodes = root.getNodesAtLevel(1).map(function(node){return new NodeSet([node]);});
     map = new Map(d3.select('#map'), 350, 500, root, visibleNodes, leaves);
     mmap = new MMap(d3.select('#mmap'), width, height, root, visibleNodes);
 
