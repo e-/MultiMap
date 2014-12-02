@@ -7,6 +7,7 @@ define([
   function MMap(svg, width, height, root, visibleNodes){
     this.svg = svg;
     this.g = svg.append('g');
+    this.labelG = svg.append('g');
     this.width = width;
     this.height = height;
     this.root = root;
@@ -81,6 +82,9 @@ define([
       this.g
         .selectAll('rect')
         .data(this.visibleNodes, NodeSet.getId);
+      
+      var texts = 
+      this.labelG.selectAll('text').data(this.visibleNodes, NodeSet.getId);
 
       rects
         .enter()
@@ -140,6 +144,18 @@ define([
         .attr('fill', 'white')
         .attr('transform', function(nodeSet){return translate(nodeSet.x + nodeSet.width / 2, nodeSet.y + nodeSet.height / 2);})
         .attr('opacity', 0)
+      
+      texts
+        .enter()
+        .append('text')
+        .text(function(d){return d.name;})
+        .attr('dy', '.5em')
+        .each(function(nodeSet){
+          nodeSet.text = d3.select(this);
+        })
+        .attr('transform', function(nodeSet){return translate(nodeSet.x + nodeSet.width / 2, nodeSet.y + nodeSet.height / 2);})
+        .attr('opacity', 0)
+ 
 
       rects
         .transition()
@@ -148,12 +164,19 @@ define([
         .attr('fill', function(nodeSet){return nodeSet.color;})
         .attr('transform', function(nodeSet){return translate(nodeSet.x, nodeSet.y);})
         .attr('opacity', 1)
+      
+      texts
+        .transition()
+        .attr('transform', function(nodeSet){return translate(nodeSet.x + nodeSet.width / 2, nodeSet.y + nodeSet.height / 2);})
+        .attr('opacity', 1)
 
 
       rects
         .exit()
         .remove();
       ;
+
+      texts.exit().remove();
     },
     updateHighlight: function(){
       var highlighted = this.visibleNodes.filter(NodeSet.isHighlighted),

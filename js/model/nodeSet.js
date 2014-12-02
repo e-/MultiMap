@@ -31,6 +31,7 @@ define(function(){
       this.iy /= this.size;
 
       this.color = this.nodes[0].color;
+      this.name = this.nodes[0].data.name;
     },
     unhighlightArea: function(){
       this.area.attr('fill', this.color).attr('stroke', '#aaa').attr('stroke-width', 1);

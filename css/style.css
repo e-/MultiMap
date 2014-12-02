@@ -2,6 +2,10 @@ html, body{
   height:100%;
   overflow:hidden;
   font-family: 'Open Sans', sans-selif;
+    -webkit-user-select: none; /* webkit (safari, chrome) browsers */
+    -moz-user-select: none; /* mozilla browsers */
+    -khtml-user-select: none; /* webkit (konqueror) browsers */
+    -ms-user-select: none; /* IE10+ */
 }
 
 #left{
@@ -56,3 +60,12 @@ html, body{
   shape-rendering: crispEdges;
 }
 
+text{
+  font-family: 'Open Sans', 'Malgun Gothic';
+  pointer-events: none;
+  stroke: #333;
+  stroke-width: 1px;
+  fill: #333;
+  font-size:2em;
+  text-anchor:middle;
+}
