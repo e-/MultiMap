@@ -9,6 +9,7 @@ define(function(){
   Node.prototype = {
     addChild: function(child){
       this.children.push(child);
+      child.parent = this;
     },
     getLeaves: function(){
       if(this.children.length == 0) 

@@ -131,6 +131,10 @@ define([
         .on('dblclick', function(nodeSet){
           self.drillDown(nodeSet);
         })
+        .on('contextmenu', function(nodeSet){
+          self.drillUp(nodeSet);
+          d3.event.preventDefault();
+        })
         .attr('width', 0)
         .attr('height', 0)
         .attr('fill', 'white')
@@ -190,7 +194,31 @@ define([
     },
     drillUp: function(nodeSet){
       var self = this;
+      
+      if(nodeSet.nodes.length > 1) return;
+      var node = nodeSet.nodes[0];
+      if(!node.parent) return;
+      
+      var canDrillUp = true, deathNote = [];
+      node.parent.children.forEach(function(child){ //child가 독립적으로 존재해야함
+        var found = false;
+        self.visibleNodes.forEach(function(node){
+          if(node.nodes.length == 1 && node.nodes[0] == child) {
+            found = true;
+            deathNote.push(node);
+          }
+        });
+        if(!found)
+          canDrillUp = false;
+      });
 
+      if(canDrillUp) {
+        deathNote.forEach(function(victim){
+          util.removeA(self.visibleNodes, victim);
+        });
+        self.visibleNodes.push(new NodeSet([node.parent]));
+        this.update();
+      }
     }
   };
 

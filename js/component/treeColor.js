@@ -21,7 +21,7 @@ define(['d3'], function(){
       data.color = d3.hcl((range[0] + range[1]) / 2, 55 - 5 * data.level, 65 + 10 * data.level);
 
       if(data.level == 0)
-        data.color = '#aaa';
+        data.color = d3.hcl(0, 0, 80);
       
       if(!data.children) return;
 
