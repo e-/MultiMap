@@ -1,51 +1,93 @@
-define(['jquery', 'model/node', 'd3', 'component/nmap', 'component/safeBrush'], function($, Node){
-  function MMap(svg, width, height, leaves){
+define([
+'jquery', 
+'model/node', 
+'model/nodeSet', 'd3', 'component/nmap', 'component/safeBrush'], function($, Node, NodeSet){
+  function MMap(svg, width, height, root, visibleNodes){
     this.svg = svg;
     this.g = svg.append('g');
     this.width = width;
     this.height = height;
-    this.leaves = leaves;
+    this.root = root;
+    this.visibleNodes = visibleNodes;
   }
     
   function translate(x, y){
    return 'translate(' + x + ',' + y + ')';
   }
 
+  var _ref,
+      namp;
+
   MMap.prototype = {
     draw: function(ref){
+      if(!ref) ref = _ref;
+      else _ref = ref;
+
       var self = this;
 
       this.svg.attr('width', this.width).attr('height', this.height);
-    
-      var nmap = d3.layout.nmap().value(function(node){return node.data.population;}).width(this.width).height(this.height);
-    
-      nmap(this.leaves);
-      
-      this
-        .g
-        .attr('id', 'rects')
+      nmap = 
+        d3.layout.nmap()
+          .value(function(node){return node.population;})
+          .width(this.width).height(this.height);
+
+      this.update(ref);
+    },
+    update: function(ref)
+    {
+      var self = this;
+      nmap(this.visibleNodes);
+      this.g
         .selectAll('rect')
-        .data(this.leaves)
+        .data(this.visibleNodes)
         .enter()
         .append('rect')
-          .attr('width', function(leaf){return leaf.dx;})
-          .attr('height', function(leaf){return leaf.dy;})
-          .attr('fill', function(leaf){return leaf.color;})
-          .attr('transform', function(leaf){return translate(leaf.x, leaf.y);})
+          .attr('width', function(nodeSet){return nodeSet.dx;})
+          .attr('height', function(nodeSet){return nodeSet.dy;})
+          .attr('fill', function(nodeSet){return nodeSet.color;})
+          .attr('transform', function(nodeSet){return translate(nodeSet.x, nodeSet.y);})
           .attr('stroke', '#aaa')
           .attr('stroke-width', 1)
-          .each(function(leaf){
-            leaf.area = d3.select(this);
+          .each(function(nodeSet){
+            nodeSet.area = d3.select(this);
           })
-          .on('mouseover', function(leaf){
-            leaf.isHovered = true;
+          .on('mouseover', function(nodeSet){
+            nodeSet.isHovered = true;
             ref.map.updateHighlight();
             self.updateHighlight();
           })
-          .on('mouseout', function(leaf){
-            leaf.isHovered = false;
+          .on('mouseout', function(nodeSet){
+            nodeSet.isHovered = false;
             ref.map.updateHighlight();
             self.updateHighlight();
+          })
+          .on('mousedown', function(nodeSet){
+            if(nodeSet.isSelected) {
+/*              var arc = d3.svg.arc()
+                .outerRadius(200)
+                .innerRadius(20);
+              
+              var pie = d3.layout.pie()
+                .sort(null)
+                .startAngle(Math.PI + Math.PI * 0.2)
+                .endAngle(Math.PI * 2 - Math.PI * 0.2)
+                .value(function(d){return 10;})
+              
+              var g = self.svg.append('g');
+              var gs = 
+                g
+                .selectAll('.arc')
+                .data(pie(d3.range(10)))
+                .enter().append('g')
+                  .attr('class', 'arc');
+
+              g.attr('transform', translate(d3.event.offsetX, d3.event.offsetY));
+              var color = d3.scale.category20();
+              gs.append('path').attr('d', arc).style('fill', function(_, i){return color(i);});
+
+              d3.event.stopPropagation();*/
+
+            }
           })
       ;
 
@@ -58,28 +100,26 @@ define(['jquery', 'model/node', 'd3', 'component/nmap', 'component/safeBrush'], 
       
       this.svg.call(brush);
 
-      function isPointContainedInBox(x, y, startX, startY, endX, endY) {
-        return startX <= x && x <= endX && startY <= y && y <= endY;
-      }
-
-      function isLeafContainedInBox(leaf, startX, startY, endX, endY) {
-        return !(leaf.y + leaf.dy < startY || 
-                 leaf.y > endY ||
-                 leaf.x + leaf.dx < startX ||
-                 leaf.x > endX);
+      function isNodeSetContainedInBox(nodeSet, startX, startY, endX, endY) {
+        return !(nodeSet.y + nodeSet.dy < startY || 
+                 nodeSet.y > endY ||
+                 nodeSet.x + nodeSet.dx < startX ||
+                 nodeSet.x > endX);
       }
 
       function brushed(startX, startY, endX, endY){
-        var highlightLeaves = [], dirty = false;
-        self.leaves.forEach(function(leaf){
-          if(isLeafContainedInBox(leaf, startX, startY, endX, endY)) {
-            if(!leaf.isSelected) dirty = true;
-            leaf.isSelected = true;
+        var dirty = false;
+
+        self.visibleNodes.forEach(function(nodeSet){
+          if(isNodeSetContainedInBox(nodeSet, startX, startY, endX, endY)) {
+            if(!nodeSet.isSelected) dirty = true;
+            nodeSet.isSelected = true;
           } else {
-            if(leaf.isSelected) dirty = true;
-            leaf.isSelected = false;
+            if(nodeSet.isSelected) dirty = true;
+            nodeSet.isSelected = false;
           }
         });
+
         if(dirty) {
           ref.map.updateHighlight();
           self.updateHighlight();
@@ -87,12 +127,12 @@ define(['jquery', 'model/node', 'd3', 'component/nmap', 'component/safeBrush'], 
       }
     },
     updateHighlight: function(){
-      var highlighted = this.leaves.filter(Node.isHighlighted),
-          highlightedIds = highlighted.map(Node.getId);
+      var highlighted = this.visibleNodes.filter(NodeSet.isHighlighted),
+          highlightedIds = highlighted.map(NodeSet.getId);
       
       // remove all highlight
-      this.leaves.forEach(function(leaf){
-        leaf.area.attr('fill', leaf.color).attr('stroke', '#aaa').attr('stroke-width', 1);
+      this.visibleNodes.forEach(function(nodeSet){
+        nodeSet.unhighlightArea();
       });
       
       //sort
@@ -101,8 +141,8 @@ define(['jquery', 'model/node', 'd3', 'component/nmap', 'component/safeBrush'], 
         return -1;
       });
         
-      highlighted.forEach(function(leaf){
-        leaf.area.attr('fill', leaf.color.darker(0.8)).attr('stroke', leaf.color.darker(3)).attr('stroke-width', 3);
+      highlighted.forEach(function(nodeSet){
+        nodeSet.highlightArea();
       });
     }
  

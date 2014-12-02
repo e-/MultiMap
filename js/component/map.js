@@ -1,11 +1,27 @@
-define(['model/node', 'd3'], function(Node){
-  function Map(svg, width, height, leaves){
+define(['model/node', 'model/nodeSet', 'd3'], function(Node, NodeSet){
+  function Map(svg, width, height, root, visibleNodes, leaves){
     this.svg = svg;
     this.g = svg.append('g');
     this.width = width;
     this.height = height;
+    this.root = root;
+    this.visibleNodes = visibleNodes;
     this.leaves = leaves;
   }
+
+  function getCenter(root){
+    if(!root.children.length) return;
+    
+    var sumx = 0, sumy = 0;
+    root.children.forEach(function(child){
+      getCenter(child);
+      sumx += child.ix;
+      sumy += child.iy;
+    });
+    root.ix = sumx / root.children.length;
+    root.iy = sumy / root.children.length;
+  }
+
   Map.prototype = {
     draw: function(ref){
       var self = this;
@@ -50,24 +66,28 @@ define(['model/node', 'd3'], function(Node){
         leaf.iy = bbox.y + bbox.height / 2;
         leaf.mapG = d3.select(this);
       });
+
+      getCenter(this.root);
     },
     updateHighlight: function(){
-      var highlighted = this.leaves.filter(Node.isHighlighted),
-          highlightedIds = highlighted.map(Node.getId);
+      var highlighted = this.visibleNodes.filter(NodeSet.isHighlighted),
+          highlightedIds = highlighted.reduce(function(result, nodeSet){
+            return result.concat(nodeSet.getNodeIds());
+          }, []);
       
       // remove all highlight
-      this.leaves.forEach(function(leaf){
-        leaf.mapG.selectAll('path').attr('fill', leaf.color).attr('stroke', '#aaa').attr('stroke-width', 1);
+      this.visibleNodes.forEach(function(nodeSet){
+        nodeSet.unhighlightMap();
       });
-      
+     
       //sort
       this.g.selectAll('g').sort(function (a, b){
         if(highlightedIds.indexOf(a.id) >= 0) return 1;
         return -1;
       });
         
-      highlighted.forEach(function(leaf){
-        leaf.mapG.selectAll('path').attr('fill', leaf.color.darker(0.8)).attr('stroke', leaf.color.darker(3)).attr('stroke-width', 3);
+      highlighted.forEach(function(nodeSet){
+        nodeSet.highlightMap();
       });
     }
   };

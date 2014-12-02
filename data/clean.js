@@ -12,6 +12,20 @@ function sanitize(r){
   return r.replace(/\r/g,'').replace(/\t/g,'').replace(/\n/g,'');
 }
 
+function fill(data){
+  if(!data.children)
+    return;
+  
+  data.size = 0;
+  data.population = 0;
+ 
+  data.children.forEach(function(child){
+    fill(child);
+    data.size += child.size;
+    data.population += child.population;
+  });
+}
+
 mapXML = fs.readFileSync('korea.svg');
 parser.parseString(mapXML.toString(), function(err, result){
   var json = JSON.parse(JSON.stringify(result));
@@ -86,6 +100,8 @@ parser.parseString(mapXML.toString(), function(err, result){
 
   loadPopulation();
   loadSize();
+
+  fill(r0s);
 
   fs.writeFileSync('data.json', JSON.stringify(r0s, undefined, 2));
 
