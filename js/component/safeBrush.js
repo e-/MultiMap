@@ -46,8 +46,8 @@ define(['d3'], function(){
           var endX = d3.event.offsetX,
               endY = d3.event.offsetY
               ;
-          if(Math.abs(startX - endX) < THRESHOLD || Math.abs(startY - endY) < THRESHOLD)
-            rect.style('display', 'none');
+/*          if(Math.abs(startX - endX) < THRESHOLD || Math.abs(startY - endY) < THRESHOLD)*/
+          rect.style('display', 'none');
         })
       ;
     }

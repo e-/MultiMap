@@ -3,6 +3,7 @@ define(function(){
     this.data = data;
     this.children = [];
     this.level = level;
+    this.id = data.id;
   }
 
   Node.prototype = {
@@ -18,7 +19,18 @@ define(function(){
         leaves = leaves.concat(child.getLeaves());
       });
       return leaves;
+    },
+    isHighlighted: function(){
+      return Node.isHighlighted(this);
     }
+  };
+
+  Node.isHighlighted = function(node){
+    return node.isHovered || node.isSelected;
+  };
+
+  Node.getId = function(node){
+    return node.id;
   };
 
   return Node;
