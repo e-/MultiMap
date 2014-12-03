@@ -35,7 +35,7 @@ util){
       else _ref = ref;
 
       var self = this;
-
+      
       this.svg.attr('width', this.width).attr('height', this.height);
       nmap = 
         d3.layout.nmap()
@@ -50,8 +50,15 @@ util){
           ;
       
       this.svg.call(brush);
+     
+      var titleHeight = this.height / 10,
+          titleFontSize = util.getPrettyFontSize('대한민국 - 인구', this.width, titleHeight);
+      this.titleHeight = titleHeight;
+      this.titleRect = this.svg.append('rect').attr('width', this.width).attr('height', this.titleHeight).style('fill', '#f5f5f5');
+      this.title =  this.svg.append('text').attr('transform', translate(this.width / 2, titleHeight / 2)).style('font-size',  titleFontSize + 'em').text('대한민국 - 인구').attr('class', 'label')
+      ;
 
-     function isNodeSetContainedInBox(node, startX, startY, endX, endY) {
+      function isNodeSetContainedInBox(node, startX, startY, endX, endY) {
         return !(node.y + node.height < startY || 
                  node.y > endY ||
                  node.x + node.width < startX ||
@@ -90,6 +97,21 @@ util){
       var self = this;
       if(!ref) ref = _ref;
       else _ref = ref;
+      
+      if(this.visibleNodes.length > 1) {
+        this.title.transition().style('opacity', 1);
+        nmap.height(this.height - this.titleHeight);
+        this.g.transition().attr('transform', translate(0, this.titleHeight));
+        this.labelG.transition().attr('transform', translate(0, this.titleHeight));
+        this.titleRect.transition().style('opacity', 1);
+      } else {
+        nmap.height(this.height);
+        this.title.transition().style('opacity', 0);
+        this.g.transition().attr('transform', translate(0, 0));
+        this.labelG.transition().attr('transform', translate(0, 0));
+        this.titleRect.transition().style('opacity', 0);
+      }
+
       nmap(this.visibleNodes);
       var labels = 
         this.visibleNodes.filter(function(node){
