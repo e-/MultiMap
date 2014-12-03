@@ -27,7 +27,6 @@ define([
       timer,
       clicks = 0;
 
-
   MMap.prototype = {
     draw: function(ref){
       if(!ref) ref = _ref;
@@ -75,8 +74,10 @@ define([
           self.updateHighlight();
         }
       }
-      
-      this.menu = d3.svg.radialMenu();
+     
+      this.menu = d3.svg.radialMenu(function(attr){
+        self.roll(attr);
+      });
       
       this.svg.call(this.menu);
 
@@ -99,54 +100,76 @@ define([
           return true;
         });
 
-      var rects = 
+      var gs = 
       this.g
-        .selectAll('rect')
+        .selectAll('g')
         .data(this.visibleNodes, NodeSet.getId);
+
+
+      gs
+        .enter()
+          .append('g')
+          .attr('transform', function(nodeSet){return translate(nodeSet.x + nodeSet.width / 2, nodeSet.y + nodeSet.height / 2);})
+          .each(function(nodeSet){
+            nodeSet.g = d3.select(this);
+          })
+            .append('rect')
+              .attr('stroke', '#aaa')
+              .attr('stroke-width', 1)
+              .each(function(nodeSet){
+                nodeSet.area = d3.select(this);
+              })
+              .on('mouseover', function(nodeSet){
+                nodeSet.isHovered = true;
+                ref.map.updateHighlight();
+                self.updateHighlight();
+              })
+              .on('mouseout', function(nodeSet){
+                nodeSet.isHovered = false;
+                ref.map.updateHighlight();
+                self.updateHighlight();
+              })
+              .on('click', function(){
+                self.menu.hide()
+              })
+              .on('contextmenu', function(nodeSet){
+                if(nodeSet.isSelected) {
+                  self.menu.toggle(event.offsetX, event.offsetY);
+                  event.stopPropagation();
+                }
+                d3.event.preventDefault();
+              })
+              .on('mousewheel', function(nodeSet){
+                if(d3.event.wheelDelta > 0) { // in
+                  self.drillDown(nodeSet);
+                } else {
+                  self.drillUp(nodeSet);
+                }
+              })
+              .attr('width', 0)
+              .attr('height', 0)
+              .attr('fill', 'white')
+
+ 
+      gs
+        .transition()
+        .attr('transform', function(nodeSet){return translate(nodeSet.x, nodeSet.y);})
+        .attr('opacity', 1)
       
+      var rects = gs.selectAll('rect');
+      
+      rects
+        .transition()
+        .attr('width', function(nodeSet){return nodeSet.width;})
+        .attr('height', function(nodeSet){return nodeSet.height;})
+        .attr('fill', function(nodeSet){return nodeSet.color;})
+      
+      gs
+        .exit()
+        .remove();
+
       var texts = 
         this.labelG.selectAll('text').data(labels, NodeSet.getId);
-
-      rects
-        .enter()
-        .append('rect')
-        .attr('stroke', '#aaa')
-        .attr('stroke-width', 1)
-        .each(function(nodeSet){
-          nodeSet.area = d3.select(this);
-        })
-        .on('mouseover', function(nodeSet){
-          nodeSet.isHovered = true;
-          ref.map.updateHighlight();
-          self.updateHighlight();
-        })
-        .on('mouseout', function(nodeSet){
-          nodeSet.isHovered = false;
-          ref.map.updateHighlight();
-          self.updateHighlight();
-        })
-        .on('click', function(){
-          self.menu.hide()
-        })
-        .on('contextmenu', function(nodeSet){
-          if(nodeSet.isSelected) {
-            self.menu.toggle(event.offsetX, event.offsetY);
-            event.stopPropagation();
-          }
-          d3.event.preventDefault();
-        })
-        .on('mousewheel', function(nodeSet){
-          if(d3.event.wheelDelta > 0) { // in
-            self.drillDown(nodeSet);
-          } else {
-            self.drillUp(nodeSet);
-          }
-        })
-        .attr('width', 0)
-        .attr('height', 0)
-        .attr('fill', 'white')
-        .attr('transform', function(nodeSet){return translate(nodeSet.x + nodeSet.width / 2, nodeSet.y + nodeSet.height / 2);})
-        .attr('opacity', 0)
       
       texts
         .enter()
@@ -159,13 +182,7 @@ define([
         .attr('opacity', 0)
  
 
-      rects
-        .transition()
-        .attr('width', function(nodeSet){return nodeSet.width;})
-        .attr('height', function(nodeSet){return nodeSet.height;})
-        .attr('fill', function(nodeSet){return nodeSet.color;})
-        .attr('transform', function(nodeSet){return translate(nodeSet.x, nodeSet.y);})
-        .attr('opacity', 1)
+
       
       texts
         .attr('font-size', function(nodeSet){
@@ -179,12 +196,15 @@ define([
         .attr('opacity', 1)
 
 
-      rects
-        .exit()
-        .remove();
-      ;
+     ;
 
       texts.exit().remove();
+
+      this.visibleNodes.forEach(function(nodeSet){
+        if(nodeSet.draw) {
+          nodeSet.draw();
+        }
+      });
     },
     updateHighlight: function(){
       var highlighted = this.visibleNodes.filter(NodeSet.isHighlighted),
@@ -196,7 +216,7 @@ define([
       });
       
       //sort
-      this.g.selectAll('rect').sort(function (a, b){
+      this.g.selectAll('g').sort(function (a, b){
         if(highlightedIds.indexOf(a.id) >= 0) return 1;
         return -1;
       });
@@ -250,6 +270,53 @@ define([
         self.visibleNodes.push(new NodeSet([node.parent]));
         this.update();
       }
+    },
+    roll: function(attr){
+      var 
+          self = this,
+          selection = this.visibleNodes.filter(NodeSet.isSelected)[0];
+      
+      selection.draw = function(){
+        var nmap = d3.layout.nmap()
+                     .width(selection.width)
+                     .height(selection.height)
+                     .value(function(nodeSet){
+                       return nodeSet.nodes[0].data[attr.name];
+                     });
+        
+        var nodeSets = selection.nodes[0].children.map(function(child){
+          return new NodeSet([child]);
+        });
+
+        nmap(nodeSets);
+
+        selection.area.remove();
+        selection.text.remove();
+
+        var rects = 
+        selection.g
+          .selectAll('rect')
+          .data(nodeSets)
+          .enter()
+            .append('rect')
+            .attr('width', 0)
+            .attr('height', 0)
+            .attr('transform', function(nodeSet){return translate(nodeSet.x + nodeSet.width / 2, nodeSet.y + nodeSet.height / 2);})
+            .attr('fill', 'white')
+            .attr('stroke', '#aaa')
+            .attr('stroke-width', 1)
+            .attr('opacity', 0);
+
+        rects
+          .transition()
+            .attr('width', function(nodeSet){return nodeSet.width;})
+            .attr('height', function(nodeSet){return nodeSet.height;})
+            .attr('fill', function(nodeSet){return nodeSet.color;})
+            .attr('transform', function(nodeSet){return translate(nodeSet.x, nodeSet.y);})
+            .attr('opacity', 1)
+      };
+      
+      this.update();
     }
   };
 

@@ -15,7 +15,7 @@ define(['model/node', 'd3'], function(Node){
     return x * 180 / Math.PI;
   }
 
-  d3.svg.radialMenu = function(){
+  d3.svg.radialMenu = function(onClick){
     var arc,
         outerRadius = 230,
         innerRadius = 40,
@@ -63,6 +63,10 @@ define(['model/node', 'd3'], function(Node){
         })
         .on('mouseout', function(){
           d3.select(this).transition().duration(150).style('opacity', 0.9);
+        })
+        .on('click', function(attr){
+          onClick(attr);
+          menu.hide();
         })
         .on('contextmenu', function(){menu.hide(); d3.event.preventDefault();});
       ;

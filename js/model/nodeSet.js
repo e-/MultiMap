@@ -66,6 +66,10 @@ define(function(){
     return nodeSet.id;
   };
   
+  NodeSet.isSelected = function(nodeSet){
+    return nodeSet.isSelected;
+  };
+
   return NodeSet;
 
 });

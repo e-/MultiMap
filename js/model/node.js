@@ -69,7 +69,7 @@ define(function(){
 
   Node.Attributes = [
     {
-      name: 'popluation',
+      name: 'population',
       realName: 'Population (#)'
     },
     {
