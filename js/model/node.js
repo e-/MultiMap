@@ -67,5 +67,40 @@ define(function(){
     }
   };
 
+  Node.Attributes = [
+    {
+      name: 'popluation',
+      realName: 'Population (#)'
+    },
+    {
+      name: 'popRatio',
+      realName: 'Gender Ratio (%)'
+    },
+    {
+      name: 'size',
+      realName: 'Area Size (km²)'
+    },
+    {
+      name: 'dummy',
+      realName: 'Dummy'
+    },
+    {
+      name: 'dummy',
+      realName: 'Dummy'
+    },
+    {
+      name: 'dummy',
+      realName: 'Dummy'
+    },
+    {
+      name: 'dummy',
+      realName: 'Dummy'
+    },
+    {
+      name: 'dummy',
+      realName: 'Dummy'
+    }
+  ];
+
   return Node;
 });

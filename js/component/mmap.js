@@ -3,7 +3,11 @@ define([
 'model/node', 
 'model/nodeSet', 
 'util',
-'d3', 'component/nmap', 'component/safeBrush'], function($, Node, NodeSet, util){
+'d3', 
+'component/nmap', 
+'component/safeBrush',
+'component/radialMenu'
+], function($, Node, NodeSet, util){
   function MMap(svg, width, height, root, visibleNodes){
     this.svg = svg;
     this.g = svg.append('g');
@@ -15,11 +19,13 @@ define([
   }
     
   function translate(x, y){
-   return 'translate(' + x + ',' + y + ')';
+    return 'translate(' + x + ',' + y + ')';
   }
 
   var _ref,
-      nmap;
+      nmap,
+      timer,
+      clicks = 0;
 
 
   MMap.prototype = {
@@ -69,6 +75,10 @@ define([
           self.updateHighlight();
         }
       }
+      
+      this.menu = d3.svg.radialMenu();
+      
+      this.svg.call(this.menu);
 
       this.update(ref);
     },
@@ -115,40 +125,22 @@ define([
           ref.map.updateHighlight();
           self.updateHighlight();
         })
-        .on('mousedown', function(nodeSet){
-          if(nodeSet.isSelected) {
-/*              var arc = d3.svg.arc()
-                .outerRadius(200)
-                .innerRadius(20);
-              
-              var pie = d3.layout.pie()
-                .sort(null)
-                .startAngle(Math.PI + Math.PI * 0.2)
-                .endAngle(Math.PI * 2 - Math.PI * 0.2)
-                .value(function(d){return 10;})
-              
-              var g = self.svg.append('g');
-              var gs = 
-                g
-                .selectAll('.arc')
-                .data(pie(d3.range(10)))
-                .enter().append('g')
-                  .attr('class', 'arc');
-
-              g.attr('transform', translate(d3.event.offsetX, d3.event.offsetY));
-              var color = d3.scale.category20();
-              gs.append('path').attr('d', arc).style('fill', function(_, i){return color(i);});
-
-              d3.event.stopPropagation();*/
-
-          }
-        })
-        .on('dblclick', function(nodeSet){
-          self.drillDown(nodeSet);
+        .on('click', function(){
+          self.menu.hide()
         })
         .on('contextmenu', function(nodeSet){
-          self.drillUp(nodeSet);
+          if(nodeSet.isSelected) {
+            self.menu.toggle(event.offsetX, event.offsetY);
+            event.stopPropagation();
+          }
           d3.event.preventDefault();
+        })
+        .on('mousewheel', function(nodeSet){
+          if(d3.event.wheelDelta > 0) { // in
+            self.drillDown(nodeSet);
+          } else {
+            self.drillUp(nodeSet);
+          }
         })
         .attr('width', 0)
         .attr('height', 0)
