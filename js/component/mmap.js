@@ -1,13 +1,15 @@
 define([
 'jquery', 
 'model/node', 
-'model/nodeSet', 
+//'model/nodeSet', 
 'util',
 'd3', 
 'component/nmap', 
 'component/safeBrush',
 'component/radialMenu'
-], function($, Node, NodeSet, util){
+], function($, Node, 
+//NodeSet, 
+util){
   function MMap(svg, width, height, root, visibleNodes){
     this.svg = svg;
     this.g = svg.append('g');
@@ -37,7 +39,7 @@ define([
       this.svg.attr('width', this.width).attr('height', this.height);
       nmap = 
         d3.layout.nmap()
-          .value(function(node){return node.population;})
+          .value(function(node){return node.data.population;})
           .width(this.width).height(this.height);
       
       var brush = 
@@ -49,23 +51,23 @@ define([
       
       this.svg.call(brush);
 
-      function isNodeSetContainedInBox(nodeSet, startX, startY, endX, endY) {
-        return !(nodeSet.y + nodeSet.height < startY || 
-                 nodeSet.y > endY ||
-                 nodeSet.x + nodeSet.width < startX ||
-                 nodeSet.x > endX);
+     function isNodeSetContainedInBox(node, startX, startY, endX, endY) {
+        return !(node.y + node.height < startY || 
+                 node.y > endY ||
+                 node.x + node.width < startX ||
+                 node.x > endX);
       }
 
       function brushed(startX, startY, endX, endY){
         var dirty = false;
 
-        self.visibleNodes.forEach(function(nodeSet){
-          if(isNodeSetContainedInBox(nodeSet, startX, startY, endX, endY)) {
-            if(!nodeSet.isSelected) dirty = true;
-            nodeSet.isSelected = true;
+        self.visibleNodes.forEach(function(node){
+          if(isNodeSetContainedInBox(node, startX, startY, endX, endY)) {
+            if(!node.isSelected) dirty = true;
+            node.isSelected = true;
           } else {
-            if(nodeSet.isSelected) dirty = true;
-            nodeSet.isSelected = false;
+            if(node.isSelected) dirty = true;
+            node.isSelected = false;
           }
         });
 
@@ -91,7 +93,7 @@ define([
       nmap(this.visibleNodes);
       var labels = 
         this.visibleNodes.filter(function(node){
-          var size = util.getPrettyFontSize(node.name, node.width, node.height);
+          var size = util.getPrettyFontSize(node.data.name, node.width, node.height);
           
           if(size < 0.5) return false;
           if(size > 10) size = 10;
@@ -103,47 +105,46 @@ define([
       var gs = 
       this.g
         .selectAll('g')
-        .data(this.visibleNodes, NodeSet.getId);
-
-
+        .data(this.visibleNodes, Node.GetId);
+      
       gs
         .enter()
           .append('g')
-          .attr('transform', function(nodeSet){return translate(nodeSet.x + nodeSet.width / 2, nodeSet.y + nodeSet.height / 2);})
-          .each(function(nodeSet){
-            nodeSet.g = d3.select(this);
+          .attr('transform', function(node){return translate(node.x + node.width / 2, node.y + node.height / 2);})
+          .each(function(node){
+            node.g = d3.select(this);
           })
             .append('rect')
               .attr('stroke', '#aaa')
               .attr('stroke-width', 1)
-              .each(function(nodeSet){
-                nodeSet.area = d3.select(this);
+              .each(function(node){
+                node.area = d3.select(this);
               })
-              .on('mouseover', function(nodeSet){
-                nodeSet.isHovered = true;
+              .on('mouseover', function(node){
+                node.isHovered = true;
                 ref.map.updateHighlight();
                 self.updateHighlight();
               })
-              .on('mouseout', function(nodeSet){
-                nodeSet.isHovered = false;
+              .on('mouseout', function(node){
+                node.isHovered = false;
                 ref.map.updateHighlight();
                 self.updateHighlight();
               })
               .on('click', function(){
                 self.menu.hide()
               })
-              .on('contextmenu', function(nodeSet){
-                if(nodeSet.isSelected) {
+              .on('contextmenu', function(node){
+                if(node.isSelected) {
                   self.menu.toggle(event.offsetX, event.offsetY);
                   event.stopPropagation();
                 }
                 d3.event.preventDefault();
               })
-              .on('mousewheel', function(nodeSet){
+              .on('mousewheel', function(node){
                 if(d3.event.wheelDelta > 0) { // in
-                  self.drillDown(nodeSet);
+                  self.drillDown(node);
                 } else {
-                  self.drillUp(nodeSet);
+                  self.drillUp(node);
                 }
               })
               .attr('width', 0)
@@ -153,46 +154,44 @@ define([
  
       gs
         .transition()
-        .attr('transform', function(nodeSet){return translate(nodeSet.x, nodeSet.y);})
+        .attr('transform', function(node){return translate(node.x, node.y);})
         .attr('opacity', 1)
       
       var rects = gs.selectAll('rect');
       
       rects
         .transition()
-        .attr('width', function(nodeSet){return nodeSet.width;})
-        .attr('height', function(nodeSet){return nodeSet.height;})
-        .attr('fill', function(nodeSet){return nodeSet.color;})
+        .attr('width', function(node){return node.width;})
+        .attr('height', function(node){return node.height;})
+        .attr('fill', function(node){return node.color;})
       
       gs
         .exit()
         .remove();
 
       var texts = 
-        this.labelG.selectAll('text').data(labels, NodeSet.getId);
+        this.labelG.selectAll('text').data(labels, Node.GetId);
       
       texts
         .enter()
         .append('text')
-        .text(function(d){return d.name;})
-        .each(function(nodeSet){
-          nodeSet.text = d3.select(this);
+        .text(function(d){return d.data.name;})
+        .each(function(node){
+          node.text = d3.select(this);
         })
-        .attr('transform', function(nodeSet){return translate(nodeSet.x + nodeSet.width / 2, nodeSet.y + nodeSet.height / 2);})
+        .attr('transform', function(node){return translate(node.x + node.width / 2, node.y + node.height / 2);})
         .attr('opacity', 0)
  
 
-
-      
       texts
-        .attr('font-size', function(nodeSet){
-          return nodeSet.fontSize + 'em';
+        .attr('font-size', function(node){
+          return node.fontSize + 'em';
         })
         .transition()
-        .attr('dy', function(nodeSet){
-          return '0.1em'; //(nodeSet.fontSize / 10) + 'em';
+        .attr('dy', function(node){
+          return '0.1em'; //(node.fontSize / 10) + 'em';
         })
-        .attr('transform', function(nodeSet){return translate(nodeSet.x + nodeSet.width / 2, nodeSet.y + nodeSet.height / 2);})
+        .attr('transform', function(node){return translate(node.x + node.width / 2, node.y + node.height / 2);})
         .attr('opacity', 1)
 
 
@@ -200,19 +199,19 @@ define([
 
       texts.exit().remove();
 
-      this.visibleNodes.forEach(function(nodeSet){
-        if(nodeSet.draw) {
-          nodeSet.draw();
+      this.visibleNodes.forEach(function(node){
+        if(node.draw) {
+          node.draw();
         }
       });
     },
     updateHighlight: function(){
-      var highlighted = this.visibleNodes.filter(NodeSet.isHighlighted),
-          highlightedIds = highlighted.map(NodeSet.getId);
+      var highlighted = this.visibleNodes.filter(Node.IsHighlighted),
+          highlightedIds = highlighted.map(Node.GetId);
       
       // remove all highlight
-      this.visibleNodes.forEach(function(nodeSet){
-        nodeSet.unhighlightArea();
+      this.visibleNodes.forEach(function(node){
+        node.unhighlightArea();
       });
       
       //sort
@@ -221,40 +220,34 @@ define([
         return -1;
       });
         
-      highlighted.forEach(function(nodeSet){
-        nodeSet.highlightArea();
+      highlighted.forEach(function(node){
+        node.highlightArea();
       });
     },
-    drillDown: function(nodeSet){
+    drillDown: function(node){
       var canDrillDown = false;
-      nodeSet.nodes.forEach(function(node){
-        if(node.children.length)
-          canDrillDown = true;
-      });
+      if(node.children.length)
+        canDrillDown = true;
       
       if(!canDrillDown) return;
 
       var self = this;
-      util.removeA(this.visibleNodes, nodeSet);
-      nodeSet.nodes.forEach(function(node){
-        node.children.forEach(function(child){
-          self.visibleNodes.push(new NodeSet([child]));
-        });
+      util.removeA(this.visibleNodes, node);
+      node.children.forEach(function(child){
+        self.visibleNodes.push(child);
       });
       this.update();
     },
-    drillUp: function(nodeSet){
+    drillUp: function(node){
       var self = this;
       
-      if(nodeSet.nodes.length > 1) return;
-      var node = nodeSet.nodes[0];
       if(!node.parent) return;
       
       var canDrillUp = true, deathNote = [];
       node.parent.children.forEach(function(child){ //child가 독립적으로 존재해야함
         var found = false;
         self.visibleNodes.forEach(function(node){
-          if(node.nodes.length == 1 && node.nodes[0] == child) {
+          if(child == node) {
             found = true;
             deathNote.push(node);
           }
@@ -267,7 +260,7 @@ define([
         deathNote.forEach(function(victim){
           util.removeA(self.visibleNodes, victim);
         });
-        self.visibleNodes.push(new NodeSet([node.parent]));
+        self.visibleNodes.push(node.parent);
         this.update();
       }
     },
@@ -280,15 +273,15 @@ define([
         var nmap = d3.layout.nmap()
                      .width(selection.width)
                      .height(selection.height)
-                     .value(function(nodeSet){
-                       return nodeSet.nodes[0].data[attr.name];
+                     .value(function(node){
+                       return node.nodes[0].data[attr.name];
                      });
         
-        var nodeSets = selection.nodes[0].children.map(function(child){
+        var nodes = selection.nodes[0].children.map(function(child){
           return new NodeSet([child]);
         });
 
-        nmap(nodeSets);
+        nmap(nodes);
 
         selection.area.remove();
         selection.text.remove();
@@ -296,12 +289,12 @@ define([
         var rects = 
         selection.g
           .selectAll('rect')
-          .data(nodeSets)
+          .data(nodes)
           .enter()
             .append('rect')
             .attr('width', 0)
             .attr('height', 0)
-            .attr('transform', function(nodeSet){return translate(nodeSet.x + nodeSet.width / 2, nodeSet.y + nodeSet.height / 2);})
+            .attr('transform', function(node){return translate(node.x + node.width / 2, node.y + node.height / 2);})
             .attr('fill', 'white')
             .attr('stroke', '#aaa')
             .attr('stroke-width', 1)
@@ -309,10 +302,10 @@ define([
 
         rects
           .transition()
-            .attr('width', function(nodeSet){return nodeSet.width;})
-            .attr('height', function(nodeSet){return nodeSet.height;})
-            .attr('fill', function(nodeSet){return nodeSet.color;})
-            .attr('transform', function(nodeSet){return translate(nodeSet.x, nodeSet.y);})
+            .attr('width', function(node){return node.width;})
+            .attr('height', function(node){return node.height;})
+            .attr('fill', function(node){return node.color;})
+            .attr('transform', function(node){return translate(node.x, node.y);})
             .attr('opacity', 1)
       };
       

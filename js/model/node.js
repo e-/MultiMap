@@ -1,9 +1,11 @@
 define(function(){
+  var id = 0;
+
   function Node(data, level){
+    this.id = ++id;
     this.data = data;
     this.children = [];
     this.level = level;
-    this.id = data.id;
   }
 
   Node.prototype = {
@@ -20,6 +22,9 @@ define(function(){
         leaves = leaves.concat(child.getLeaves());
       });
       return leaves;
+    },
+    getLeafIds: function(){
+      return this.getLeaves.map(Node.GetId);
     },
     getNodesAtLevel: function(level){
       if(this.level == level)
@@ -53,6 +58,12 @@ define(function(){
       } else {
         this.mapG.selectAll('path').attr('fill', this.color.darker(0.5)).attr('stroke', this.color.darker(3)).attr('stroke-width', 3);
       }
+    },
+    unhighlightArea: function(){
+      this.area.attr('fill', this.color).attr('stroke', '#aaa').attr('stroke-width', 1);
+    },
+    highlightArea: function(){
+      this.area.attr('fill', this.color.darker(0.5)).attr('stroke', this.color.darker(3)).attr('stroke-width', 3);
     },
     getLeafIds: function(){
       var ids = [];
@@ -101,6 +112,19 @@ define(function(){
       realName: 'Dummy'
     }
   ];
+  
+  Node.GetId = function(node){
+    return node.id;
+  };
+
+  Node.IsHighlighted = function(node){
+    return node.isHovered || node.isSelected;
+  };
+
+  Node.IsSelected = function(node){
+    return node.isSelected;
+  };
+
 
   return Node;
 });

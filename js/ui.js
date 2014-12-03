@@ -2,7 +2,7 @@ define([
 'jquery', 
 'component/map',
 'component/mmap',
-'model/nodeSet',
+//'model/nodeSet',
 'model/node',
 'util',
 
@@ -10,7 +10,9 @@ define([
 'component/nmap', 
 'component/safeBrush',
 'component/treeColor'
-], function($, Map, MMap, NodeSet, Node, util){
+], function($, Map, MMap, 
+/*NodeSet,*/
+Node, util){
   var ui = {},
       width = $(window).width() - 380,
       height = $(window).height(),
@@ -22,7 +24,6 @@ define([
   
   function buildTree(data, level){
     var root = new Node(data, level);
-    
     if(data.children) {
       data.children.forEach(function(child){
         root.addChild(buildTree(child, level + 1));
@@ -40,7 +41,7 @@ define([
     var treeColor = d3.treeColor();
     treeColor(root);
     
-    visibleNodes = root.getNodesAtLevel(1).map(function(node){return new NodeSet([node]);});
+    visibleNodes = root.getNodesAtLevel(1); //.map(function(node){return new NodeSet([node]);});
     map = new Map(d3.select('#map'), 350, 500, root, visibleNodes, leaves);
     mmap = new MMap(d3.select('#mmap'), width, height, root, visibleNodes);
 
@@ -52,7 +53,7 @@ define([
     map.draw(ref);
     
     // ix, iy update
-    visibleNodes.forEach(function(nodeSet){nodeSet.update();});
+    //visibleNodes.forEach(function(node){node.update();});
     mmap.draw(ref);
 
 /*    util.getExactTextSize('가', 1);

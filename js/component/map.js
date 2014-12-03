@@ -1,4 +1,9 @@
-define(['model/node', 'model/nodeSet', 'd3'], function(Node, NodeSet){
+define(['model/node', 
+//'model/nodeSet', 
+'d3'], function(Node
+//, 
+//NodeSet
+){
   function Map(svg, width, height, root, visibleNodes, leaves){
     this.svg = svg;
     this.g = svg.append('g');
@@ -73,14 +78,14 @@ define(['model/node', 'model/nodeSet', 'd3'], function(Node, NodeSet){
       this.root.children[3].ix -= 30;
     },
     updateHighlight: function(){
-      var highlighted = this.visibleNodes.filter(NodeSet.isHighlighted),
-          highlightedIds = highlighted.reduce(function(result, nodeSet){
-            return result.concat(nodeSet.getNodeIds());
+      var highlighted = this.visibleNodes.filter(Node.IsHighlighted),
+          highlightedIds = highlighted.reduce(function(result, node){
+            return result.concat(node.getLeafIds());
           }, []);
       
       // remove all highlight
-      this.visibleNodes.forEach(function(nodeSet){
-        nodeSet.unhighlightMap();
+      this.visibleNodes.forEach(function(node){
+        node.unhighlightMap();
       });
      
       //sort
@@ -89,8 +94,8 @@ define(['model/node', 'model/nodeSet', 'd3'], function(Node, NodeSet){
         return -1;
       });
         
-      highlighted.forEach(function(nodeSet){
-        nodeSet.highlightMap();
+      highlighted.forEach(function(node){
+        node.highlightMap();
       });
     }
   };
