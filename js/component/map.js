@@ -68,6 +68,8 @@ define(['model/node', 'model/nodeSet', 'd3'], function(Node, NodeSet){
       });
 
       getCenter(this.root);
+      
+      this.root.children[0].children[2].iy += 30;
     },
     updateHighlight: function(){
       var highlighted = this.visibleNodes.filter(NodeSet.isHighlighted),

@@ -78,13 +78,24 @@ define([
       if(!ref) ref = _ref;
       else _ref = ref;
       nmap(this.visibleNodes);
+      var labels = 
+        this.visibleNodes.filter(function(node){
+          var size = util.getPrettyFontSize(node.name, node.width, node.height);
+          
+          if(size < 0.5) return false;
+          if(size > 10) size = 10;
+
+          node.fontSize = size;
+          return true;
+        });
+
       var rects = 
       this.g
         .selectAll('rect')
         .data(this.visibleNodes, NodeSet.getId);
       
       var texts = 
-      this.labelG.selectAll('text').data(this.visibleNodes, NodeSet.getId);
+        this.labelG.selectAll('text').data(labels, NodeSet.getId);
 
       rects
         .enter()
@@ -149,7 +160,6 @@ define([
         .enter()
         .append('text')
         .text(function(d){return d.name;})
-        .attr('dy', '.5em')
         .each(function(nodeSet){
           nodeSet.text = d3.select(this);
         })
@@ -166,7 +176,13 @@ define([
         .attr('opacity', 1)
       
       texts
+        .attr('font-size', function(nodeSet){
+          return nodeSet.fontSize + 'em';
+        })
         .transition()
+        .attr('dy', function(nodeSet){
+          return '0.1em'; //(nodeSet.fontSize / 10) + 'em';
+        })
         .attr('transform', function(nodeSet){return translate(nodeSet.x + nodeSet.width / 2, nodeSet.y + nodeSet.height / 2);})
         .attr('opacity', 1)
 

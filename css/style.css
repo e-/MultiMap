@@ -63,9 +63,9 @@ html, body{
 text{
   font-family: 'Open Sans', 'Malgun Gothic';
   pointer-events: none;
-  stroke: #333;
-  stroke-width: 1px;
+/*  stroke: #444;*/
+/*  stroke-width: 1px;*/
   fill: #333;
-  font-size:2em;
   text-anchor:middle;
+  alignment-baseline:central;
 }

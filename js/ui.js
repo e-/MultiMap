@@ -4,12 +4,13 @@ define([
 'component/mmap',
 'model/nodeSet',
 'model/node',
+'util',
 
 'd3', 
 'component/nmap', 
 'component/safeBrush',
 'component/treeColor'
-], function($, Map, MMap, NodeSet, Node){
+], function($, Map, MMap, NodeSet, Node, util){
   var ui = {},
       width = $(window).width() - 380,
       height = $(window).height(),
@@ -53,6 +54,12 @@ define([
     // ix, iy update
     visibleNodes.forEach(function(nodeSet){nodeSet.update();});
     mmap.draw(ref);
+
+/*    util.getExactTextSize('가', 1);
+    util.getExactTextSize('-', 1);
+    util.getExactTextSize('- -', 1);
+    util.getExactTextSize('-  -', 1);
+    util.getExactTextSize('-  -', 1);*/
   };
   
   return ui;
