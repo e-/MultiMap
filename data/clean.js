@@ -8,6 +8,8 @@ var parser = new xml2js.Parser(),
     leaves = [],
     id = 0;
 
+var temperatureN = 20;
+
 function sanitize(r){
   return r.replace(/\r/g,'').replace(/\t/g,'').replace(/\n/g,'');
 }
@@ -19,14 +21,22 @@ function fill(data){
   data.size = 0;
   data.population = 0;
   data.popRatio = 0;
+  data.temperature = new Array(temperatureN);
+  var i;
+  for(i=0;i<temperatureN;++i)
+    data.temperature[i] = 0;
 
   data.children.forEach(function(child){
     fill(child);
     data.size += child.size;
     data.population += child.population;
     data.popRatio += child.popRatio * child.population;
+    for(i=0;i<temperatureN;++i)
+      data.temperature[i] += child.temperature[i];
   });
-
+  
+  for(i=0;i<temperatureN;++i)
+    data.temperature[i] /= data.children.length;
   data.popRatio /= data.population;
 }
 
@@ -105,11 +115,13 @@ parser.parseString(mapXML.toString(), function(err, result){
   loadPopulation();
   loadSize();
 
+  loadTemperature();
+
   fill(r0s);
 
   fs.writeFileSync('data.json', JSON.stringify(r0s, undefined, 2));
 
-   
+  
 });
   
 function loadPopulation(){
@@ -199,6 +211,37 @@ function loadSize(){
   leaves.forEach(function(leaf){
     if(!leaf.size)
       console.error('no pop', leaf.name);
+  });
+}
+
+function getRandomSine(q, w, e, r){
+  var a = Math.random()*q + w;
+  var b = Math.random()*e + r;
+  
+  return function(i){
+    return a * Math.sin(i / b)
+  }
+}
+
+function loadTemperature(){
+  var s1, s2, s3,
+      arr = [], i,
+      nn = temperatureN;
+
+  for(i=0;i<nn;++i)
+    arr.push(i);
+
+  leaves.forEach(function(leaf){
+    s1 = getRandomSine(10, 1, 30, 3);
+    s2 = getRandomSine(5, 2, 20, 2);
+    s3 = getRandomSine(2, 3, 10, 1);
+    
+    leaf.temperature = [];
+
+    for(i=0;i<nn;++i){
+      leaf.temperature.push(s1(i) + s2(i) + s3(i) + leaf.id / 5 + leaf.popRatio / 10);
+    }
+    
   });
 }
 
