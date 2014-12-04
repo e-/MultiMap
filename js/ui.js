@@ -59,6 +59,7 @@ Node, util){
     }
 
     function brushed(startX, startY, endX, endY){
+      return;
       var dirty = false;
 
       visibleNodes.forEach(function(node){

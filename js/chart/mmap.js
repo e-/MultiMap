@@ -229,6 +229,8 @@ util){
     drillDown: function(node){
       //루트는 불가
       if(!this.parent) return;
+      //이미 있으면 불가
+      if(node.vis) return;
       var canDrillDown = false;
       if(node.children.length)
         canDrillDown = true;
@@ -244,6 +246,7 @@ util){
     },
     drillUp: function(node){
       if(!this.parent) return;
+      
       var self = this;
       
       if(!node.parent) return;
@@ -285,7 +288,7 @@ util){
         this.labelG.remove();
         if(this.title)this.title.remove();
       }
-    },
+    }
 
   };
 
