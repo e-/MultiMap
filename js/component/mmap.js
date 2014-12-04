@@ -10,7 +10,7 @@ define([
 ], function($, Node, 
 //NodeSet, 
 util){
-  function MMap(rootG, width, height, nodes, parent, ui, level){
+  function MMap(rootG, width, height, nodes, parent, ui, level, attr){
     this.rootG = rootG;
     this.g = rootG.append('g');
     this.labelG = rootG.append('g');
@@ -20,6 +20,7 @@ util){
     this.ui = ui;
     this.level = level || 0;
     this.parent = parent;
+    this.attr = attr;
   }
     
   function translate(x, y){
@@ -32,18 +33,22 @@ util){
       
       this.nmap = 
         d3.layout.nmap()
-          .value(function(node){return node.data.population;})
+          .value(
+            this.attr ? 
+              function(node){return node.data[self.attr.name];}
+              : function(node){return node.data.population;}
+          )
           .width(this.width).height(this.height);
       
       if(this.parent) {
-        this.titleHeight = this.height / 10;
-        this.titleString = this.parent.data.name + ' - 인구';
-        this.titleFontSize = util.getPrettyFontSize(this.titleString, this.width, this.titleHeight);
- 
-        this.title =  this.rootG.append('text').attr('transform', translate(this.width / 2, this.titleHeight / 2)).style('font-size',  this.titleFontSize + 'em').text(this.titleString).attr('class', 'label');
-      }
-      ;
+        this.titleString = this.parent.data.name;
+        if(this.attr)
+          this.titleString +=  ' - ' + this.attr.realName;
       
+        this.titleHeight = this.height / 10;
+        this.title = this.rootG.append('text').text(this.titleString).attr('class', 'label').attr('transform', translate(this.width / 2, this.titleHeight / 2));
+      }
+           
       this.update();
     },
     update: function()
@@ -52,9 +57,17 @@ util){
       
       if(!this.parent) { //부모없는 최상위노드이면 
       } else { //자식이면
+        this.width = this.parent.width;
+        this.height = this.parent.height;
+        this.titleHeight = this.height / 10;
+        this.titleFontSize = util.getPrettyFontSize(this.titleString, this.width, this.titleHeight);
+        this.title
+          .style('font-size',  this.titleFontSize + 'em');
+
+        // 타이틀 필요여부 강원도의 경우 자식이 하나라 항상 타이틀이 필요없음. 혹은 대한민국
         if(this.nodes.length > 1) {
-          this.title.transition().style('opacity', 1);
-          this.nmap.height(this.height - this.titleHeight);
+          this.title.transition().attr('opacity', 1).attr('transform', translate(this.width / 2, this.titleHeight / 2));
+          this.nmap.height(this.height - this.titleHeight).width(this.width);
           this.g.transition().attr('transform', translate(0, this.titleHeight));
           this.labelG.transition().attr('transform', translate(0, this.titleHeight));
           this
@@ -63,14 +76,15 @@ util){
             .attr('fill', this.parent.color)
             .attr('width', this.width)
             .attr('height', this.titleHeight)
-            .style('opacity', 1);
+            .attr('opacity', 1);
           this.parent.text.transition().attr('opacity', 0);
         } else { 
-          this.title.transition().style('opacity', 0);
-          this.nmap.height(this.height);
+          this.title.transition().attr('opacity', 0).attr('transform', translate(this.width / 2, this.titleHeight / 2));
+          this.nmap.height(this.height).width(this.width);
           this.g.transition().attr('transform', translate(0, 0));
           this.labelG.transition().attr('transform', translate(0, 0));
-          this.parent.rect.transition().style('opacity', 0);
+          this.parent.rect.transition().attr('opacity', 0);
+          this.parent.text.transition().attr('opacity', 0);
         }
       }
 
@@ -155,30 +169,30 @@ util){
         .remove();
 
       var texts = 
-        this.labelG.selectAll('text').data(labels, Node.GetId);
-      
+        this.labelG.selectAll('text.l' + this.level)
+        .data(labels, Node.GetId);
+        
       texts
         .enter()
         .append('text')
+        .attr('class', 'l' + this.level)
         .text(function(d){return d.data.name;})
-        .each(function(node){
-          node.text = d3.select(this);
-        })
         .attr('transform', function(node){return translate(node.x + node.width / 2, node.y + node.height / 2);})
         .attr('opacity', 0)
- 
+        .each(function(node){
+          node.text = d3.select(this);
+        }) 
 
       texts
         .attr('font-size', function(node){
           return node.fontSize + 'em';
         })
-        .transition()
+       .transition()
         .attr('dy', function(node){
           return '0.1em'; //(node.fontSize / 10) + 'em';
         })
         .attr('transform', function(node){return translate(node.x + node.width / 2, node.y + node.height / 2);})
         .attr('opacity', 1)
-
 
      ;
       texts.exit().remove();
@@ -214,6 +228,8 @@ util){
       });
     },
     drillDown: function(node){
+      //루트는 불가
+      if(!this.parent) return;
       var canDrillDown = false;
       if(node.children.length)
         canDrillDown = true;
@@ -228,6 +244,7 @@ util){
       this.update();
     },
     drillUp: function(node){
+      if(!this.parent) return;
       var self = this;
       
       if(!node.parent) return;
@@ -250,8 +267,19 @@ util){
           util.removeA(self.nodes, victim);
         });
         self.nodes.push(node.parent);
-        this.update();
+        
+        if(node.parent.vis){
+          node.parent.vis.remove();
+          delete node.parent.vis;
+        }
+        
+        ui.mmap.update();
       }
+    },
+    remove: function(){
+      this.g.remove();
+      this.labelG.remove();
+      if(this.title)this.title.remove();
     }
   };
 

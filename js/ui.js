@@ -93,6 +93,12 @@ Node, util){
     this.mmap.draw();
 
     d3.select('#mmap').call(this.menu);
+    
+    this.menu.node = root;
+    this.menu.mmap = this.mmap;
+    window.root = root;
+    window.ui = ui;
+//    ui.roll(Node.Attributes[0]);
   };
   
   ui.roll = function(attr){
@@ -106,10 +112,11 @@ Node, util){
       node.g.append('g'), 
       node.width, 
       node.height, 
-      node.children, 
+      node.children.slice(0), 
       node,
       ui, 
-      ui.menu.mmap.level + 1);
+      ui.menu.mmap.level + 1,
+      attr);
 
     node.vis.draw();
     

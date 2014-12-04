@@ -16,12 +16,14 @@ define(['d3'], function(){
 
       this
         .on('mousedown', function(){
+          if(d3.event.which != 1) return;
           startX = d3.event.offsetX;
           startY = d3.event.offsetY;
           rect.style('display', 'inline').attr('width', 0).attr('height', 0);
           brushing = true;
         })
         .on('mousemove', function(){
+          if(d3.event.which != 1) return;
           if(brushing) {
             var endX = d3.event.offsetX,
                 endY = d3.event.offsetY,
@@ -42,6 +44,7 @@ define(['d3'], function(){
           }
         })
         .on('mouseup', function(){
+          if(d3.event.which != 1) return;
           brushing = false;
           var endX = d3.event.offsetX,
               endY = d3.event.offsetY

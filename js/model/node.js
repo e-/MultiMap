@@ -79,9 +79,8 @@ define(function(){
     getMapHighlighted: function(){
       if(Node.IsHighlighted(this))
         return [this];
-
       if(this.children.length) {
-        var arr = []; 
+        var arr = [];
         this.children.forEach(function(child){
           arr = arr.concat(child.getMapHighlighted());
         });
