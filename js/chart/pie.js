@@ -50,7 +50,7 @@ define(['util', 'model/node', 'd3'], function(util, Node){
 
       this.backgroundColor = this.nodes[0].color.brighter(0);
       this.backgroundColor.l = 100;
-      this.backgroundColor.c = 50;
+      this.backgroundColor.c = 15;
            
       this.update();        
     },
@@ -187,9 +187,11 @@ define(['util', 'model/node', 'd3'], function(util, Node){
     remove: function(option){
       if(option == 'grace') {
         this.g.transition().attr('opacity', 0).remove();
+        this.background.transition().attr('opacity', 0).remove();
         if(this.title)this.title.transition().attr('opacity', 0).remove();
       } else {
         this.g.remove();
+        this.background.remove();
         if(this.title)this.title.remove();
       }
 

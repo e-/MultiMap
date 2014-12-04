@@ -14,15 +14,6 @@ define(['util', 'model/node', 'd3'], function(util, Node){
     this.attr = attr;
     this.leaves = this.parent.getLeaves();
 
-    var values = this.leaves.map(function(leaf){return leaf.data[attr.name];});
-
-    this.colorScale = d3.scale.linear()
-      .domain([
-        d3.min(values),
-        100,
-        d3.max(values)
-      ])
-      .range(['#0571b0', '#f7f7f7', '#ca0020'])
   }
 
   function translate(x, y){
@@ -33,6 +24,15 @@ define(['util', 'model/node', 'd3'], function(util, Node){
     draw: function(){
       var self = this;
 
+      var values = this.leaves.map(function(leaf){return leaf.data[attr.name];});
+
+      this.colorScale = d3.scale.linear()
+        .domain([
+          d3.min(values),
+          100,
+          d3.max(values)
+        ])
+        .range(['#0571b0', '#f7f7f7', '#ca0020'])
 
       
       this.g.on('mousewheel', function(){

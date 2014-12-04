@@ -110,8 +110,8 @@ define(function(){
       realName: 'Area Size (km²)'
     },
     {
-      name: 'dummy',
-      realName: 'Dummy'
+      name: 'temperature',
+      realName: 'Temperature (℃)'
     },
     {
       name: 'dummy',

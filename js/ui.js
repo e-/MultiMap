@@ -103,7 +103,7 @@ Node, util){
 
     this.menu.node = root.children[0];
     this.menu.mmap = root.vis;
-    ui.roll(Node.Attributes[1]);
+    ui.roll(Node.Attributes[3]);
     
     //this.menu.show(500, 500, root, this.mmap);
   };
@@ -119,7 +119,7 @@ Node, util){
     if(node.vis) { 
       node.vis.remove('grace');
     }
-    node.vis = new (node.level > 0 ? Chart.GeoHeatmap : Chart.MMap)(
+    node.vis = new (node.level > 0 ? Chart.Line : Chart.MMap)(
       node.g.append('g'), 
       node.width, 
       node.height, 
