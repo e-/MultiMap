@@ -1,7 +1,11 @@
 define([
 'chart/mmap',
+'chart/geoHeatmap',
 'chart/pie'
-], function(MMap, Pie){
+], function(
+MMap, 
+GeoHeatmap,
+Pie){
   var chart = {};
 
   chart = {
@@ -13,6 +17,7 @@ define([
       {}
     ],
     MMap: MMap,
+    GeoHeatmap: GeoHeatmap,
     Pie: Pie
   };
 

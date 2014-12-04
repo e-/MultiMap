@@ -1,7 +1,10 @@
 define(['util', 'model/node', 'd3'], function(util, Node){
-  function Pie(rootG, width, height, nodes, parent, ui, level, attr){
+  function GeoHeatmap(rootG, width, height, nodes, parent, ui, level, attr){
     this.rootG = rootG;
     this.g = rootG.append('g');
+    this.background = 
+        this.g.append('rect').attr('fill', 'white').attr('stroke', '#aaa');
+    this.mapG = this.g.append('g').attr('opacity', 0);
     this.width = width;
     this.height = height;
     this.nodes = nodes;
@@ -9,27 +12,28 @@ define(['util', 'model/node', 'd3'], function(util, Node){
     this.level = level || 0;
     this.parent = parent;
     this.attr = attr;
+    this.leaves = this.parent.getLeaves();
+
+    var values = this.leaves.map(function(leaf){return leaf.data[attr.name];});
+
+    this.colorScale = d3.scale.linear()
+      .domain([
+        d3.min(values),
+        100,
+        d3.max(values)
+      ])
+      .range(['#0571b0', '#f7f7f7', '#ca0020'])
   }
 
   function translate(x, y){
     return 'translate(' + x + ',' + y + ')';
   }
  
-  function angle(d) {
-    var a = (d.startAngle + d.endAngle) * 90 / Math.PI - 90;
-    return a > 90 ? a - 180 : a;
-  } 
-
-  Pie.prototype = {
+  GeoHeatmap.prototype = {
     draw: function(){
       var self = this;
 
-      this.arc = d3.svg.arc().innerRadius(0);
-      this.pie = d3.layout.pie().sort(null).value(function(node){
-        return node.data[self.attr.name];
-      });
-      this.background = 
-        this.g.append('rect').attr('fill', 'white').attr('stroke', '#aaa');
+
       
       this.g.on('mousewheel', function(){
         d3.event.stopPropagation();
@@ -50,7 +54,7 @@ define(['util', 'model/node', 'd3'], function(util, Node){
 
       this.backgroundColor = this.nodes[0].color.brighter(0);
       this.backgroundColor.l = 100;
-      this.backgroundColor.c = 50;
+      this.backgroundColor.c = 15;
            
       this.update();        
     },
@@ -91,10 +95,6 @@ define(['util', 'model/node', 'd3'], function(util, Node){
           actualHeight = this.height;
         }
       }
-      
-      var radius = Math.min(actualWidth, actualHeight) / 2 * 0.9,
-          fontSize = util.getPrettyFontSize('가나다라', radius * 0.9, radius * 0.9);  
-
 
       this.background
         .transition()
@@ -102,70 +102,63 @@ define(['util', 'model/node', 'd3'], function(util, Node){
         .attr('width', actualWidth)
         .attr('height', actualHeight)
 
-      this.arc.outerRadius(radius);
+      var 
+          minX = 9999999,
+          minY = 9999999,
+          maxX = 0,
+          maxY = 0;
 
       this.gs = 
-      this.g
-        .selectAll('.arc')
-          .data(this.pie(this.nodes))
-
-      var gsEnter =  
+        this.mapG
+          .selectAll('g')
+            .data(this.leaves)
+      
       this.gs
         .enter()
           .append('g')
-          .attr('class', 'arc')
-          .attr('transform', translate(actualWidth / 2, actualHeight / 2));
-
-      gsEnter
-        .append('path')
-         .attr('fill', function(node){return node.data.color;})
-         .attr('stroke', this.nodes[0].color.darker(7))
-         .attr('opacity', 0)
-         .on('mouseover', function(d){
-           d.data.isHovered = true;
-           self.ui.map.updateHighlight();
-           self.updateHighlight();
-         })
-         .on('mouseout', function(d){
-           d.data.isHovered = false;
-           self.ui.map.updateHighlight();
-           self.updateHighlight();
-         })
-         .each(function(d){
-           d.data.arc = d3.select(this);
-         })
-
-      ;
-
-      gsEnter
-          .filter(function(d){
-            return d.endAngle - d.startAngle > .2;
-          })
-        .append('text')
-        .attr('text-anchor', 'middle')
-        .attr('class', 'label')
-        .text(function(d){return d.data.data.name;});
+            .each(function(d){
+              d.geoHeatmapG = d3.select(this);
+            })
+            .selectAll('path')
+            .data(function(node){
+              return node.data.d.map(function(d){return [d, self.colorScale(node.data[self.attr.name])]});
+            })
+            .enter()
+            .append('path')
+              .attr('d', function(d){return d[0];})
+              .attr('fill', function(d){return d[1]})
+              .attr('stroke', '#aaa')
       
       this.gs
-        .transition()
-        .attr('transform', translate(actualWidth / 2, actualHeight / 2));
+        .selectAll('path')
+        .each(function(){
+          var bbox = this.getBBox();
+          if(bbox.x < minX) minX = bbox.x;
+          if(bbox.y < minY) minY = bbox.y;
+          if(bbox.x + bbox.width > maxX) maxX = bbox.x + bbox.width;
+          if(bbox.y + bbox.height > maxY) maxY = bbox.y + bbox.height;
+        });
+     
+      var mapWidth = maxX - minX,
+          mapHeight = maxY - minY,
+          scale = Math.min(actualWidth / mapWidth, actualHeight / mapHeight) * 0.9,
+          marginTop = (actualHeight - mapHeight * scale) / 2,
+          marginLeft = (actualWidth - mapWidth * scale) / 2;
 
-      this.gs.select('path')
+      if(!this.mapG.attr('transform'))
+        this.mapG
+          .attr('transform', translate(marginLeft, marginTop) + 'scale('+scale+')' + translate(-minX, -minY) )
+      this
+        .mapG
         .transition()
-        .attr('d', this.arc)
+        .attr('transform', translate(marginLeft, marginTop) + 'scale('+scale+')' + translate(-minX, -minY) )
         .attr('opacity', 1)
+      ;
       
-      this.gs.select('text')
-        .style('font-size', fontSize + 'em')
-        .transition()
-        .attr('transform', function(d){
-          var center = self.arc.centroid(d);
-
-          return translate(center[0] * 1.2, center[1] * 1.2) + 'rotate(' + angle(d) + ')';
-        })
       this.gs.exit().remove();
     },
     updateHighlight: function(){
+      return;
       var highlighted = this.nodes.filter(Node.IsHighlighted),
           highlightedIds = highlighted.map(Node.GetId);
       
@@ -185,6 +178,7 @@ define(['util', 'model/node', 'd3'], function(util, Node){
       });
     },
     remove: function(option){
+      this.g.attr('transform', '');
       if(option == 'grace') {
         this.g.transition().attr('opacity', 0).remove();
         if(this.title)this.title.transition().attr('opacity', 0).remove();
@@ -192,9 +186,12 @@ define(['util', 'model/node', 'd3'], function(util, Node){
         this.g.remove();
         if(this.title)this.title.remove();
       }
-    }
+    },
+
+
+
+
   };
 
-
-  return Pie;
+  return GeoHeatmap;
 });

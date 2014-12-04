@@ -18,12 +18,16 @@ function fill(data){
   
   data.size = 0;
   data.population = 0;
- 
+  data.popRatio = 0;
+
   data.children.forEach(function(child){
     fill(child);
     data.size += child.size;
     data.population += child.population;
+    data.popRatio += child.popRatio * child.population;
   });
+
+  data.popRatio /= data.population;
 }
 
 mapXML = fs.readFileSync('korea.svg');
