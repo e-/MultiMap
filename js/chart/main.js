@@ -2,12 +2,14 @@ define([
 'chart/mmap',
 'chart/geoHeatmap',
 'chart/pie',
-'chart/line'
+'chart/line',
+'chart/horizon'
 ], function(
 MMap, 
 GeoHeatmap,
 Pie,
-Line){
+Line,
+Horizon){
   var chart = {};
 
   chart = {
@@ -21,7 +23,8 @@ Line){
     MMap: MMap,
     GeoHeatmap: GeoHeatmap,
     Pie: Pie,
-    Line: Line
+    Line: Line,
+    Horizon: Horizon
   };
 
   return chart;

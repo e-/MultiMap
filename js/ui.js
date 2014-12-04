@@ -119,7 +119,7 @@ Node, util){
     if(node.vis) { 
       node.vis.remove('grace');
     }
-    node.vis = new (node.level > 0 ? Chart.Line : Chart.MMap)(
+    node.vis = new (node.level > 0 ? Chart.Horizon : Chart.MMap)(
       node.g.append('g'), 
       node.width, 
       node.height, 
