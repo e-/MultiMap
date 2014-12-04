@@ -1,4 +1,4 @@
-define(['util', 'd3'], function(util){
+define(['util', 'model/node', 'd3'], function(util, Node){
   function Pie(rootG, width, height, nodes, parent, ui, level, attr){
     this.rootG = rootG;
     this.g = rootG.append('g');
@@ -115,6 +115,21 @@ define(['util', 'd3'], function(util){
          .attr('fill', function(node){return node.data.color;})
          .attr('stroke', this.nodes[0].color.darker(7))
          .attr('opacity', 0)
+         .on('mouseover', function(d){
+           d.data.isHovered = true;
+           self.ui.map.updateHighlight();
+           self.updateHighlight();
+         })
+         .on('mouseout', function(d){
+           d.data.isHovered = false;
+           self.ui.map.updateHighlight();
+           self.updateHighlight();
+         })
+         .each(function(d){
+           d.data.arc = d3.select(this);
+         })
+
+      ;
 
       gsEnter
           .filter(function(d){
@@ -143,6 +158,23 @@ define(['util', 'd3'], function(util){
       this.gs.exit().remove();
     },
     updateHighlight: function(){
+      var highlighted = this.nodes.filter(Node.IsHighlighted),
+          highlightedIds = highlighted.map(Node.GetId);
+      
+      // remove all highlight
+      this.nodes.forEach(function(node){
+        node.unhighlightElement(node.arc);
+      });
+      
+      //sort
+      this.gs.sort(function (a, b){
+        if(highlightedIds.indexOf(a.data.id) >= 0) return 1;
+        return -1;
+      });
+        
+      highlighted.forEach(function(node){
+        node.highlightElement(node.arc);
+      });
     }
   };
 

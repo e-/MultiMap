@@ -59,6 +59,12 @@ define(function(){
         this.mapG.selectAll('path').attr('fill', this.color.darker(0.5)).attr('stroke', this.color.darker(3)).attr('stroke-width', 3);
       }
     },
+    unhighlightElement: function(ele){
+      ele.attr('fill', this.color).attr('stroke', '#aaa').attr('stroke-width', 1);
+    },
+    highlightElement: function(ele){
+      ele.attr('fill', this.color.darker(0.5)).attr('stroke', this.color.darker(3)).attr('stroke-width', 3);
+    },
     unhighlightArea: function(){
       this.rect.attr('fill', this.color).attr('stroke', '#aaa').attr('stroke-width', 1);
     },

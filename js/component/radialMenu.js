@@ -2,7 +2,6 @@ define([
 'model/node', 
 'chart/main',
 'd3'], function(Node, Chart){
-  console.log(Chart);
   function translate(x, y){
     return 'translate(' + x + ',' + y + ')';
   }
