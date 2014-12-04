@@ -125,7 +125,9 @@ define(['model/node', 'd3'], function(Node){
       });
     }
 
-    menu.show = function(x, y){
+    menu.show = function(x, y, node, mmap){
+      menu.node = node;
+      menu.mmap = mmap;
       g
         .attr('transform', translate(x, y))
         .style('display', 'inline')
@@ -163,9 +165,9 @@ define(['model/node', 'd3'], function(Node){
       visible = false;
     };  
 
-    menu.toggle = function(x, y){
+    menu.toggle = function(x, y, node, mmap){
       if(visible) menu.hide();
-      else menu.show(x, y);
+      else menu.show(x, y, node, mmap);
     };
 
     return menu;

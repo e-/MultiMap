@@ -60,10 +60,10 @@ define(function(){
       }
     },
     unhighlightArea: function(){
-      this.area.attr('fill', this.color).attr('stroke', '#aaa').attr('stroke-width', 1);
+      this.rect.attr('fill', this.color).attr('stroke', '#aaa').attr('stroke-width', 1);
     },
     highlightArea: function(){
-      this.area.attr('fill', this.color.darker(0.5)).attr('stroke', this.color.darker(3)).attr('stroke-width', 3);
+      this.rect.attr('fill', this.color.darker(0.5)).attr('stroke', this.color.darker(3)).attr('stroke-width', 3);
     },
     getLeafIds: function(){
       var ids = [];

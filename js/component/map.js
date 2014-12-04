@@ -4,7 +4,7 @@ define(['model/node',
 //, 
 //NodeSet
 ){
-  function Map(svg, width, height, root, visibleNodes, leaves){
+  function Map(svg, width, height, root, visibleNodes, leaves, ui){
     this.svg = svg;
     this.g = svg.append('g');
     this.width = width;
@@ -12,6 +12,7 @@ define(['model/node',
     this.root = root;
     this.visibleNodes = visibleNodes;
     this.leaves = leaves;
+    this.ui = ui;
   }
 
   function getCenter(root){
@@ -28,7 +29,7 @@ define(['model/node',
   }
 
   Map.prototype = {
-    draw: function(ref){
+    draw: function(){
       var self = this;
       
       this.svg.attr('width', this.width).attr('height', this.height);
@@ -42,12 +43,12 @@ define(['model/node',
           .append('g')
           .on('mouseover', function(leaf){
             leaf.isHovered = true;
-            ref.mmap.updateHighlight();
+            self.ui.mmap.updateHighlight();
             self.updateHighlight();
           })
           .on('mouseout', function(leaf){
             leaf.isHovered = false;
-            ref.mmap.updateHighlight();
+            self.ui.mmap.updateHighlight();
             self.updateHighlight();
           })
       ;

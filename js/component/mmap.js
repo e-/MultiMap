@@ -10,111 +10,72 @@ define([
 ], function($, Node, 
 //NodeSet, 
 util){
-  function MMap(svg, width, height, root, visibleNodes){
-    this.svg = svg;
-    this.g = svg.append('g');
-    this.labelG = svg.append('g');
+  function MMap(rootG, width, height, nodes, parent, ui, level){
+    this.rootG = rootG;
+    this.g = rootG.append('g');
+    this.labelG = rootG.append('g');
     this.width = width;
     this.height = height;
-    this.root = root;
-    this.visibleNodes = visibleNodes;
+    this.nodes = nodes;
+    this.ui = ui;
+    this.level = level || 0;
+    this.parent = parent;
   }
     
   function translate(x, y){
     return 'translate(' + x + ',' + y + ')';
   }
 
-  var _ref,
-      nmap,
-      timer,
-      clicks = 0;
-
   MMap.prototype = {
-    draw: function(ref){
-      if(!ref) ref = _ref;
-      else _ref = ref;
-
+    draw: function(){
       var self = this;
       
-      this.svg.attr('width', this.width).attr('height', this.height);
-      nmap = 
+      this.nmap = 
         d3.layout.nmap()
           .value(function(node){return node.data.population;})
           .width(this.width).height(this.height);
       
-      var brush = 
-            d3.svg.safeBrush()
-              .x(d3.scale.linear().domain([0, this.width]).range([0, this.width]))
-              .y(d3.scale.linear().domain([0, this.height]).range([0, this.height]))
-              .on('brush', brushed)
-          ;
-      
-      this.svg.call(brush);
-     
-      var titleHeight = this.height / 10,
-          titleFontSize = util.getPrettyFontSize('대한민국 - 인구', this.width, titleHeight);
-      this.titleHeight = titleHeight;
-      this.titleRect = this.svg.append('rect').attr('width', this.width).attr('height', this.titleHeight).style('fill', '#f5f5f5');
-      this.title =  this.svg.append('text').attr('transform', translate(this.width / 2, titleHeight / 2)).style('font-size',  titleFontSize + 'em').text('대한민국 - 인구').attr('class', 'label')
+      if(this.parent) {
+        this.titleHeight = this.height / 10;
+        this.titleFontSize = util.getPrettyFontSize('대한민국 - 인구', this.width, this.titleHeight);
+ 
+        this.title =  this.rootG.append('text').attr('transform', translate(this.width / 2, this.titleHeight / 2)).style('font-size',  this.titleFontSize + 'em').text('대한민국 - 인구').attr('class', 'label');
+      }
       ;
-
-      function isNodeSetContainedInBox(node, startX, startY, endX, endY) {
-        return !(node.y + node.height < startY || 
-                 node.y > endY ||
-                 node.x + node.width < startX ||
-                 node.x > endX);
-      }
-
-      function brushed(startX, startY, endX, endY){
-        var dirty = false;
-
-        self.visibleNodes.forEach(function(node){
-          if(isNodeSetContainedInBox(node, startX, startY, endX, endY)) {
-            if(!node.isSelected) dirty = true;
-            node.isSelected = true;
-          } else {
-            if(node.isSelected) dirty = true;
-            node.isSelected = false;
-          }
-        });
-
-        if(dirty) {
-          ref.map.updateHighlight();
-          self.updateHighlight();
-        }
-      }
-     
-      this.menu = d3.svg.radialMenu(function(attr){
-        self.roll(attr);
-      });
       
-      this.svg.call(this.menu);
-
-      this.update(ref);
+      this.update();
     },
-    update: function(ref)
+    update: function()
     {
       var self = this;
-      if(!ref) ref = _ref;
-      else _ref = ref;
       
-      if(this.visibleNodes.length > 1) {
-        this.title.transition().style('opacity', 1);
-        nmap.height(this.height - this.titleHeight);
-        this.g.transition().attr('transform', translate(0, this.titleHeight));
-        this.labelG.transition().attr('transform', translate(0, this.titleHeight));
-        this.titleRect.transition().style('opacity', 1);
-      } else {
-        nmap.height(this.height);
-        this.title.transition().style('opacity', 0);
-        this.g.transition().attr('transform', translate(0, 0));
-        this.labelG.transition().attr('transform', translate(0, 0));
-        this.titleRect.transition().style('opacity', 0);
+      if(!this.parent) { //부모없는 최상위노드이면 
+      } else { //자식이면
+        if(this.nodes.length > 1) {
+          this.title.transition().style('opacity', 1);
+          this.nmap.height(this.height - this.titleHeight);
+          this.g.transition().attr('transform', translate(0, this.titleHeight));
+          this.labelG.transition().attr('transform', translate(0, this.titleHeight));
+          this
+            .parent.rect
+            .transition()
+            .attr('fill', this.parent.color)
+            .attr('width', this.width)
+            .attr('height', this.titleHeight)
+            .style('opacity', 1);
+          this.parent.text.transition().attr('opacity', 0);
+        } else { 
+          this.title.transition().style('opacity', 0);
+          this.nmap.height(this.height);
+          this.g.transition().attr('transform', translate(0, 0));
+          this.labelG.transition().attr('transform', translate(0, 0));
+          this.parent.rect.transition().style('opacity', 0);
+        }
       }
 
-      nmap(this.visibleNodes);
+      this.nmap(this.nodes);
       var labels = 
-        this.visibleNodes.filter(function(node){
+        this.nodes.filter(function(node){
           var size = util.getPrettyFontSize(node.data.name, node.width, node.height);
           
           if(size < 0.5) return false;
@@ -126,62 +87,63 @@ util){
 
       var gs = 
       this.g
-        .selectAll('g')
-        .data(this.visibleNodes, Node.GetId);
+        .selectAll('g.l' + self.level)
+        .data(this.nodes, Node.GetId);
       
       gs
         .enter()
           .append('g')
           .attr('transform', function(node){return translate(node.x + node.width / 2, node.y + node.height / 2);})
+          .attr('class', 'l' + self.level)
           .each(function(node){
             node.g = d3.select(this);
           })
-            .append('rect')
-              .attr('stroke', '#aaa')
-              .attr('stroke-width', 1)
-              .each(function(node){
-                node.area = d3.select(this);
-              })
-              .on('mouseover', function(node){
-                node.isHovered = true;
-                ref.map.updateHighlight();
-                self.updateHighlight();
-              })
-              .on('mouseout', function(node){
-                node.isHovered = false;
-                ref.map.updateHighlight();
-                self.updateHighlight();
-              })
-              .on('click', function(){
-                self.menu.hide()
-              })
-              .on('contextmenu', function(node){
-                if(node.isSelected) {
-                  self.menu.toggle(event.offsetX, event.offsetY);
-                  event.stopPropagation();
-                }
-                d3.event.preventDefault();
-              })
-              .on('mousewheel', function(node){
-                if(d3.event.wheelDelta > 0) { // in
-                  self.drillDown(node);
-                } else {
-                  self.drillUp(node);
-                }
-              })
-              .attr('width', 0)
-              .attr('height', 0)
-              .attr('fill', 'white')
-
- 
+          .append('rect')
+            .attr('stroke', '#aaa')
+            .attr('stroke-width', 1)
+            .attr('class', 'l'+this.level)
+            .each(function(node){
+              node.rect = d3.select(this);
+            })
+            .on('mouseover', function(node){
+              node.isHovered = true;
+              self.ui.map.updateHighlight();
+              self.updateHighlight();
+            })
+            .on('mouseout', function(node){
+              node.isHovered = false;
+              self.ui.map.updateHighlight();
+              self.updateHighlight();
+            })
+            .on('click', function(){
+              self.ui.menu.hide()
+            })
+            .on('contextmenu', function(node){
+              self.ui.menu.toggle(d3.event.offsetX, d3.event.offsetY, node, self);
+              d3.event.stopPropagation();
+              d3.event.preventDefault();
+            })
+            .on('mousewheel', function(node){
+              if(d3.event.wheelDelta > 0) { // in
+                self.drillDown(node);
+              } else {
+                self.drillUp(node);
+              }
+            })
+            .attr('width', 0)
+            .attr('height', 0)
+            .attr('fill', 'white')
       gs
         .transition()
         .attr('transform', function(node){return translate(node.x, node.y);})
         .attr('opacity', 1)
       
-      var rects = gs.selectAll('rect');
+      var rects = gs.selectAll('rect.l' + this.level);
       
       rects
+        .filter(function(node){
+          return !node.vis;
+        })
         .transition()
         .attr('width', function(node){return node.width;})
         .attr('height', function(node){return node.height;})
@@ -218,26 +180,25 @@ util){
 
 
      ;
-
       texts.exit().remove();
 
-      this.visibleNodes.forEach(function(node){
-        if(node.draw) {
-          node.draw();
+      this.nodes.forEach(function(node){
+        if(node.vis) {
+          node.vis.update();
         }
       });
     },
     updateHighlight: function(){
-      var highlighted = this.visibleNodes.filter(Node.IsHighlighted),
+      var highlighted = this.nodes.filter(Node.IsHighlighted),
           highlightedIds = highlighted.map(Node.GetId);
       
       // remove all highlight
-      this.visibleNodes.forEach(function(node){
+      this.nodes.forEach(function(node){
         node.unhighlightArea();
       });
       
       //sort
-      this.g.selectAll('g').sort(function (a, b){
+      this.g.selectAll('g.l' + this.level).sort(function (a, b){
         if(highlightedIds.indexOf(a.id) >= 0) return 1;
         return -1;
       });
@@ -254,9 +215,9 @@ util){
       if(!canDrillDown) return;
 
       var self = this;
-      util.removeA(this.visibleNodes, node);
+      util.removeA(this.nodes, node);
       node.children.forEach(function(child){
-        self.visibleNodes.push(child);
+        self.nodes.push(child);
       });
       this.update();
     },
@@ -268,7 +229,7 @@ util){
       var canDrillUp = true, deathNote = [];
       node.parent.children.forEach(function(child){ //child가 독립적으로 존재해야함
         var found = false;
-        self.visibleNodes.forEach(function(node){
+        self.nodes.forEach(function(node){
           if(child == node) {
             found = true;
             deathNote.push(node);
@@ -280,58 +241,11 @@ util){
 
       if(canDrillUp) {
         deathNote.forEach(function(victim){
-          util.removeA(self.visibleNodes, victim);
+          util.removeA(self.nodes, victim);
         });
-        self.visibleNodes.push(node.parent);
+        self.nodes.push(node.parent);
         this.update();
       }
-    },
-    roll: function(attr){
-      var 
-          self = this,
-          selection = this.visibleNodes.filter(NodeSet.isSelected)[0];
-      
-      selection.draw = function(){
-        var nmap = d3.layout.nmap()
-                     .width(selection.width)
-                     .height(selection.height)
-                     .value(function(node){
-                       return node.nodes[0].data[attr.name];
-                     });
-        
-        var nodes = selection.nodes[0].children.map(function(child){
-          return new NodeSet([child]);
-        });
-
-        nmap(nodes);
-
-        selection.area.remove();
-        selection.text.remove();
-
-        var rects = 
-        selection.g
-          .selectAll('rect')
-          .data(nodes)
-          .enter()
-            .append('rect')
-            .attr('width', 0)
-            .attr('height', 0)
-            .attr('transform', function(node){return translate(node.x + node.width / 2, node.y + node.height / 2);})
-            .attr('fill', 'white')
-            .attr('stroke', '#aaa')
-            .attr('stroke-width', 1)
-            .attr('opacity', 0);
-
-        rects
-          .transition()
-            .attr('width', function(node){return node.width;})
-            .attr('height', function(node){return node.height;})
-            .attr('fill', function(node){return node.color;})
-            .attr('transform', function(node){return translate(node.x, node.y);})
-            .attr('opacity', 1)
-      };
-      
-      this.update();
     }
   };
 
