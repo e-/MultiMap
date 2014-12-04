@@ -1,17 +1,16 @@
 define([
 'jquery', 
 'component/map',
-'component/mmap',
-//'model/nodeSet',
+'chart',
 'model/node',
 'util',
 
 'd3', 
 'component/nmap', 
 'component/safeBrush',
-'component/treeColor'
-], function($, Map, MMap, 
-/*NodeSet,*/
+'component/treeColor',
+'component/radialMenu'
+], function($, Map, Chart, 
 Node, util){
   var ui = {},
       width = $(window).width() - 380,
@@ -84,7 +83,7 @@ Node, util){
       
 
     ui.map = new Map(d3.select('#map'), 350, 500, root, visibleNodes, leaves, ui);
-    ui.mmap = new MMap(d3.select('#mmap'), width, height, visibleNodes, undefined, ui);
+    ui.mmap = new Chart.MMap(d3.select('#mmap'), width, height, visibleNodes, undefined, ui);
     
     this.map.draw();
     
@@ -94,11 +93,18 @@ Node, util){
 
     d3.select('#mmap').call(this.menu);
     
-    this.menu.node = root;
-    this.menu.mmap = this.mmap;
     window.root = root;
     window.ui = ui;
-//    ui.roll(Node.Attributes[0]);
+   
+    this.menu.node = root;
+    this.menu.mmap = this.mmap;
+    ui.roll(Node.Attributes[0]);
+
+    this.menu.node = root.children[0];
+    this.menu.mmap = root.vis;
+    ui.roll(Node.Attributes[0]);
+    
+    //this.menu.show(500, 500, root, this.mmap);
   };
   
   ui.roll = function(attr){
@@ -106,9 +112,13 @@ Node, util){
         self = this,
         node = ui.menu.node
     ; 
-    
-//    console.log(node);
-    node.vis = new MMap(
+
+    // attr & layout change
+
+    if(node.vis) { 
+      node.vis.remove('grace');
+    }
+    node.vis = new (node.level > 0 ? Chart.Pie : Chart.MMap)(
       node.g.append('g'), 
       node.width, 
       node.height, 

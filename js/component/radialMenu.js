@@ -1,4 +1,8 @@
-define(['model/node', 'd3'], function(Node){
+define([
+'model/node', 
+'chart/main',
+'d3'], function(Node, Chart){
+  console.log(Chart);
   function translate(x, y){
     return 'translate(' + x + ',' + y + ')';
   }
@@ -17,17 +21,22 @@ define(['model/node', 'd3'], function(Node){
 
   d3.svg.radialMenu = function(onClick){
     var arc,
+        arc2,
         outerRadius = 230,
         innerRadius = 40,
         labelRadius = 220,
+        typeRadius = 300,
         startAngle = Math.PI * 0.35,
         endAngle = Math.PI * 0.65,
         deltaAngle = (endAngle - startAngle) / Node.Attributes.length,
+        deltaAngle2 = (endAngle - startAngle) / Chart.Types.length,
         g,
         gs,
+        gs2,
         center,
         centerIcon,
         arcs,
+        arcs2,
         visible = false,
         labels;
 
@@ -35,19 +44,33 @@ define(['model/node', 'd3'], function(Node){
       arc = d3.svg.arc()
               .outerRadius(outerRadius)
               .innerRadius(innerRadius);
-      
+      arc2 = d3.svg.arc() 
+              .outerRadius(typeRadius)
+              .innerRadius(outerRadius)
+      ;
+
       Node.Attributes.forEach(function(attr){
         attr.startAngle = 0;
         attr.endAngle = deltaAngle;
+      });
+        
+      Chart.Types.forEach(function(type){
+        type.startAngle = 0;
+        type.endAngle = deltaAngle2;
       });
 
       g = this.append('g');
       
       gs = g
-        .selectAll('g')
+        .selectAll('g.attr')
         .data(Node.Attributes)
-        .enter().append('g')
+        .enter().append('g').attr('class', 'attr')
       ;
+
+      gs2 = g
+        .selectAll('g.type')
+        .data(Chart.Types)
+        .enter().append('g').attr('class', 'type')
       
       arcs = 
       gs
@@ -67,6 +90,27 @@ define(['model/node', 'd3'], function(Node){
         .on('click', function(attr){
           menu.hide();
           onClick(attr);
+        })
+        .on('contextmenu', function(){menu.hide(); d3.event.preventDefault();});
+      ;
+      
+      arcs2 = 
+      gs2
+        .append('path')
+        .attr('d', arc2)
+        .style('fill', 'white')
+        .style('opacity', 0.9)
+        .attr('stroke', '#aaa')
+        .attr('stroke-width', '2px')
+        .attr('stroke-opacity', 0.8)
+        .on('mouseover', function(){
+          d3.select(this).transition().duration(150).style('opacity', 1);
+        })
+        .on('mouseout', function(){
+          d3.select(this).transition().duration(150).style('opacity', 0.9);
+        })
+        .on('click', function(attr){
+          menu.hide();
         })
         .on('contextmenu', function(){menu.hide(); d3.event.preventDefault();});
       ;
@@ -108,13 +152,13 @@ define(['model/node', 'd3'], function(Node){
       //menu.show();
     }
 
-    function arcTransition(transition, status){
+    function arcTransition(transition, status, delta){
       var show = status == 'show';
 
       transition.attrTween('transform', function(d, i){
         var i = d3.interpolate(
-          show ? startAngle : startAngle + deltaAngle * i, 
-          show ? startAngle + deltaAngle * i : startAngle
+          show ? startAngle : startAngle + delta * i, 
+          show ? startAngle + delta * i : startAngle
         )
         ;
 
@@ -142,7 +186,10 @@ define(['model/node', 'd3'], function(Node){
 
       gs
         .transition()
-          .call(arcTransition, 'show');
+          .call(arcTransition, 'show', deltaAngle);
+      gs2
+        .transition()
+          .call(arcTransition, 'show', deltaAngle2);
 
       visible = true;
     };
@@ -156,7 +203,11 @@ define(['model/node', 'd3'], function(Node){
 
       gs
         .transition()
-        .call(arcTransition, 'hide')
+        .call(arcTransition, 'hide', deltaAngle)
+
+      gs2
+        .transition()
+        .call(arcTransition, 'hide', deltaAngle2)
 
       g
         .transition()

@@ -5,8 +5,7 @@ define([
 'util',
 'd3', 
 'component/nmap', 
-'component/safeBrush',
-'component/radialMenu'
+'component/safeBrush'
 ], function($, Node, 
 //NodeSet, 
 util){
@@ -253,7 +252,7 @@ util){
       node.parent.children.forEach(function(child){ //child가 독립적으로 존재해야함
         var found = false;
         self.nodes.forEach(function(node){
-          if(child == node) {
+          if(child == node && !node.vis) {
             found = true;
             deathNote.push(node);
           }
@@ -276,11 +275,18 @@ util){
         ui.mmap.update();
       }
     },
-    remove: function(){
-      this.g.remove();
-      this.labelG.remove();
-      if(this.title)this.title.remove();
-    }
+    remove: function(option){
+      if(option == 'grace') {
+        this.g.transition().attr('opacity', 0).remove();
+        this.labelG.transition().attr('opaicty', 0).remove();
+        if(this.title)this.title.transition().attr('opacity', 0).remove();
+      } else {
+        this.g.remove();
+        this.labelG.remove();
+        if(this.title)this.title.remove();
+      }
+    },
+
   };
 
   return MMap;

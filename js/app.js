@@ -1,6 +1,7 @@
 requirejs.config({
   baseUrl: 'js',
 //  packages: ['model', 'visualizer/view', 'adapter', 'backend', 'dev'],
+  packages: ['chart'],
   paths: {
     jquery: 'lib/jquery-2.1.1.min',
     d3: 'lib/d3.min',
