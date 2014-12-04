@@ -43,7 +43,9 @@ define(['util', 'model/node', 'd3', 'lib/horizon'], function(util, Node){
       this.backgroundColor.l = 100;
       this.backgroundColor.c = 15;
            
-      this.horizon = d3.horizon().bands(5).mode('offset').interpolate('basis').colors(['#0571b0', '#f7f7f7', '#f7f7f7', '#ca0020'])
+      this.horizon = d3.horizon().bands(5).mode('offset').interpolate('basis').colors(['#0571b0', '#f7f7f7', '#f7f7f7', '#ca0020']).value(function(d){
+        return d[1];
+      });
       this.mean = d3.mean(
         this.nodes.map(function(node){
           return d3.mean(node.data[self.attr.name]);
@@ -51,9 +53,9 @@ define(['util', 'model/node', 'd3', 'lib/horizon'], function(util, Node){
       );
       this.data = 
         this.nodes.map(function(node){
-          return node.data[self.attr.name].map(function(value, i){
+          return [node, node.data[self.attr.name].map(function(value, i){
             return [i, value - self.mean]
-          });
+          })];
         });
 
       this.update();        
@@ -104,90 +106,93 @@ define(['util', 'model/node', 'd3', 'lib/horizon'], function(util, Node){
 
       this.gs = 
       this.g
-          .selectAll('g')
+          .selectAll('g.hor')
           .data(this.data)
   
-      this.horizon.width(actualWidth).height(actualHeight/  10);
-      this.gs.enter().append('g')
+      var perHeight = actualHeight / this.data.length,
+          fontSize = Math.min(util.getPrettyFontSize('가나다라', actualWidth, perHeight), 2.5)
+          ;
+      this.horizon.width(actualWidth).height(perHeight);
+
+      var gsEnter = 
+      this.gs.enter()
+        .append('g')
+        .attr('opacity', 0)
+        .attr('class', 'hor')
+        .on('mouseover', function(node){
+          node[0].isHovered = true;
+          self.ui.map.updateHighlight();
+          self.updateHighlight();
+        })
+        .on('mouseout', function(node){
+          node[0].isHovered = false;
+          self.ui.map.updateHighlight();
+          self.updateHighlight();
+        })
+        .each(function(node){
+          node[0].horizonG = d3.select(this);
+        });
       
       this.gs
         .transition()
-        .attr('transform', function(_, i){return translate(0, i * 30);})
-        .call(this.horizon);
-
-/*      var gsEnter =  
-      this.gs
-        .enter()
-          .append('g')
-
-      gsEnter
-        .append('path')
-         .attr('fill', function(node){return node.data.color;})
-         .attr('stroke', this.nodes[0].color.darker(7))
-         .attr('opacity', 0)
-         .on('mouseover', function(d){
-           d.data.isHovered = true;
-           self.ui.map.updateHighlight();
-           self.updateHighlight();
-         })
-         .on('mouseout', function(d){
-           d.data.isHovered = false;
-           self.ui.map.updateHighlight();
-           self.updateHighlight();
-         })
-         .each(function(d){
-           d.data.arc = d3.select(this);
-         })
-
-      ;
-
-      gsEnter
-          .filter(function(d){
-            return d.endAngle - d.startAngle > .2;
-          })
-        .append('text')
-        .attr('text-anchor', 'middle')
-        .attr('class', 'label')
-        .text(function(d){return d.data.data.name;});
-      
-      this.gs
-        .transition()
-        .attr('transform', translate(actualWidth / 2, actualHeight / 2));
-
-      this.gs.select('path')
-        .transition()
-        .attr('d', this.arc)
+        .attr('transform', function(_, i){return translate(0, i * perHeight);})
         .attr('opacity', 1)
+        .call(this.horizon);
       
-      this.gs.select('text')
+      gsEnter
+        .append('text')
+        .attr('class', 'label')
+        .style('text-anchor', 'end')
+        .attr('transform', function(_, i){return translate(actualWidth - 15, 0);})
+        .text(function(node){return node[0].data.name;});
+
+      gsEnter
+        .append('rect')
+        .attr('stroke', 'black')
+        .attr('class', 'highlight')
+        .attr('stroke', '#aaa')
+        .attr('stroke-width', '1px')
+        .attr('fill', 'transparent')
+      
+      this
+        .gs.select('text')
         .style('font-size', fontSize + 'em')
         .transition()
-        .attr('transform', function(d){
-          var center = self.arc.centroid(d);
+        .attr('transform', translate(actualWidth - 15, perHeight / 2))
+      ;
 
-          return translate(center[0] * 1.2, center[1] * 1.2) + 'rotate(' + angle(d) + ')';
-        })
+      this
+        .gs.select('rect.highlight')
+        .transition()
+        .attr('width', actualWidth)
+        .attr('height', perHeight)
 
-      this.gs.exit().remove();*/
+      this.gs.exit().remove();
+    },
+    highlight: function(node){
+      node.horizonG.select('rect.highlight').attr('stroke', '#333').attr('stroke-width', 3)
+    },
+    unhighlight: function(node){
+      node.horizonG.select('rect.highlight').attr('stroke', '#aaa').attr('stroke-width', 1);
     },
     updateHighlight: function(){
-      return;
       var highlighted = this.nodes.filter(Node.IsHighlighted),
-          highlightedIds = highlighted.map(Node.GetId);
+          highlightedIds = highlighted.map(Node.GetId),
+          self = this;
       
       // remove all highlight
       this.nodes.forEach(function(node){
-        node.unhighlightElement(node.arc);
+        self.unhighlight(node);
       });
       
       //sort
       this.gs.sort(function (a, b){
-        if(highlightedIds.indexOf(a.data.id) >= 0) return 1;
+        if(highlightedIds.indexOf(a[0].id) >= 0) return 1;
         return -1;
       });
         
       highlighted.forEach(function(node){
-        node.highlightElement(node.arc);
+        self.highlight(node);
       });
     },
     remove: function(option){
@@ -204,7 +209,7 @@ define(['util', 'model/node', 'd3', 'lib/horizon'], function(util, Node){
       delete this.data;
 
       this.nodes.forEach(function(node){
-        delete node.arc;
+        delete node.horizonG;
       });
     }
   };

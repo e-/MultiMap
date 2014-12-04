@@ -7,7 +7,8 @@
         y = d3_horizonY,
         w = 960,
         h = 40,
-        duration = 0;
+        duration = 0,
+        value = function(t){return t;};
 
     var color = d3.scale.linear()
         .domain([-1, 0, 0, 1])
@@ -26,7 +27,7 @@
             id; // unique id for paths
 
         // Compute x- and y-values along with extents.
-        var data = d.map(function(d, i) {
+        var data = value(d).map(function(d, i) {
           var xv = x.call(this, d, i),
               yv = y.call(this, d, i);
           if (xv < xMin) xMin = xv;
@@ -167,6 +168,11 @@
     horizon.height = function(x) {
       if (!arguments.length) return h;
       h = +x;
+      return horizon;
+    };
+
+    horizon.value = function(x){
+      value = x;
       return horizon;
     };
 
