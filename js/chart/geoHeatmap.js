@@ -121,13 +121,23 @@ define(['util', 'model/node', 'd3'], function(util, Node){
             })
             .selectAll('path')
             .data(function(node){
-              return node.data.d.map(function(d){return [d, self.colorScale(node.data[self.attr.name])]});
+              return node.data.d.map(function(d){return [d, self.colorScale(node.data[self.attr.name]), node]});
             })
             .enter()
             .append('path')
               .attr('d', function(d){return d[0];})
               .attr('fill', function(d){return d[1]})
               .attr('stroke', '#aaa')
+              .on('mouseover', function(d){
+                d[2].isHovered = true;
+                self.ui.map.updateHighlight();
+                self.updateHighlight();
+              })
+              .on('mouseout', function(d){
+                d[2].isHovered = false;
+                self.ui.map.updateHighlight();
+                self.updateHighlight();
+              })
       
       this.gs
         .selectAll('path')
@@ -148,6 +158,7 @@ define(['util', 'model/node', 'd3'], function(util, Node){
       if(!this.mapG.attr('transform'))
         this.mapG
           .attr('transform', translate(marginLeft, marginTop) + 'scale('+scale+')' + translate(-minX, -minY) )
+
       this
         .mapG
         .transition()
@@ -157,40 +168,46 @@ define(['util', 'model/node', 'd3'], function(util, Node){
       
       this.gs.exit().remove();
     },
+    highlight: function(node){
+      node.geoHeatmapG.selectAll('path').attr('stroke', '#333').attr('stroke-width', 3)
+    },
+    unhighlight: function(node){
+      node.geoHeatmapG.selectAll('path').attr('stroke', '#aaa').attr('stroke-width', 1);
+    },
     updateHighlight: function(){
-      return;
-      var highlighted = this.nodes.filter(Node.IsHighlighted),
-          highlightedIds = highlighted.map(Node.GetId);
+      var highlighted = this.leaves.filter(Node.IsHighlighted),
+          highlightedIds = highlighted.map(Node.GetId),
+          self = this;
       
       // remove all highlight
-      this.nodes.forEach(function(node){
-        node.unhighlightElement(node.arc);
+      this.leaves.forEach(function(node){
+        self.unhighlight(node);
       });
       
       //sort
       this.gs.sort(function (a, b){
-        if(highlightedIds.indexOf(a.data.id) >= 0) return 1;
+        if(highlightedIds.indexOf(a.id) >= 0) return 1;
         return -1;
       });
         
       highlighted.forEach(function(node){
-        node.highlightElement(node.arc);
+        self.highlight(node);
       });
     },
     remove: function(option){
-      this.g.attr('transform', '');
       if(option == 'grace') {
         this.g.transition().attr('opacity', 0).remove();
+        this.background.transition().attr('opacity', 0).remove();
         if(this.title)this.title.transition().attr('opacity', 0).remove();
       } else {
         this.g.remove();
+        this.background.remove();
         if(this.title)this.title.remove();
       }
-    },
-
-
-
-
+      this.leaves.forEach(function(leaf){
+        delete leaf.geoHeatmapG;
+      });
+    }
   };
 
   return GeoHeatmap;

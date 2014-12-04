@@ -192,6 +192,10 @@ define(['util', 'model/node', 'd3'], function(util, Node){
         this.g.remove();
         if(this.title)this.title.remove();
       }
+
+      this.nodes.forEach(function(node){
+        delete node.arc;
+      });
     }
   };
 
