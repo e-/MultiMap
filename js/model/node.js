@@ -75,6 +75,19 @@ define(function(){
       } else {
         return [this.id];
       }
+    },
+    getMapHighlighted: function(){
+      if(Node.IsHighlighted(this))
+        return [this];
+
+      if(this.children.length) {
+        var arr = []; 
+        this.children.forEach(function(child){
+          arr = arr.concat(child.getMapHighlighted());
+        });
+        return arr;
+      }
+      return [];
     }
   };
 
@@ -118,7 +131,7 @@ define(function(){
   };
 
   Node.IsHighlighted = function(node){
-    return node.isHovered || node.isSelected;
+    return node.isHovered || node.isSelected || node.isBrushed;
   };
 
   Node.IsSelected = function(node){

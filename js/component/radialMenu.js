@@ -65,8 +65,8 @@ define(['model/node', 'd3'], function(Node){
           d3.select(this).transition().duration(150).style('opacity', 0.9);
         })
         .on('click', function(attr){
-          onClick(attr);
           menu.hide();
+          onClick(attr);
         })
         .on('contextmenu', function(){menu.hide(); d3.event.preventDefault();});
       ;
@@ -126,6 +126,8 @@ define(['model/node', 'd3'], function(Node){
     }
 
     menu.show = function(x, y, node, mmap){
+      if(!node.children.length) return;
+      node.isSelected = true;
       menu.node = node;
       menu.mmap = mmap;
       g
@@ -146,6 +148,7 @@ define(['model/node', 'd3'], function(Node){
     };
 
     menu.hide = function(){
+      if(menu.node)menu.node.isSelected = false;
       center 
         .transition()
         .attr('r', 0)

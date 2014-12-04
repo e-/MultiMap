@@ -37,9 +37,10 @@ util){
       
       if(this.parent) {
         this.titleHeight = this.height / 10;
-        this.titleFontSize = util.getPrettyFontSize('대한민국 - 인구', this.width, this.titleHeight);
+        this.titleString = this.parent.data.name + ' - 인구';
+        this.titleFontSize = util.getPrettyFontSize(this.titleString, this.width, this.titleHeight);
  
-        this.title =  this.rootG.append('text').attr('transform', translate(this.width / 2, this.titleHeight / 2)).style('font-size',  this.titleFontSize + 'em').text('대한민국 - 인구').attr('class', 'label');
+        this.title =  this.rootG.append('text').attr('transform', translate(this.width / 2, this.titleHeight / 2)).style('font-size',  this.titleFontSize + 'em').text(this.titleString).attr('class', 'label');
       }
       ;
       
@@ -205,6 +206,11 @@ util){
         
       highlighted.forEach(function(node){
         node.highlightArea();
+      });
+
+      this.nodes.forEach(function(node){
+        if(node.vis)
+          node.vis.updateHighlight();
       });
     },
     drillDown: function(node){

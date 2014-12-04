@@ -79,8 +79,8 @@ define(['model/node',
       this.root.children[3].ix -= 30;
     },
     updateHighlight: function(){
-      var highlighted = this.visibleNodes.filter(Node.IsHighlighted),
-          highlightedIds = highlighted.reduce(function(result, node){
+      var highlighted = this.root.getMapHighlighted();
+      var highlightedIds = highlighted.reduce(function(result, node){
             return result.concat(node.getLeafIds());
           }, []);
       

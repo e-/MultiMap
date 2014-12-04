@@ -101,6 +101,7 @@ Node, util){
         node = ui.menu.node
     ; 
     
+//    console.log(node);
     node.vis = new MMap(
       node.g.append('g'), 
       node.width, 
@@ -111,7 +112,9 @@ Node, util){
       ui.menu.mmap.level + 1);
 
     node.vis.draw();
-
+    
+    ui.mmap.updateHighlight();
+    ui.map.updateHighlight();
 //    ui.mmap.update();
   }
 
