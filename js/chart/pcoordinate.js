@@ -135,12 +135,15 @@ define(['util', 'model/node', 'd3'], function(util, Node){
             .enter()
               .append('g')
               .attr('class', 'dimension axis')
-              .attr('transform', function(_, i){
-                return translate(self.xScale(i), 0)
-              })
-              .each(function(d, i){
-                d3.select(this).call(self.yAxes[i]);
-              })
+
+      this.dgs
+        .transition()
+          .attr('transform', function(_, i){
+            return translate(self.xScale(i), 0)
+          })
+          .each(function(d, i){
+            d3.select(this).call(self.yAxes[i]);
+          })
 
       dEnter
         .append('text')
@@ -165,6 +168,16 @@ define(['util', 'model/node', 'd3'], function(util, Node){
 
       nEnter  
         .append('path')
+          .attr('fill', 'none')
+          .attr('stroke-width', '3px')
+          .attr('opacity', 0.5)
+          .attr('stroke', function(node){
+            return node.color.darker(1.0);
+          })
+
+      
+      this.gs.select('path')
+        .transition()
           .attr('d', function(node, i){
             return self.line(dimensions.map(function(_, i){
               return [
@@ -173,13 +186,6 @@ define(['util', 'model/node', 'd3'], function(util, Node){
               ];
             }));
           })
-          .attr('fill', 'none')
-          .attr('stroke-width', '3px')
-          .attr('opacity', 0.7)
-          .attr('stroke', function(node){
-            return node.color.darker(1);
-          })
-
       
       /*
       var radius = Math.min(actualWidth, actualHeight) / 2 * 0.9,
