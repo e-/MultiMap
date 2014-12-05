@@ -134,7 +134,8 @@ Node, util){
     this.menu.node = root.children[0];
     this.menu.mmap = root.vis;
     ui.roll(Node.Attributes[0], Chart.MMap);
-
+    
+    ui.detail.empty();
     //this.menu.show(500, 500, root, this.mmap);
   };
   

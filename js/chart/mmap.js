@@ -123,11 +123,13 @@ util){
               node.isHovered = true;
               self.ui.map.updateHighlight();
               self.updateHighlight();
+              self.ui.detail.show(node);
             })
             .on('mouseout', function(node){
               node.isHovered = false;
               self.ui.map.updateHighlight();
               self.updateHighlight();
+              self.ui.detail.empty();
             })
             .on('click', function(){
               self.ui.menu.hide()
