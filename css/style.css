@@ -82,3 +82,62 @@ text{
   alignment-baseline:auto;
   font-size:0.9em;
 }
+
+
+#popover{
+  font-family: 'Malgun Gothic';
+  width:200px;
+}
+
+#popover h3{
+  font-weight:bold;
+}
+
+#popover p{
+  margin:0;
+}
+
+.no-padding{
+  padding:0px;
+}
+
+#detail{
+  font-family: 'Open Sans', 'Malgun Gothic';
+  width:100%;
+  margin-bottom:0px;
+}
+
+#detail td, #detail th{
+  padding:4px 10px;
+  font-size:0.9em;
+}
+
+
+.tac{
+  text-align:center !important;
+}
+
+#detail th{
+  width:30%;
+}
+
+#detail td{
+  text-align:right;
+  width:20%;
+}
+
+#detail #city-name{
+  border-top:none;
+  text-align:center;
+  font-weight:bold;
+  font-size:1.0em;
+}
+
+.br {
+  border-right: 1px solid #ddd;
+}
+
+#help{
+  padding-left:10px;
+  margin:0;
+}

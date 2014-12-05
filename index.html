@@ -23,14 +23,58 @@
   <body>
     <div id="right">
       <svg id="mmap"></svg>
+      <div class="popover top" id="popover">
+        <div class="arrow"></div>
+        <h3 class="popover-title">서울특별시</h3>
+        <div class="popover-content">
+          <p>
+            인구: 234234234
+          </p>
+        </div>
+      </div>
     </div>
     <div id="left">
       <div class="panel panel-default rectangle" id="control-panel">
         <div class="panel-heading rectangle">
+          Detail
+        </div>
+        <div class="panel-body rectangle no-padding">
+          <table id="detail" class="table table-striped">
+            <tr> 
+              <td colspan="4" id="city-name"></td>
+            </tr>
+            <tr>
+              <th>Population</th>
+              <td class="br"><span id="detail-population"></span></td>
+              <th>Size</th>
+              <td><span id="detail-size"></span>&nbsp;km²</th>
+            </tr>
+            <tr>
+              <th>Gender Ratio</th>
+              <td class="br"><span id="detail-ratio"></span></td>
+              <th>Temperature</th>
+              <td><span id="detail-temperature"></span>&nbsp;℃</td>
+            </tr>
+            <tr>
+              <th>Car</th>
+              <td class="br"><span id="detail-car"></span></td>
+              <th>Taxi</th>
+              <td><span id="detail-taxi"></span></td>
+            </tr>
+            <tr>
+              <th>Bus</th>
+              <td class="br"><span id="detail-bus"></span></td>
+              <th>Truck</th>
+              <td><span id="detail-truck"></span></td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="panel-heading rectangle" style="border-top: 1px solid #ddd;">
           Help
         </div>
         <div class="panel-body rectangle">
-          <ul>
+          <ul id="help">
             <li><span class="label label-default">Hover</span> : Show the corresponding region on the map</li>
             <li><span class="label label-default">Wheel Up</span> : Drill down</li>
             <li><span class="label label-default">Wheel Down</span> : Aggregate</li>
@@ -42,7 +86,7 @@
         <div class="panel-heading rectangle">
           Map
         </div>
-        <div class="panel-body rectangle">
+        <div class="panel-body rectangle" style="display:none">
           <svg id="map"></svg>
         </div>
       </div>

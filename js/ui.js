@@ -18,7 +18,8 @@ Node, util){
       map,
       mmap,
       leaves = [],
-      visibleNodes = []
+      visibleNodes = [],
+      $popover = $('#popover')
       ;
   //0: MMAp 
   //1: Geo 
@@ -140,6 +141,65 @@ Node, util){
   ui.update = function(){
     ui.mmap.update();
   };
+
+  ui.tooltip = {
+    show: function(x, y, title, content){
+      $popover.find('h3').html(title);
+      $popover.find('.popover-content p').html(content);
+      if(y < 150) {
+        $popover
+          .removeClass('top')
+          .addClass('bottom')
+          .show()
+          .css('left', x - $popover.width() / 2)
+          .css('top', y)
+      } else {
+        $popover
+          .removeClass('bottom')
+          .addClass('top')  
+          .show()
+          .css('left', x - $popover.width() / 2)
+          .css('top', y - $popover.height())
+      }
+
+    },
+    hide: function(){
+      $popover.hide();
+    }
+  };
+    
+  ui.detail = {
+    show: function(node){
+      $('#city-name').html(node.data.name);
+      $('#detail-population').html(util.addCommas(node.data.population));
+      $('#detail-size').html(util.addCommas(
+      Math.round(node.data.size / 1000000)
+      ));
+
+      $('#detail-ratio').html(
+        Math.round(node.data.popRatio * 10) / 10);
+
+      $('#detail-temperature').html(
+        Math.round(d3.mean(node.data.temperature) * 10) / 10
+      );
+
+      $('#detail-car').html(util.addCommas(node.data.vehicle[0]));
+      $('#detail-taxi').html(util.addCommas(node.data.vehicle[1]));
+      $('#detail-bus').html(util.addCommas(node.data.vehicle[2]));
+      $('#detail-truck').html(util.addCommas(node.data.vehicle[3]));
+    },
+    empty: function(){
+      $('#city-name').html('&nbsp');
+      $('#detail-population').html('');
+      $('#detail-size').html('');
+      $('#detail-ratio').html('');
+      $('#detail-temperature').html('');
+      $('#detail-car').html('');
+      $('#detail-taxi').html('');
+      $('#detail-bus').html('');
+      $('#detail-truck').html('');
+    }
+  }
 
   ui.roll = function(attr, chart){
     var 

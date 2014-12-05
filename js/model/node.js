@@ -107,7 +107,7 @@ define(function(){
     },
     {
       name: 'popRatio',
-      realName: 'Gender Ratio (%)'
+      realName: 'Gender Ratio'
     },
     {
       name: 'temperature',

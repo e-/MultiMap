@@ -156,8 +156,10 @@ define([
       else startAngle = Math.PI * 0.35;
       
       if(screenWidth - 200 < d3.event.x) {
-        console.log('wer');
         startAngle = Math.PI;
+        if(screenHeight - 200 < y) {
+          startAngle = Math.PI * 2 - deltaAngle * Node.Attributes.length;
+        }
       }
 
       if(!node.children.length) return;
