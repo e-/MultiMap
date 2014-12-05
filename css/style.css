@@ -69,3 +69,16 @@ text{
   text-anchor:middle;
   alignment-baseline:central;
 }
+
+.axis line,
+.axis path {
+  fill: none;
+  stroke: #000;
+  stroke-width:3px;
+  opacity:0.5;
+}
+
+.axis text{
+  alignment-baseline:auto;
+  font-size:0.9em;
+}

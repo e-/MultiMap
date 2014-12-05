@@ -20,7 +20,34 @@ Node, util){
       leaves = [],
       visibleNodes = []
       ;
+  //0: MMAp 
+  //1: Geo 
+  //2: Pie
+  //3: Line 
+  //4: Horizon 
+  //0: MMAp 
+  //0: MMAp 
+  Node.Attributes[0].charts = [
+    Chart.Types[0],
+    Chart.Types[2]
+  ];
   
+  Node.Attributes[1].charts = [
+    Chart.Types[0],
+    Chart.Types[2]
+  ];
+
+  Node.Attributes[2].charts = [
+    Chart.Types[1]
+  ];
+
+  Node.Attributes[3].charts = [
+    Chart.Types[3],
+    Chart.Types[4]
+  ];
+
+
+
   function buildTree(data, level){
     var root = new Node(data, level);
     if(data.children) {
@@ -103,8 +130,8 @@ Node, util){
 
     this.menu.node = root.children[0];
     this.menu.mmap = root.vis;
-    ui.roll(Node.Attributes[3]);
-    
+    ui.roll(Node.Attributes[4]);
+
     //this.menu.show(500, 500, root, this.mmap);
   };
   
@@ -119,7 +146,7 @@ Node, util){
     if(node.vis) { 
       node.vis.remove('grace');
     }
-    node.vis = new (node.level > 0 ? Chart.Horizon : Chart.MMap)(
+    node.vis = new (node.level > 0 ? Chart.PCoordinate : Chart.MMap)(
       node.g.append('g'), 
       node.width, 
       node.height, 

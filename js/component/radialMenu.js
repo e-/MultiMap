@@ -48,9 +48,10 @@ define([
               .innerRadius(outerRadius)
       ;
 
-      Node.Attributes.forEach(function(attr){
+      Node.Attributes.forEach(function(attr, i){
         attr.startAngle = 0;
         attr.endAngle = deltaAngle;
+        attr.subStartAngle = startAngle + i * deltaAngle;
       });
         
       Chart.Types.forEach(function(type){
@@ -66,11 +67,6 @@ define([
         .enter().append('g').attr('class', 'attr')
       ;
 
-      gs2 = g
-        .selectAll('g.type')
-        .data(Chart.Types)
-        .enter().append('g').attr('class', 'type')
-      
       arcs = 
       gs
         .append('path')
@@ -80,8 +76,9 @@ define([
         .attr('stroke', '#aaa')
         .attr('stroke-width', '2px')
         .attr('stroke-opacity', 0.8)
-        .on('mouseover', function(){
+        .on('mouseover', function(attr){
           d3.select(this).transition().duration(150).style('opacity', 1);
+          menu.showSub(attr);
         })
         .on('mouseout', function(){
           d3.select(this).transition().duration(150).style('opacity', 0.9);
@@ -93,30 +90,7 @@ define([
         .on('contextmenu', function(){menu.hide(); d3.event.preventDefault();});
       ;
       
-      arcs2 = 
-      gs2
-        .append('path')
-        .attr('d', arc2)
-        .style('fill', 'white')
-        .style('opacity', 0.9)
-        .attr('stroke', '#aaa')
-        .attr('stroke-width', '2px')
-        .attr('stroke-opacity', 0.8)
-        .on('mouseover', function(){
-          d3.select(this).transition().duration(150).style('opacity', 1);
-        })
-        .on('mouseout', function(){
-          d3.select(this).transition().duration(150).style('opacity', 0.9);
-        })
-        .on('click', function(attr){
-          menu.hide();
-        })
-        .on('contextmenu', function(){menu.hide(); d3.event.preventDefault();});
-      ;
-
-      g.attr('transform', translate(500, 500));
-
-      labels = gs
+           labels = gs
           .append('text')
           .attr('class', 'label')
           .text(function(attr){return attr.realName;})
@@ -151,7 +125,7 @@ define([
       //menu.show();
     }
 
-    function arcTransition(transition, status, delta){
+    function arcTransition(transition, status, startAngle, delta){
       var show = status == 'show';
 
       transition.attrTween('transform', function(d, i){
@@ -185,11 +159,7 @@ define([
 
       gs
         .transition()
-          .call(arcTransition, 'show', deltaAngle);
-      gs2
-        .transition()
-          .call(arcTransition, 'show', deltaAngle2);
-
+          .call(arcTransition, 'show', startAngle, deltaAngle);
       visible = true;
     };
 
@@ -202,11 +172,8 @@ define([
 
       gs
         .transition()
-        .call(arcTransition, 'hide', deltaAngle)
+        .call(arcTransition, 'hide', startAngle, deltaAngle)
 
-      gs2
-        .transition()
-        .call(arcTransition, 'hide', deltaAngle2)
 
       g
         .transition()
@@ -216,7 +183,76 @@ define([
           });
 
       visible = false;
+      menu.hideSub();
     };  
+   
+    menu.showSub = function(attr){
+      gs2 = g
+        .selectAll('g.type')
+        .data(attr.charts, function(d){return d.name;})
+
+      var enter = 
+      gs2
+        .enter()  
+          .append('g')
+          .attr('class', 'type');
+      
+      enter
+        .append('path')
+          .style('fill', 'white')
+          .style('opacity', 0.9)
+          .attr('stroke', '#aaa')
+          .attr('stroke-width', '2px')
+          .attr('stroke-opacity', 0.8)
+      enter
+        .append('path')
+          .attr('d', function(chart){return chart.d;})
+          .attr('shape-rendering', 'optimizeQuality') 
+          .attr('opacity', 0.9)
+          .attr('pointer-events', 'none')
+          .attr('transform', function(chart){
+            var center = arc2.centroid(chart),
+                tr = translate(center[0], center[1]);
+            if(chart.transform)
+              tr += chart.transform;
+            return tr;
+          });
+
+            
+      arcs2 = gs2
+        .select('path')
+        .attr('d', arc2)
+        .on('mouseover', function(){
+          d3.select(this).transition().duration(150).style('opacity', 1);
+        })
+        .on('mouseout', function(){
+          d3.select(this).transition().duration(150).style('opacity', 0.9);
+        })
+        .on('click', function(attr){
+//          menu.hide();
+        })
+        .on('contextmenu', function(){menu.hide(); d3.event.preventDefault();});
+      ;
+
+      gs2
+        .transition()
+          .call(arcTransition, 'show', attr.subStartAngle, deltaAngle2);
+      
+
+      gs2.exit().remove();
+    }
+
+    menu.hideSub = function(){
+      if(gs2)
+        gs2
+          .transition()
+          .attr('opacity', 0)
+
+  /*    gs2
+        .transition()
+        .call(arcTransition, 'hide', deltaAngle2)
+*/
+    };
 
     menu.toggle = function(x, y, node, mmap){
       if(visible) menu.hide();

@@ -1,5 +1,12 @@
 define(['util', 'model/node', 'd3'], function(util, Node){
-  function Line(rootG, width, height, nodes, parent, ui, level, attr){
+  var dimensions = [
+    'Car',
+    'Taxi',
+    'Bus',
+    'Truck'
+  ];
+
+  function PCoordinate(rootG, width, height, nodes, parent, ui, level, attr){
     this.rootG = rootG;
     this.g = rootG.append('g');
     this.width = width;
@@ -15,13 +22,13 @@ define(['util', 'model/node', 'd3'], function(util, Node){
     return 'translate(' + x + ',' + y + ')';
   }
  
-  Line.prototype = {
+  PCoordinate.prototype = {
     draw: function(){
       var self = this;
 
       this.background = 
         this.g.append('rect').attr('fill', 'white').attr('stroke', '#aaa');
-
+      
       this.g.on('mousewheel', function(){
         d3.event.stopPropagation();
         self.remove('grace');
@@ -29,21 +36,6 @@ define(['util', 'model/node', 'd3'], function(util, Node){
 
         self.ui.mmap.update();
       });
-      
-      this.yScale = d3.scale.linear()
-        .domain([
-          d3.min(this.nodes, function(node){return d3.min(node.data[self.attr.name]);}),
-          d3.max(this.nodes, function(node){return d3.max(node.data[self.attr.name]);})
-        ])
-
-      this.xScale = d3.scale.linear()
-        .domain([0, 19])
-      ;
-      
-      this.line = d3.svg.line()
-        .interpolate('basis')
-        .x(function(_, i){return self.xScale(i);})
-        .y(function(d){return self.yScale(d);})
 
       if(this.parent) {
         this.titleString = this.parent.data.name;
@@ -57,7 +49,34 @@ define(['util', 'model/node', 'd3'], function(util, Node){
       this.backgroundColor = this.nodes[0].color.brighter(0);
       this.backgroundColor.l = 99;
       this.backgroundColor.c = 5;
-           
+      
+      this.xScale = d3.scale.ordinal()
+        .domain(d3.range(dimensions.length))
+      
+      this.yScales = [];
+      this.yAxes = [];
+
+      for(var i=0;i<4;++i){
+        var ex = d3.extent(this.nodes, function(node){
+              return node.data[self.attr.name][i];
+        });
+        this.yScales.push(
+          d3.scale.linear()
+            .domain(
+              [
+                ex[0] * 0.85,
+                ex[1] * 1.05
+              ]
+            )
+        );
+
+        this.yAxes.push(
+          d3.svg.axis().orient('left').scale(this.yScales[i]).tickSize(5,1).ticks(4)
+        );
+      }
+
+      this.line = d3.svg.line();
+
       this.update();        
     },
     update: function(){
@@ -97,56 +116,83 @@ define(['util', 'model/node', 'd3'], function(util, Node){
           actualHeight = this.height;
         }
       }
-      
+
+      this.xScale.rangePoints([0, actualWidth], 1)
+      for(var i=0;i<4;++i)
+        this.yScales[i].range([actualHeight - 10, 40]);
+
       this.background
         .transition()
         .attr('fill', this.backgroundColor)
         .attr('width', actualWidth)
         .attr('height', actualHeight)
-
-      var marginTop = 20,
-          marginLeft = 40,
-          marginBottom = 40,
-          marginRight = 130
-      ;
       
-      this.xScale.range([marginLeft, actualWidth - marginRight])
-      this.yScale.range([marginTop, actualHeight - marginBottom])
+      this.dgs = this.g
+          .selectAll('.dimension')
+            .data(dimensions)
 
+      var dEnter = this.dgs
+            .enter()
+              .append('g')
+              .attr('class', 'dimension axis')
+              .attr('transform', function(_, i){
+                return translate(self.xScale(i), 0)
+              })
+              .each(function(d, i){
+                d3.select(this).call(self.yAxes[i]);
+              })
+
+      dEnter
+        .append('text')
+        .attr('class', 'label')
+        .style('font-size', '1.7em')
+        .style('alignment-baseline', 'auto')
+        .attr('transform', translate(0, 30))
+        .text(function(_, i){return dimensions[i];})
+       
+      
       this.gs = 
       this.g
-        .selectAll('g')
+        .selectAll('.node')
           .data(this.nodes)
-      
-      var gsEnter =  
+
+      var nEnter =  
       this.gs
         .enter()
           .append('g')
-          .each(function(node){node.lineG = d3.select(this);});
+          .attr('class', 'node')
+
+
+      nEnter  
+        .append('path')
+          .attr('d', function(node, i){
+            return self.line(dimensions.map(function(_, i){
+              return [
+                self.xScale(i),
+                self.yScales[i](node.data[self.attr.name][i])
+              ];
+            }));
+          })
+          .attr('fill', 'none')
+          .attr('stroke-width', '3px')
+          .attr('opacity', 0.7)
+          .attr('stroke', function(node){
+            return node.color.darker(1);
+          })
+
+      
+      /*
+      var radius = Math.min(actualWidth, actualHeight) / 2 * 0.9,
+          fontSize = util.getPrettyFontSize('가나다라', radius * 0.9, radius * 0.9);  
+
+
+
+      this.arc.outerRadius(radius);
+
 
       gsEnter
         .append('path')
-          .attr('stroke', function(node){return node.color.darker(0.4);})
-          .attr('stroke-width', '2px')
-          .attr('fill', 'none')
-
-     gsEnter
-       .append('circle')
-       .attr('stroke', function(node){return node.color.darker(0.4);})
-       .attr('stroke-width', '3px')
-       .attr('r', 10)
-       .attr('fill', function(node){return node.color;})
-    
-     gsEnter
-      .append('text')
-        .attr('x', 20)
-        .style('font-size','1.2em')
-        .attr('dy', '0')
-        .attr('class', 'label')
-        .attr('text-anchor', 'start')
-        .style('text-anchor', 'start')
-        .text(function(d){return d.data.name;})
-/*         .attr('fill', function(node){return node.data.color;})
+         .attr('fill', function(node){return node.data.color;})
          .attr('stroke', this.nodes[0].color.darker(7))
          .attr('opacity', 0)
          .on('mouseover', function(d){
@@ -162,40 +208,40 @@ define(['util', 'model/node', 'd3'], function(util, Node){
          .each(function(d){
            d.data.arc = d3.select(this);
          })
-*/
+
       ;
 
-      if(this.init) {
-        this.gs.select('path')
-          .transition()
-          .attr('d', function(node){
-            return self.line(node.data[self.attr.name]);
+      gsEnter
+          .filter(function(d){
+            return d.endAngle - d.startAngle > .2;
           })
-          .attr('opacity', 1)
-      } else {
+        .append('text')
+        .attr('text-anchor', 'middle')
+        .attr('class', 'label')
+        .text(function(d){return d.data.data.name;});
+      
+      this.gs
+        .transition()
+        .attr('transform', translate(actualWidth / 2, actualHeight / 2));
 
-        var k = 0, n = this.nodes[0].data[self.attr.name].length;
+      this.gs.select('path')
+        .transition()
+        .attr('d', this.arc)
+        .attr('opacity', 1)
+      
+      this.gs.select('text')
+        .style('font-size', fontSize + 'em')
+        .transition()
+        .attr('transform', function(d){
+          var center = self.arc.centroid(d);
 
-        function draw(k){
-          self.gs.each(function(d){
-            var e = d3.select(this);
-            e.select('path')
-              .attr('d', function(d){return self.line(d.data[self.attr.name].slice(0, k+1));});
-            e.selectAll('circle, text')
-              .attr('transform', function(d, i){return translate(self.xScale(k), self.yScale(d.data[self.attr.name][k]));})
-          });
-        }
-
-        d3.timer(function(){
-          draw(k);
-          k++;
-          if(k >= n)
-            return true;
-        });
-      }
-      this.gs.exit().remove();
+          return translate(center[0] * 1.2, center[1] * 1.2) + 'rotate(' + angle(d) + ')';
+        })
+          */
+      //this.gs.exit().remove();
     },
     updateHighlight: function(){
+      return;
       var highlighted = this.nodes.filter(Node.IsHighlighted),
           highlightedIds = highlighted.map(Node.GetId);
       
@@ -226,15 +272,11 @@ define(['util', 'model/node', 'd3'], function(util, Node){
       }
 
       this.nodes.forEach(function(node){
-        delete node.arc;
-        delete node.background;
-        delete node.xScale;
-        delete node.yScale;
-        delete node.lineG;
+        delete node.pcPath;
       });
     }
   };
 
 
-  return Line;
+  return PCoordinate;
 });

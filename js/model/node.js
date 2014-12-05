@@ -102,32 +102,20 @@ define(function(){
       realName: 'Population (#)'
     },
     {
-      name: 'popRatio',
-      realName: 'Gender Ratio (%)'
-    },
-    {
       name: 'size',
       realName: 'Area Size (km²)'
+    },
+    {
+      name: 'popRatio',
+      realName: 'Gender Ratio (%)'
     },
     {
       name: 'temperature',
       realName: 'Temperature (℃)'
     },
     {
-      name: 'dummy',
-      realName: 'Dummy'
-    },
-    {
-      name: 'dummy',
-      realName: 'Dummy'
-    },
-    {
-      name: 'dummy',
-      realName: 'Dummy'
-    },
-    {
-      name: 'dummy',
-      realName: 'Dummy'
+      name: 'vehicle',
+      realName: 'Vehicle (#)'
     }
   ];
   

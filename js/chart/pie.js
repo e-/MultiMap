@@ -49,8 +49,8 @@ define(['util', 'model/node', 'd3'], function(util, Node){
       }
 
       this.backgroundColor = this.nodes[0].color.brighter(0);
-      this.backgroundColor.l = 100;
-      this.backgroundColor.c = 15;
+      this.backgroundColor.l = 99;
+      this.backgroundColor.c = 5;
            
       this.update();        
     },

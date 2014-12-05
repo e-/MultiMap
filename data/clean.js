@@ -25,6 +25,8 @@ function fill(data){
   var i;
   for(i=0;i<temperatureN;++i)
     data.temperature[i] = 0;
+  
+  data.vehicle = [0, 0, 0, 0];
 
   data.children.forEach(function(child){
     fill(child);
@@ -33,6 +35,10 @@ function fill(data){
     data.popRatio += child.popRatio * child.population;
     for(i=0;i<temperatureN;++i)
       data.temperature[i] += child.temperature[i];
+    data.vehicle[0] += child.vehicle[0];
+    data.vehicle[1] += child.vehicle[1];
+    data.vehicle[2] += child.vehicle[2];
+    data.vehicle[3] += child.vehicle[3];
   });
   
   for(i=0;i<temperatureN;++i)
@@ -116,6 +122,7 @@ parser.parseString(mapXML.toString(), function(err, result){
   loadSize();
 
   loadTemperature();
+  loadVehicle();
 
   fill(r0s);
 
@@ -219,7 +226,7 @@ function getRandomSine(q, w, e, r){
   var b = Math.random()*e + r;
   
   return function(i){
-    return a * Math.sin(i / b)
+    return a * Math.sin(b * i / Math.PI);
   }
 }
 
@@ -242,6 +249,29 @@ function loadTemperature(){
       leaf.temperature.push(s1(i) + s2(i) + s3(i) + leaf.id / 5 + leaf.popRatio / 10);
     }
     
+  });
+}
+
+function rnd_snd() {
+    return (Math.random()*2-1)+(Math.random()*2-1)+(Math.random()*2-1);
+}
+
+function rnd(mean, stdev) {
+    return Math.round(rnd_snd()*stdev+mean);
+}
+
+function q(x, leaf){
+  return Math.round(leaf.population / 100000 * x);
+}
+
+function loadVehicle(){
+  leaves.forEach(function(leaf){
+    leaf.vehicle = [
+      q(rnd(100000, 30000), leaf),
+      q(rnd(50000, 20000), leaf),
+      q(rnd(30000, 10000), leaf),
+      q(rnd(10000, 5000), leaf)
+    ];
   });
 }
 

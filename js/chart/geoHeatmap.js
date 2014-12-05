@@ -24,7 +24,7 @@ define(['util', 'model/node', 'd3'], function(util, Node){
     draw: function(){
       var self = this;
 
-      var values = this.leaves.map(function(leaf){return leaf.data[attr.name];});
+      var values = this.leaves.map(function(leaf){return leaf.data[self.attr.name];});
 
       this.colorScale = d3.scale.linear()
         .domain([
