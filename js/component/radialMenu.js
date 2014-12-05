@@ -1,7 +1,12 @@
 define([
+'jquery',
 'model/node', 
 'chart/main',
-'d3'], function(Node, Chart){
+'d3'], function($, Node, Chart){
+  var screenHeight = $(window).height(),
+      screenWidth = $(window).width()
+      ;
+
   function translate(x, y){
     return 'translate(' + x + ',' + y + ')';
   }
@@ -51,7 +56,7 @@ define([
       Node.Attributes.forEach(function(attr, i){
         attr.startAngle = 0;
         attr.endAngle = deltaAngle;
-        attr.subStartAngle = startAngle + i * deltaAngle;
+        attr.subStartAngle = i * deltaAngle;
       });
         
       Chart.Types.forEach(function(type){
@@ -85,7 +90,8 @@ define([
         })
         .on('click', function(attr){
           menu.hide();
-          onClick(attr);
+
+          onClick(attr, attr.charts[0].chart);
         })
         .on('contextmenu', function(){menu.hide(); d3.event.preventDefault();});
       ;
@@ -143,6 +149,17 @@ define([
     }
 
     menu.show = function(x, y, node, mmap){
+      if(y < 100)
+        startAngle = Math.PI / 2;
+      else if(screenHeight - 100 < y)
+        startAngle = Math.PI / 2 - deltaAngle * Node.Attributes.length;
+      else startAngle = Math.PI * 0.35;
+      
+      if(screenWidth - 200 < d3.event.x) {
+        console.log('wer');
+        startAngle = Math.PI;
+      }
+
       if(!node.children.length) return;
       node.isSelected = true;
       menu.node = node;
@@ -160,6 +177,8 @@ define([
       gs
         .transition()
           .call(arcTransition, 'show', startAngle, deltaAngle);
+
+      menu.hideSub();
       visible = true;
     };
 
@@ -204,6 +223,11 @@ define([
           .attr('stroke', '#aaa')
           .attr('stroke-width', '2px')
           .attr('stroke-opacity', 0.8)
+          .on('click', function(chart){
+            menu.hide();
+            onClick(attr, chart.chart);
+          })
+
       enter
         .append('path')
           .attr('d', function(chart){return chart.d;})
@@ -228,15 +252,12 @@ define([
         .on('mouseout', function(){
           d3.select(this).transition().duration(150).style('opacity', 0.9);
         })
-        .on('click', function(attr){
-//          menu.hide();
-        })
         .on('contextmenu', function(){menu.hide(); d3.event.preventDefault();});
       ;
 
       gs2
         .transition()
-          .call(arcTransition, 'show', attr.subStartAngle, deltaAngle2);
+          .call(arcTransition, 'show', startAngle +  attr.subStartAngle, deltaAngle2);
       
 
       gs2.exit().remove();

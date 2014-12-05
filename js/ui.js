@@ -25,8 +25,8 @@ Node, util){
   //2: Pie
   //3: Line 
   //4: Horizon 
-  //0: MMAp 
-  //0: MMAp 
+  //5: Pc
+
   Node.Attributes[0].charts = [
     Chart.Types[0],
     Chart.Types[2]
@@ -46,7 +46,9 @@ Node, util){
     Chart.Types[4]
   ];
 
-
+  Node.Attributes[4].charts = [
+    Chart.Types[5]
+  ];
 
   function buildTree(data, level){
     var root = new Node(data, level);
@@ -105,8 +107,8 @@ Node, util){
       }
     }
 
-    this.menu = d3.svg.radialMenu(function(attr){
-      ui.roll(attr);
+    this.menu = d3.svg.radialMenu(function(attr, chart){
+      ui.roll(attr, chart);
     });
       
 
@@ -126,16 +128,20 @@ Node, util){
    
     this.menu.node = root;
     this.menu.mmap = this.mmap;
-    ui.roll(Node.Attributes[0]);
+    ui.roll(Node.Attributes[0], Chart.MMap);
 
     this.menu.node = root.children[0];
     this.menu.mmap = root.vis;
-    ui.roll(Node.Attributes[4]);
+    ui.roll(Node.Attributes[0], Chart.MMap);
 
     //this.menu.show(500, 500, root, this.mmap);
   };
   
-  ui.roll = function(attr){
+  ui.update = function(){
+    ui.mmap.update();
+  };
+
+  ui.roll = function(attr, chart){
     var 
         self = this,
         node = ui.menu.node
@@ -145,8 +151,21 @@ Node, util){
 
     if(node.vis) { 
       node.vis.remove('grace');
+      delete node.vis;
+      function dd(node){
+        if(!node.children.length)return;
+        node.children.forEach(function(child){
+          if(child.vis) {
+            child.vis.remove('grace');
+            delete child.vis;
+            dd(child);
+          }
+        });
+      }
+      dd(node);
     }
-    node.vis = new (node.level > 0 ? Chart.PCoordinate : Chart.MMap)(
+    
+    node.vis = new chart(
       node.g.append('g'), 
       node.width, 
       node.height, 

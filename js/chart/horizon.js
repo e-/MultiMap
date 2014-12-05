@@ -52,10 +52,14 @@ define(['util', 'model/node', 'd3', 'lib/horizon'], function(util, Node){
         })
       );
       this.data = 
-        this.nodes.map(function(node){
-          return [node, node.data[self.attr.name].map(function(value, i){
-            return [i, value - self.mean]
-          })];
+        this.nodes.map(function(node, actualIndex){
+          return [
+            node, 
+            node.data[self.attr.name].map(function(value, i){
+              return [i, value - self.mean]
+            }),
+            actualIndex
+          ];
         });
 
       this.update();        
@@ -107,7 +111,9 @@ define(['util', 'model/node', 'd3', 'lib/horizon'], function(util, Node){
       this.gs = 
       this.g
           .selectAll('g.hor')
-          .data(this.data)
+          .data(this.data, function(d){
+            return d[2];
+          })
   
       var perHeight = actualHeight / this.data.length,
           fontSize = Math.min(util.getPrettyFontSize('가나다라', actualWidth, perHeight), 2.5)
@@ -135,7 +141,7 @@ define(['util', 'model/node', 'd3', 'lib/horizon'], function(util, Node){
       
       this.gs
         .transition()
-        .attr('transform', function(_, i){return translate(0, i * perHeight);})
+        .attr('transform', function(d){return translate(0, d[2] * perHeight);})
         .attr('opacity', 1)
         .call(this.horizon);
       
@@ -143,7 +149,7 @@ define(['util', 'model/node', 'd3', 'lib/horizon'], function(util, Node){
         .append('text')
         .attr('class', 'label')
         .style('text-anchor', 'end')
-        .attr('transform', function(_, i){return translate(actualWidth - 15, 0);})
+        .attr('transform', function(){return translate(actualWidth - 15, 0);})
         .text(function(node){return node[0].data.name;});
 
       gsEnter
@@ -190,7 +196,7 @@ define(['util', 'model/node', 'd3', 'lib/horizon'], function(util, Node){
         if(highlightedIds.indexOf(a[0].id) >= 0) return 1;
         return -1;
       });
-        
+      
       highlighted.forEach(function(node){
         self.highlight(node);
       });

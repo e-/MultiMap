@@ -107,7 +107,9 @@ define(['util', 'model/node', 'd3'], function(util, Node){
       this.gs = 
       this.g
         .selectAll('.arc')
-          .data(this.pie(this.nodes))
+          .data(this.pie(this.nodes), function(d){
+            return d.data.id;
+          })
 
       var gsEnter =  
       this.gs
