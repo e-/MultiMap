@@ -246,7 +246,7 @@ function loadTemperature(){
     leaf.temperature = [];
 
     for(i=0;i<nn;++i){
-      leaf.temperature.push(s1(i) + s2(i) + s3(i) + leaf.id / 5 + leaf.popRatio / 10);
+      leaf.temperature.push((s1(i) + s2(i) + s3(i) + leaf.id) / 20 + 15 );
     }
     
   });
@@ -261,16 +261,16 @@ function rnd(mean, stdev) {
 }
 
 function q(x, leaf){
-  return Math.round(leaf.population / 100000 * x);
+  return Math.round(leaf.population / 300000 * x);
 }
 
 function loadVehicle(){
   leaves.forEach(function(leaf){
     leaf.vehicle = [
-      q(rnd(100000, 30000), leaf),
-      q(rnd(50000, 20000), leaf),
-      q(rnd(30000, 10000), leaf),
-      q(rnd(10000, 5000), leaf)
+      q(rnd(10000, 3000), leaf),
+      q(rnd(1000, 500), leaf),
+      q(rnd(300, 100), leaf),
+      q(rnd(100, 50), leaf)
     ];
   });
 }
