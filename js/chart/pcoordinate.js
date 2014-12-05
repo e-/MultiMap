@@ -174,6 +174,19 @@ define(['util', 'model/node', 'd3'], function(util, Node){
           .attr('stroke', function(node){
             return node.color.darker(1.0);
           })
+          .each(function(node){
+            node.pcPath = d3.select(this);
+          })
+          .on('mouseover', function(node){
+            node.isHovered = true;
+            self.ui.map.updateHighlight();
+            self.updateHighlight();
+          })
+          .on('mouseout', function(node){
+            node.isHovered = false;
+            self.ui.map.updateHighlight();
+            self.updateHighlight();
+          })
 
       
       this.gs.select('path')
@@ -246,15 +259,25 @@ define(['util', 'model/node', 'd3'], function(util, Node){
           */
       //this.gs.exit().remove();
     },
+    highlight: function(node){
+      node.pcPath
+        .attr('opacity', 0.9)
+        .attr('stroke', node.color.darker(1.5))
+        .attr('stroke-width', '7px')
+    },
+    unhighlight: function(node){
+      node.pcPath
+        .attr('stroke', node.color.darker(1.0))
+        .attr('opacity', 0.5)
+        .attr('stroke-width', '3px')
+    },
     updateHighlight: function(){
-      return;
       var highlighted = this.nodes.filter(Node.IsHighlighted),
-          highlightedIds = highlighted.map(Node.GetId);
+          highlightedIds = highlighted.map(Node.GetId),
+          self = this;
       
       // remove all highlight
-      this.nodes.forEach(function(node){
-        node.unhighlightElement(node.arc);
-      });
+      this.nodes.forEach(self.unhighlight);
       
       //sort
       this.gs.sort(function (a, b){
@@ -262,9 +285,7 @@ define(['util', 'model/node', 'd3'], function(util, Node){
         return -1;
       });
         
-      highlighted.forEach(function(node){
-        node.highlightElement(node.arc);
-      });
+      highlighted.forEach(self.highlight);
     },
     remove: function(option){
       if(option == 'grace') {
