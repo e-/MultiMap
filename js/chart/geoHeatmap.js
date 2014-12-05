@@ -132,11 +132,13 @@ define(['util', 'model/node', 'd3'], function(util, Node){
                 d[2].isHovered = true;
                 self.ui.map.updateHighlight();
                 self.updateHighlight();
+                self.ui.detail.show(d[2]);
               })
               .on('mouseout', function(d){
                 d[2].isHovered = false;
                 self.ui.map.updateHighlight();
                 self.updateHighlight();
+                self.ui.detail.empty();
               })
       
       this.gs
@@ -169,7 +171,7 @@ define(['util', 'model/node', 'd3'], function(util, Node){
       this.gs.exit().remove();
     },
     highlight: function(node){
-      node.geoHeatmapG.selectAll('path').attr('stroke', '#333').attr('stroke-width', 3)
+      node.geoHeatmapG.selectAll('path').attr('stroke', '#333').attr('stroke-width', 1.5)
     },
     unhighlight: function(node){
       node.geoHeatmapG.selectAll('path').attr('stroke', '#aaa').attr('stroke-width', 1);

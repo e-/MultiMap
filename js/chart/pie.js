@@ -127,11 +127,13 @@ define(['util', 'model/node', 'd3'], function(util, Node){
            d.data.isHovered = true;
            self.ui.map.updateHighlight();
            self.updateHighlight();
+           self.ui.detail.show(d.data);
          })
          .on('mouseout', function(d){
            d.data.isHovered = false;
            self.ui.map.updateHighlight();
            self.updateHighlight();
+           self.ui.detail.empty();
          })
          .each(function(d){
            d.data.arc = d3.select(this);

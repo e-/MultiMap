@@ -181,11 +181,13 @@ define(['util', 'model/node', 'd3'], function(util, Node){
             node.isHovered = true;
             self.ui.map.updateHighlight();
             self.updateHighlight();
+            self.ui.detail.show(node);
           })
           .on('mouseout', function(node){
             node.isHovered = false;
             self.ui.map.updateHighlight();
             self.updateHighlight();
+            self.ui.detail.empty();
           })
 
       

@@ -129,11 +129,13 @@ define(['util', 'model/node', 'd3', 'lib/horizon'], function(util, Node){
           node[0].isHovered = true;
           self.ui.map.updateHighlight();
           self.updateHighlight();
+          self.ui.detail.show(node[0]);
         })
         .on('mouseout', function(node){
           node[0].isHovered = false;
           self.ui.map.updateHighlight();
           self.updateHighlight();
+          self.ui.detail.empty();
         })
         .each(function(node){
           node[0].horizonG = d3.select(this);
