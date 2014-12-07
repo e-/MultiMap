@@ -202,64 +202,7 @@ define(['util', 'model/node', 'd3'], function(util, Node){
             }));
           })
       
-      /*
-      var radius = Math.min(actualWidth, actualHeight) / 2 * 0.9,
-          fontSize = util.getPrettyFontSize('가나다라', radius * 0.9, radius * 0.9);  
-
-
-
-      this.arc.outerRadius(radius);
-
-
-      gsEnter
-        .append('path')
-         .attr('fill', function(node){return node.data.color;})
-         .attr('stroke', this.nodes[0].color.darker(7))
-         .attr('opacity', 0)
-         .on('mouseover', function(d){
-           d.data.isHovered = true;
-           self.ui.map.updateHighlight();
-           self.updateHighlight();
-         })
-         .on('mouseout', function(d){
-           d.data.isHovered = false;
-           self.ui.map.updateHighlight();
-           self.updateHighlight();
-         })
-         .each(function(d){
-           d.data.arc = d3.select(this);
-         })
-
-      ;
-
-      gsEnter
-          .filter(function(d){
-            return d.endAngle - d.startAngle > .2;
-          })
-        .append('text')
-        .attr('text-anchor', 'middle')
-        .attr('class', 'label')
-        .text(function(d){return d.data.data.name;});
-      
-      this.gs
-        .transition()
-        .attr('transform', translate(actualWidth / 2, actualHeight / 2));
-
-      this.gs.select('path')
-        .transition()
-        .attr('d', this.arc)
-        .attr('opacity', 1)
-      
-      this.gs.select('text')
-        .style('font-size', fontSize + 'em')
-        .transition()
-        .attr('transform', function(d){
-          var center = self.arc.centroid(d);
-
-          return translate(center[0] * 1.2, center[1] * 1.2) + 'rotate(' + angle(d) + ')';
-        })
-          */
-      //this.gs.exit().remove();
+      this.gs.exit().remove();
     },
     highlight: function(node){
       node.pcPath
@@ -274,6 +217,7 @@ define(['util', 'model/node', 'd3'], function(util, Node){
         .attr('stroke-width', '3px')
     },
     updateHighlight: function(){
+      if(this.isRemoving) return;
       var highlighted = this.nodes.filter(Node.IsHighlighted),
           highlightedIds = highlighted.map(Node.GetId),
           self = this;
@@ -290,6 +234,7 @@ define(['util', 'model/node', 'd3'], function(util, Node){
       highlighted.forEach(self.highlight);
     },
     remove: function(option){
+      this.isRemoving = true;
       if(option == 'grace') {
         this.g.transition().attr('opacity', 0).remove();
         this.background.transition().attr('opacity', 0).remove();

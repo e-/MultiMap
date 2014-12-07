@@ -9,6 +9,7 @@ define(['util', 'model/node', 'd3'], function(util, Node){
     this.level = level || 0;
     this.parent = parent;
     this.attr = attr;
+    this.isRemoving = false;
   }
 
   function translate(x, y){
@@ -105,9 +106,9 @@ define(['util', 'model/node', 'd3'], function(util, Node){
         .attr('height', actualHeight)
 
       var marginTop = 20,
-          marginLeft = 40,
-          marginBottom = 40,
-          marginRight = 130
+          marginLeft = 10,
+          marginBottom = 20,
+          marginRight = 30
       ;
       
       this.xScale.range([marginLeft, actualWidth - marginRight])
@@ -116,7 +117,7 @@ define(['util', 'model/node', 'd3'], function(util, Node){
       this.gs = 
       this.g
         .selectAll('g')
-          .data(this.nodes)
+          .data(this.nodes, function(node){return node.id;})
       
       var gsEnter =  
       this.gs
@@ -126,44 +127,32 @@ define(['util', 'model/node', 'd3'], function(util, Node){
 
       gsEnter
         .append('path')
-          .attr('stroke', function(node){return node.color.darker(0.4);})
-          .attr('stroke-width', '2px')
+          .attr('stroke', function(node){return node.color.darker(1.0);})
+          .attr('stroke-width', '3px')
+          .attr('opacity', 0.5)
           .attr('fill', 'none')
+          .on('mouseover', function(node){
+            node.isHovered = true;
+            self.ui.map.updateHighlight();
+            self.updateHighlight();
+            self.ui.detail.show(node);
+          })
+          .on('mouseout', function(node){
+            node.isHovered = false;
+            self.ui.map.updateHighlight();
+            self.updateHighlight();
+            self.ui.detail.empty();
+          })
 
-     gsEnter
+      gsEnter
        .append('circle')
-       .attr('stroke', function(node){return node.color.darker(0.4);})
+       .attr('stroke', function(node){return node.color.darker(1.0);})
+       .attr('opacity', 0.5)
        .attr('stroke-width', '3px')
        .attr('r', 10)
        .attr('fill', function(node){return node.color;})
     
-     gsEnter
-      .append('text')
-        .attr('x', 20)
-        .style('font-size','1.2em')
-        .attr('dy', '0')
-        .attr('class', 'label')
-        .attr('text-anchor', 'start')
-        .style('text-anchor', 'start')
-        .text(function(d){return d.data.name;})
-/*         .attr('fill', function(node){return node.data.color;})
-         .attr('stroke', this.nodes[0].color.darker(7))
-         .attr('opacity', 0)
-         .on('mouseover', function(d){
-           d.data.isHovered = true;
-           self.ui.map.updateHighlight();
-           self.updateHighlight();
-         })
-         .on('mouseout', function(d){
-           d.data.isHovered = false;
-           self.ui.map.updateHighlight();
-           self.updateHighlight();
-         })
-         .each(function(d){
-           d.data.arc = d3.select(this);
-         })
-*/
-      ;
+      var k = 0, n = this.nodes[0].data[self.attr.name].length;
 
       if(this.init) {
         this.gs.select('path')
@@ -171,17 +160,18 @@ define(['util', 'model/node', 'd3'], function(util, Node){
           .attr('d', function(node){
             return self.line(node.data[self.attr.name]);
           })
-          .attr('opacity', 1)
+        this.gs.select('circle')
+          .transition()
+          .attr('transform', function(d, i){return translate(self.xScale(n-1), self.yScale(d.data[self.attr.name][n-1]));})
       } else {
 
-        var k = 0, n = this.nodes[0].data[self.attr.name].length;
 
         function draw(k){
           self.gs.each(function(d){
             var e = d3.select(this);
             e.select('path')
               .attr('d', function(d){return self.line(d.data[self.attr.name].slice(0, k+1));});
-            e.selectAll('circle, text')
+            e.select('circle')
               .attr('transform', function(d, i){return translate(self.xScale(k), self.yScale(d.data[self.attr.name][k]));})
           });
         }
@@ -192,29 +182,52 @@ define(['util', 'model/node', 'd3'], function(util, Node){
           if(k >= n)
             return true;
         });
+        this.init = true;
       }
       this.gs.exit().remove();
     },
+    highlight: function(node){
+      node.lineG.select('path')
+        .attr('opacity', 0.9)
+        .attr('stroke', node.color.darker(1.5))
+        .attr('stroke-width', '7px')
+      node.lineG.select('circle')
+        .attr('opacity', 1)
+        .attr('stroke', node.color.darker(1.5))
+        .attr('stroke-width', '7px')
+
+    },
+    unhighlight: function(node){
+      node.lineG
+        .select('path')
+        .attr('stroke', node.color.darker(1.0))
+        .attr('opacity', 0.5)
+        .attr('stroke-width', '3px')
+      node.lineG.select('circle')
+        .attr('opacity', 0.5)
+        .attr('stroke', node.color.darker(1.0))
+        .attr('stroke-width', '3px')
+
+    },
     updateHighlight: function(){
+      if(this.isRemoving)return;
       var highlighted = this.nodes.filter(Node.IsHighlighted),
-          highlightedIds = highlighted.map(Node.GetId);
-      
+          highlightedIds = highlighted.map(Node.GetId),
+          self = this;
+       
       // remove all highlight
-      this.nodes.forEach(function(node){
-        node.unhighlightElement(node.arc);
-      });
+      this.nodes.forEach(self.unhighlight);
       
       //sort
       this.gs.sort(function (a, b){
-        if(highlightedIds.indexOf(a.data.id) >= 0) return 1;
+        if(highlightedIds.indexOf(a.id) >= 0) return 1;
         return -1;
       });
         
-      highlighted.forEach(function(node){
-        node.highlightElement(node.arc);
-      });
+      highlighted.forEach(self.highlight);
     },
     remove: function(option){
+      this.isRemoving = true;
       if(option == 'grace') {
         this.g.transition().attr('opacity', 0).remove();
         this.background.transition().attr('opacity', 0).remove();
@@ -226,10 +239,6 @@ define(['util', 'model/node', 'd3'], function(util, Node){
       }
 
       this.nodes.forEach(function(node){
-        delete node.arc;
-        delete node.background;
-        delete node.xScale;
-        delete node.yScale;
         delete node.lineG;
       });
     }

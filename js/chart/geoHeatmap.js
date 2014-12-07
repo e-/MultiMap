@@ -13,7 +13,7 @@ define(['util', 'model/node', 'd3'], function(util, Node){
     this.parent = parent;
     this.attr = attr;
     this.leaves = this.parent.getLeaves();
-
+    this.isRemoving = false;
   }
 
   function translate(x, y){
@@ -177,6 +177,7 @@ define(['util', 'model/node', 'd3'], function(util, Node){
       node.geoHeatmapG.selectAll('path').attr('stroke', '#aaa').attr('stroke-width', 1);
     },
     updateHighlight: function(){
+      if(this.isRemoving)return;
       var highlighted = this.leaves.filter(Node.IsHighlighted),
           highlightedIds = highlighted.map(Node.GetId),
           self = this;
@@ -197,6 +198,7 @@ define(['util', 'model/node', 'd3'], function(util, Node){
       });
     },
     remove: function(option){
+      this.isRemoving = true;
       if(option == 'grace') {
         this.g.transition().attr('opacity', 0).remove();
         this.background.transition().attr('opacity', 0).remove();
